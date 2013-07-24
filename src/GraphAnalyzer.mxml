@@ -7,16 +7,26 @@
 	</fx:Declarations>
 	<fx:Script>
 		<![CDATA[
-			
+			private function resizeCanvas():void {
+				var min:int = Math.min(leftPanel.width, leftPanel.height-20)-15;
+				
+				canvas.width = min;
+				canvas.height = min;
+				
+				timeSlider.width = min;
+			}
 		]]>
 	</fx:Script>
 	<mx:HDividedBox liveDragging="true" width="100%" height="100%">
-		<s:BorderContainer width="80%" height="100%" backgroundColor="0xABCDEF"/>
+		<s:BorderContainer id="leftPanel" width="80%" height="100%" backgroundColor="0x333333" resize="resizeCanvas()">
+			<s:BorderContainer id="canvas" verticalCenter="-10" horizontalCenter="0" dropShadowVisible="true"/>
+			<s:HSlider id="timeSlider" y="{canvas.y+canvas.height+10}" horizontalCenter="0" />
+		</s:BorderContainer>
 		<mx:VDividedBox width="20%" liveDragging="true" height="100%">
-			<s:Panel width="100%" title="검색">
+			<s:Panel width="100%" title="검색" dropShadowVisible="true">
 				
 			</s:Panel>
-			<s:Panel width="100%" title="속성">
+			<s:Panel width="100%" title="속성" dropShadowVisible="true">
 				
 			</s:Panel>
 		</mx:VDividedBox>
