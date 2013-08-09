@@ -15,7 +15,7 @@ package
 		private function enterFrameHandler(e:Event):void {
 			var t:Sprite = new Sprite();
 			
-			t.graphics.beginFill(0);
+			t.graphics.beginFill(0xFFFFFF*Math.random());
 			t.graphics.drawCircle(100*Math.random(), 100*Math.random(), 3);
 			t.x = Math.random()*this.width;
 			t.y = Math.random()*this.height;
