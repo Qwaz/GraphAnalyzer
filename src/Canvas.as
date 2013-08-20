@@ -23,12 +23,16 @@ package
 		
 		public function set slider(slider:HSlider):void {
 			_slider = slider;
-			parser = new Parser(_slider);
+			parser = new Parser();
 			parser.addEventListener(Event.COMPLETE, parseComplete);
 			parser.parse();
 		}
 		
 		private function parseComplete(e:Event):void {
+			_slider.minimum = parser.minimum;
+			_slider.maximum = parser.maximum;
+			_slider.stepSize = parser.stepSize;
+			
 			lastTime = _slider.minimum;
 			nodeIndex = 0;
 			edgeIndex = 0;

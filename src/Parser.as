@@ -4,8 +4,6 @@ package
 	import flash.events.EventDispatcher;
 	import flash.net.URLLoader;
 	import flash.net.URLRequest;
-	
-	import spark.components.HSlider;
 
 	public class Parser extends EventDispatcher
 	{
@@ -15,8 +13,6 @@ package
 		EDGE:String="../edge.txt",
 		IGNORE:String=".";
 		
-		public var slider:HSlider;
-		
 		private var frameLoader:URLLoader, graphLoader:URLLoader, edgeLoader:URLLoader;
 		
 		private var numNodeData:uint, numEdgeData:uint;
@@ -25,11 +21,12 @@ package
 		private var nodeDictionary:Object, edgeDictionary:Object;
 		private var _nodeAlterInfo:Vector.<AlterInfo>, _edgeAlterInfo:Vector.<AlterInfo>;
 		
+		public var minimum:Number, maximum:Number, stepSize:Number;
+		
 		private var nodeLoaded:Boolean = false, edgeLoaded:Boolean = false;
 		
-		public function Parser(slider:HSlider)
+		public function Parser()
 		{
-			this.slider = slider;
 		}
 		
 		public function parse():void {
@@ -49,9 +46,9 @@ package
 			var cnt:int = 0;
 			
 			var year:Array = split[cnt++].split(' ');
-			slider.minimum = Number(year[0]);
-			slider.maximum = Number(year[1]);
-			slider.stepSize = Number(year[2]);
+			minimum = Number(year[0]);
+			maximum = Number(year[1]);
+			stepSize = Number(year[2]);
 			
 			var i:int, tp:Array;
 			
