@@ -95,23 +95,6 @@ package
 			var i:int, j:int, tp:Array, tInfo:AlterInfo;
 			nodeAlterInfo = new Vector.<AlterInfo>;
 			
-			/*var numStart:int = int(split[cnt++]);
-			for(i=0; i<numStart; i++){
-				tInfo = new AlterInfo();
-				tInfo.time = slider.minimum;
-				tInfo.node = split[cnt++];
-				
-				tInfo.type = AlterInfo.NODE;
-				tInfo.mode = AlterInfo.ADD;
-				
-				tp = split[cnt++].split(' ');
-				for(j=1; j<numNodeData; j++){
-					tInfo.data[nodeDataList[j].name] = nodeDataList[j].parse(tp[j-1]);
-				}
-				
-				nodeAlterInfo.push(tInfo);
-			}*/
-			
 			var numChange:int = int(split[cnt++]);
 			for(i=0; i<numChange; i++){
 				tp = split[cnt++].split(' ');
@@ -171,25 +154,6 @@ package
 			
 			var i:int, j:int, tp:Array, tInfo:AlterInfo;
 			edgeAlterInfo = new Vector.<AlterInfo>;
-			
-			/*var numStart:int = int(split[cnt++]);
-			for(i=0; i<numStart; i++){
-				tp = split[cnt++].split(' ');
-				tInfo = new AlterInfo();
-				tInfo.time = slider.minimum;
-				tInfo.node = tp[0];
-				tInfo.node2 = tp[1];
-				
-				tInfo.type = AlterInfo.EDGE;
-				tInfo.mode = AlterInfo.ADD;
-				
-				tp = split[cnt++].split(' ');
-				for(j=0; j<numEdgeData; j++){
-					tInfo.data[edgeDataList[j].name] = edgeDataList[j].parse(tp[j]);
-				}
-				
-				edgeAlterInfo.push(tInfo);
-			}*/
 			
 			var numChange:int = int(split[cnt++]);
 			for(i=0; i<numChange; i++){
@@ -306,6 +270,7 @@ package
 					now = nodeAlterInfo[nodeIndex];
 					if(now.mode == AlterInfo.REMOVE){
 						node[now.node].dispose();
+						delete node[now.node];
 					} else {
 						if(now.mode == AlterInfo.ADD){
 							node[now.node] = new Node();
@@ -335,6 +300,7 @@ package
 					now = nodeAlterInfo[nodeIndex-1];
 					if(now.mode == AlterInfo.ADD){
 						node[now.node].dispose();
+						delete node[now.node];
 					} else {
 						if(now.mode == AlterInfo.REMOVE){
 							node[now.node] = new Node();
@@ -367,14 +333,6 @@ package
 		}
 		
 		private function enterFrameHandler(e:Event):void {
-			/*var t:Sprite = new Sprite();
-			
-			t.graphics.beginFill(0xFFFFFF*Math.random());
-			t.graphics.drawCircle(0, 0, 1);
-			t.x = Math.random()*SIZE-SIZE/2;
-			t.y = Math.random()*SIZE-SIZE/2;
-			
-			addChild(t);*/
 		}
 	}
 }
