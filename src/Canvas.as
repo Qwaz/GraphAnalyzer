@@ -33,7 +33,7 @@ package
 			_slider.maximum = parser.maximum;
 			_slider.stepSize = parser.stepSize;
 			
-			lastTime = _slider.minimum;
+			lastTime = Number.MIN_VALUE;
 			nodeIndex = 0;
 			edgeIndex = 0;
 			
@@ -43,6 +43,9 @@ package
 			node = new Object();
 			
 			_slider.addEventListener(Event.CHANGE, changeHandler);
+			
+			_slider.value = _slider.minimum;
+			_slider.dispatchEvent(new Event(Event.CHANGE));
 		}
 		
 		private function apply(target:Object, source:Object):void {

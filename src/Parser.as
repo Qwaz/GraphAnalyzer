@@ -40,6 +40,8 @@ package
 		}
 		
 		private function frameLoadCompleteHandler(e:Event):void {
+			frameLoader.removeEventListener(Event.COMPLETE, frameLoadCompleteHandler);
+			
 			var rawString:String = frameLoader.data;
 			var split:Array = rawString.split(/\r?\n/);
 			
@@ -81,6 +83,8 @@ package
 		}
 		
 		private function graphLoadCompleteHandler(e:Event):void {
+			graphLoader.removeEventListener(Event.COMPLETE, graphLoadCompleteHandler);
+			
 			var rawString:String = graphLoader.data;
 			var split:Array = rawString.split(/\r?\n/);
 			
@@ -141,6 +145,8 @@ package
 		}
 		
 		private function edgeLoadCompleteHandler(e:Event):void {
+			edgeLoader.removeEventListener(Event.COMPLETE, edgeLoadCompleteHandler);
+			
 			var rawString:String = edgeLoader.data;
 			var split:Array = rawString.split(/\r?\n/);
 			
