@@ -1,42 +1,39 @@
 package
 {
-	import flash.display.Sprite;
 	import flash.events.Event;
+	import flash.events.EventDispatcher;
 	import flash.net.URLLoader;
 	import flash.net.URLRequest;
 	
 	import spark.components.HSlider;
-	import spark.core.SpriteVisualElement;
 
-	public class Parser extends SpriteVisualElement
-	{	
-		public static const SIZE:Number = 100;
-		
+	public class Parser extends EventDispatcher
+	{
 		private static const
 		FRAME:String="../frame.txt",
 		GRAPH:String="../graph.txt",
 		EDGE:String="../edge.txt",
-		ignore:String=".";
-		
-		private var frameLoader:URLLoader, graphLoader:URLLoader, edgeLoader:URLLoader;
+		IGNORE:String=".";
 		
 		public var slider:HSlider;
 		
+		private var frameLoader:URLLoader, graphLoader:URLLoader, edgeLoader:URLLoader;
+		
 		private var numNodeData:uint, numEdgeData:uint;
 		private var nodeDataList:Vector.<Data>, edgeDataList:Vector.<Data>;
+		
 		private var nodeDictionary:Object, edgeDictionary:Object;
-		private var nodeAlterInfo:Vector.<AlterInfo>, edgeAlterInfo:Vector.<AlterInfo>;
+		private var _nodeAlterInfo:Vector.<AlterInfo>, _edgeAlterInfo:Vector.<AlterInfo>;
 		
 		private var nodeLoaded:Boolean = false, edgeLoaded:Boolean = false;
 		
-		private var lastTime:Number, nodeIndex:uint, edgeIndex:uint;
-		private var node:Object;
-		
-		public function Parser()
+		public function Parser(slider:HSlider)
 		{
+			this.slider = slider;
+		}
+		
+		public function parse():void {
 			parseFrame();
-			
-			startRendering();
 		}
 		
 		private function parseFrame():void {
@@ -93,7 +90,7 @@ package
 			var cnt:int = 0;
 			
 			var i:int, j:int, tp:Array, tInfo:AlterInfo;
-			nodeAlterInfo = new Vector.<AlterInfo>;
+			_nodeAlterInfo = new Vector.<AlterInfo>;
 			
 			var numChange:int = int(split[cnt++]);
 			for(i=0; i<numChange; i++){
@@ -131,10 +128,10 @@ package
 					}
 				}
 				
-				nodeAlterInfo.push(tInfo);
+				_nodeAlterInfo.push(tInfo);
 			}
 			
-			nodeAlterInfo.sort(AlterInfo.sortFunc);
+			_nodeAlterInfo.sort(AlterInfo.sortFunc);
 			
 			nodeLoaded = true;
 			initCheck();
@@ -153,7 +150,7 @@ package
 			var cnt:int = 0;
 			
 			var i:int, j:int, tp:Array, tInfo:AlterInfo;
-			edgeAlterInfo = new Vector.<AlterInfo>;
+			_edgeAlterInfo = new Vector.<AlterInfo>;
 			
 			var numChange:int = int(split[cnt++]);
 			for(i=0; i<numChange; i++){
@@ -192,10 +189,10 @@ package
 					}
 				}
 				
-				edgeAlterInfo.push(tInfo);
+				_edgeAlterInfo.push(tInfo);
 			}
 			
-			edgeAlterInfo.sort(AlterInfo.sortFunc);
+			_edgeAlterInfo.sort(AlterInfo.sortFunc);
 			
 			edgeLoaded = true;
 			initCheck();
@@ -209,8 +206,8 @@ package
 				nowEdge = new Object();
 				
 				var i:int, now:AlterInfo;
-				for(i=0; i<nodeAlterInfo.length; i++){
-					now = nodeAlterInfo[i];
+				for(i=0; i<_nodeAlterInfo.length; i++){
+					now = _nodeAlterInfo[i];
 					if(now.mode == AlterInfo.ADD){
 						nowNode[now.node] = new Object();
 					}
@@ -220,8 +217,8 @@ package
 					}
 				}
 				
-				for(i=0; i<edgeAlterInfo.length; i++){
-					now = edgeAlterInfo[i];
+				for(i=0; i<_edgeAlterInfo.length; i++){
+					now = _edgeAlterInfo[i];
 					if(now.mode == AlterInfo.ADD){
 						nowEdge[hash(now)] = new Object();
 					}
@@ -231,13 +228,7 @@ package
 					}
 				}
 				
-				lastTime = slider.minimum;
-				nodeIndex = 0;
-				edgeIndex = 0;
-				
-				node = new Object();
-				
-				slider.addEventListener(Event.CHANGE, changeHandler);
+				this.dispatchEvent(new Event(Event.COMPLETE));
 			}
 		}
 		
@@ -255,84 +246,12 @@ package
 			}
 		}
 		
-		private function apply(target:Object, source:Object):void {
-			var str:String;
-			for(str in source){
-				target[str] = source[str];
-			}
+		public function get nodeAlterInfo():Vector.<AlterInfo>{
+			return _nodeAlterInfo;
 		}
 		
-		private function changeHandler(e:Event):void {
-			var now:AlterInfo;
-			if(lastTime < slider.value){
-				//오른쪽으로 드래그 한 경우
-				for(; nodeIndex < nodeAlterInfo.length && nodeAlterInfo[nodeIndex].time <= slider.value; nodeIndex++){
-					now = nodeAlterInfo[nodeIndex];
-					if(now.mode == AlterInfo.REMOVE){
-						node[now.node].dispose();
-						delete node[now.node];
-					} else {
-						if(now.mode == AlterInfo.ADD){
-							node[now.node] = new Node();
-							addChild(node[now.node]);
-							node[now.node].x = Math.random()*SIZE-SIZE/2;
-							node[now.node].y = Math.random()*SIZE-SIZE/2;
-						}
-						apply(node[now.node].data, now.data);
-					}
-				}
-				
-				for(; edgeIndex < edgeAlterInfo.length && edgeAlterInfo[edgeIndex].time <= slider.value; edgeIndex++){
-					now = edgeAlterInfo[edgeIndex];
-					if(now.type == AlterInfo.REMOVE){
-						if(node[now.node])
-							delete node[now.node].to[now.node2];
-					} else {
-						if(now.type == AlterInfo.ADD){
-							node[now.node].to[now.node2] = new Object();
-						}
-						apply(node[now.node].to[now.node2], now.data);
-					}
-				}
-			} else if(lastTime > slider.value) {
-				//왼쪽으로 드래그 한 경우
-				for(; nodeIndex > 0 && nodeAlterInfo[nodeIndex-1].time > slider.value; nodeIndex--){
-					now = nodeAlterInfo[nodeIndex-1];
-					if(now.mode == AlterInfo.ADD){
-						node[now.node].dispose();
-						delete node[now.node];
-					} else {
-						if(now.mode == AlterInfo.REMOVE){
-							node[now.node] = new Node();
-							addChild(node[now.node]);
-							node[now.node].x = Math.random()*SIZE-SIZE/2;
-							node[now.node].y = Math.random()*SIZE-SIZE/2;
-						}
-						apply(node[now.node].data, now.prev);
-					}
-				}
-				
-				for(; edgeIndex > 0 && edgeAlterInfo[edgeIndex-1].time > slider.value; edgeIndex--){
-					now = edgeAlterInfo[edgeIndex-1];
-					if(now.type == AlterInfo.ADD){
-						if(node[now.node])
-							delete node[now.node].to[now.node2];
-					} else {
-						if(now.type == AlterInfo.REMOVE){
-							node[now.node].to[now.node2] = new Object();
-						}
-						apply(node[now.node].to[now.node2], now.prev);
-					}
-				}
-			}
-			lastTime = slider.value;
-		}
-		
-		private function startRendering():void {
-			addEventListener(Event.ENTER_FRAME, enterFrameHandler);
-		}
-		
-		private function enterFrameHandler(e:Event):void {
+		public function get edgeAlterInfo():Vector.<AlterInfo>{
+			return _edgeAlterInfo;
 		}
 	}
 }
