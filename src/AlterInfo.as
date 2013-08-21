@@ -22,6 +22,10 @@ package
 			prev = new Object();
 		}
 		
+		public function hash():String {
+			return node+'$$$$$'+node2;
+		}
+		
 		public static function sortFunc(p:AlterInfo, q:AlterInfo):int {
 			if(p.time == q.time) return 0;
 			else if(p.time < q.time) return -1;

@@ -223,20 +223,16 @@ package
 				for(i=0; i<_edgeAlterInfo.length; i++){
 					now = _edgeAlterInfo[i];
 					if(now.mode == AlterInfo.ADD){
-						nowEdge[hash(now)] = new Object();
+						nowEdge[now.hash()] = new Object();
 					}
-					overwrite(nowEdge[hash(now)], now, now.mode != AlterInfo.ADD);
+					overwrite(nowEdge[now.hash()], now, now.mode != AlterInfo.ADD);
 					if(now.mode == AlterInfo.REMOVE){
-						delete nowEdge[hash(now)];
+						delete nowEdge[now.hash()];
 					}
 				}
 				
 				this.dispatchEvent(new Event(Event.COMPLETE));
 			}
-		}
-		
-		private function hash(target:AlterInfo):String {
-			return target.node+'$$$$$'+target.node2;
 		}
 		
 		private function overwrite(target:Object, source:AlterInfo, savePrev:Boolean):void {

@@ -6,6 +6,9 @@ html-template/
 
 # Other files and folders
 
+edge.txt
+frame.txt
+graph.txt
 *.swf
 
 # Project files, i.e. `.project`, `.actionScriptProperties` and `.flexProperties`

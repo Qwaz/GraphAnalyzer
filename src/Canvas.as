@@ -4,6 +4,9 @@ package
 	
 	import spark.components.HSlider;
 	import spark.core.SpriteVisualElement;
+	
+	import graph.Edge;
+	import graph.Node;
 
 	public class Canvas extends SpriteVisualElement
 	{	
@@ -15,7 +18,7 @@ package
 		
 		private var lastTime:Number, nodeIndex:uint, edgeIndex:uint;
 		
-		private var node:Object;
+		private var node:Object, edge:Object;
 		
 		public function Canvas()
 		{
@@ -41,11 +44,14 @@ package
 			edgeAlterInfo = parser.edgeAlterInfo;
 			
 			node = new Object();
+			edge = new Object();
 			
 			_slider.addEventListener(Event.CHANGE, changeHandler);
 			
 			_slider.value = _slider.minimum;
 			_slider.dispatchEvent(new Event(Event.CHANGE));
+			
+			addEventListener(Event.ENTER_FRAME, enterFrameHandler);
 		}
 		
 		private function apply(target:Object, source:Object):void {
@@ -56,7 +62,7 @@ package
 		}
 		
 		private function changeHandler(e:Event):void {
-			var now:AlterInfo;
+			var now:AlterInfo, tEdge:Edge;
 			if(lastTime < _slider.value){
 				//오른쪽으로 드래그 한 경우
 				for(; nodeIndex < nodeAlterInfo.length && nodeAlterInfo[nodeIndex].time <= _slider.value; nodeIndex++){
@@ -77,14 +83,16 @@ package
 				
 				for(; edgeIndex < edgeAlterInfo.length && edgeAlterInfo[edgeIndex].time <= _slider.value; edgeIndex++){
 					now = edgeAlterInfo[edgeIndex];
-					if(now.type == AlterInfo.REMOVE){
-						if(node[now.node])
-							delete node[now.node].to[now.node2];
+					if(now.mode == AlterInfo.REMOVE){
+						edge[now.hash()].dispose();
+						delete edge[now.hash()];
 					} else {
-						if(now.type == AlterInfo.ADD){
-							node[now.node].to[now.node2] = new Object();
+						if(now.mode == AlterInfo.ADD){
+							tEdge = new Edge(now.node, now.node2);
+							edge[now.hash()] = tEdge;
+							addChildAt(tEdge, 0);
 						}
-						apply(node[now.node].to[now.node2], now.data);
+						apply(edge[now.hash()], now.data);
 					}
 				}
 			} else if(lastTime > _slider.value) {
@@ -107,18 +115,58 @@ package
 				
 				for(; edgeIndex > 0 && edgeAlterInfo[edgeIndex-1].time > _slider.value; edgeIndex--){
 					now = edgeAlterInfo[edgeIndex-1];
-					if(now.type == AlterInfo.ADD){
-						if(node[now.node])
-							delete node[now.node].to[now.node2];
+					if(now.mode == AlterInfo.ADD){
+						edge[now.hash()].dispose();
+						delete edge[now.hash()];
 					} else {
-						if(now.type == AlterInfo.REMOVE){
-							node[now.node].to[now.node2] = new Object();
+						if(now.mode == AlterInfo.REMOVE){
+							tEdge = new Edge(now.node, now.node2);
+							edge[now.hash()] = tEdge;
+							addChildAt(tEdge, 0);
 						}
-						apply(node[now.node].to[now.node2], now.prev);
+						apply(edge[now.hash()], now.prev);
 					}
 				}
 			}
+			adjustEdge();
+			
 			lastTime = _slider.value;
+		}
+		
+		private function enterFrameHandler(e:Event):void {
+			var nowNode:Node, nextNode:Node, nowEdge:Edge;
+			
+			for each(nowEdge in edge){
+				nowNode = node[nowEdge.node1];
+				nextNode = node[nowEdge.node2];
+				
+				nowNode.speedX += Edge.CONSTANT*(nextNode.x-nowNode.x);
+				nowNode.speedY += Edge.CONSTANT*(nextNode.y-nowNode.y);
+			}
+			
+			for each(nowNode in node){
+				for each(nextNode in node){
+					if(nextNode != nowNode){
+						nowNode.speedX -= Node.CONSTANT/(nextNode.x-nowNode.x);
+						nowNode.speedY -= Node.CONSTANT/(nextNode.y-nowNode.y);
+					}
+				}
+				
+				nowNode.update();
+			}
+			
+			adjustEdge();
+		}
+		
+		private function adjustEdge():void {
+			var nowEdge:Edge;
+			for each(nowEdge in edge){
+				nowEdge.x = node[nowEdge.node1].x;
+				nowEdge.y = node[nowEdge.node1].y;
+				
+				nowEdge.scaleX = node[nowEdge.node2].x-node[nowEdge.node1].x;
+				nowEdge.scaleY = node[nowEdge.node2].y-node[nowEdge.node1].y;
+			}
 		}
 	}
 }
