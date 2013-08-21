@@ -6,11 +6,12 @@ package
 	import spark.core.SpriteVisualElement;
 	
 	import graph.Edge;
+	import graph.GraphObject;
 	import graph.Node;
 
 	public class Canvas extends SpriteVisualElement
 	{	
-		public static const SIZE:Number = 100;
+		public static const SIZE:Number = 100, MIN_DISTANCE:Number = 7;
 		
 		private var _slider:HSlider, parser:Parser;
 		
@@ -134,6 +135,7 @@ package
 		}
 		
 		private function enterFrameHandler(e:Event):void {
+			var nearest:GraphObject, dist:Number = MIN_DISTANCE;
 			var nowNode:Node, nextNode:Node, nowEdge:Edge;
 			
 			for each(nowEdge in edge){
@@ -153,9 +155,27 @@ package
 				}
 				
 				nowNode.update();
+				nowNode.filters = [];
+				
+				if(dist > nowNode.distance(mouseX, mouseY)){
+					dist = nowNode.distance(mouseX, mouseY);
+					nearest = nowNode;
+				}
 			}
 			
 			adjustEdge();
+			
+			for each(nowEdge in edge){
+				nowEdge.filters = [];
+				
+				if(dist > nowEdge.distance(mouseX, mouseY)){
+					dist = nowEdge.distance(mouseX, mouseY);
+					nearest = nowEdge;
+				}
+			}
+			
+			if(nearest)
+				nearest.highlight();
 		}
 		
 		private function adjustEdge():void {
