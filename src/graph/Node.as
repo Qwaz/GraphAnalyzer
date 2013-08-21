@@ -1,5 +1,7 @@
 package graph
 {
+	import flash.geom.Point;
+
 	public class Node extends GraphObject
 	{
 		public static const
@@ -26,6 +28,10 @@ package graph
 			
 			speedX *= FRICTION;
 			speedY *= FRICTION;
+		}
+		
+		override public function distance(mouseX:Number, mouseY:Number):Number {
+			return Point.distance(new Point(mouseX, mouseY), new Point(this.x, this.y));
 		}
 	}
 }

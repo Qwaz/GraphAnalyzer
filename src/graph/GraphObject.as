@@ -19,5 +19,9 @@ package graph
 			this.parent.removeChild(this);
 			data = null;
 		}
+		
+		public function distance(mouseX:Number, mouseY:Number):Number {
+			return 0;
+		}
 	}
 }

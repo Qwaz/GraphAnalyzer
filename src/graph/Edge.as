@@ -1,6 +1,7 @@
 package graph
 {
 	import flash.display.LineScaleMode;
+	import flash.geom.Point;
 
 	public class Edge extends GraphObject
 	{
@@ -16,6 +17,13 @@ package graph
 			
 			this.graphics.lineStyle(1, 0, 1, false, LineScaleMode.NONE);
 			this.graphics.lineTo(1, 1);
+		}
+		
+		override public function distance(mouseX:Number, mouseY:Number):Number {
+			var x1:Number=this.x, x2:Number=x1+this.width;
+			var y1:Number=this.x, y2:Number=y2+this.width;
+			
+			return 0;
 		}
 	}
 }
