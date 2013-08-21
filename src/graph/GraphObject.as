@@ -5,10 +5,9 @@ package graph
 	
 	public class GraphObject extends Sprite
 	{
-		public static var glowFilter:GlowFilter
-		= new GlowFilter(0xFF0000);
-		
 		public var data:Object;
+		
+		protected var _highlighted:Boolean = false;
 		
 		public function GraphObject() {
 			data = new Object();
@@ -19,12 +18,12 @@ package graph
 			data = null;
 		}
 		
-		public function highlight():void {
-			this.filters = [glowFilter];
-		}
-		
 		public function distance(mouseX:Number, mouseY:Number):Number {
 			return 0;
+		}
+		
+		public function set highlighted(val:Boolean):void {
+			_highlighted = val;
 		}
 	}
 }

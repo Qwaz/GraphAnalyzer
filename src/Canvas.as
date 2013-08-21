@@ -154,8 +154,8 @@ package
 					}
 				}
 				
+				nowNode.highlighted = false;
 				nowNode.update();
-				nowNode.filters = [];
 				
 				if(dist > nowNode.distance(mouseX, mouseY)){
 					dist = nowNode.distance(mouseX, mouseY);
@@ -166,7 +166,7 @@ package
 			adjustEdge();
 			
 			for each(nowEdge in edge){
-				nowEdge.filters = [];
+				nowEdge.highlighted = false;
 				
 				if(dist > nowEdge.distance(mouseX, mouseY)){
 					dist = nowEdge.distance(mouseX, mouseY);
@@ -175,7 +175,7 @@ package
 			}
 			
 			if(nearest)
-				nearest.highlight();
+				nearest.highlighted = true;
 		}
 		
 		private function adjustEdge():void {

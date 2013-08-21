@@ -25,5 +25,19 @@ package graph
 			return (Math.abs((y2-y1)*mouseX-(x2-x1)*mouseY-x1*(y2-y1)+y1*(x2-x1))/
 				Math.sqrt((y2-y1)*(y2-y1)+(x2-x1)*(x2-x1)))+2;
 		}
+		
+		override public function set highlighted(val:Boolean):void {
+			if(_highlighted != val){
+				this.graphics.clear();
+				if(val){
+					this.graphics.lineStyle(1.5, 0x333333, 1, false, LineScaleMode.NONE);
+					this.graphics.lineTo(1, 1);
+				} else {
+					this.graphics.lineStyle(1, 0, 1, false, LineScaleMode.NONE);
+					this.graphics.lineTo(1, 1);
+				}
+				_highlighted = val;
+			}
+		}
 	}
 }
