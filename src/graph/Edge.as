@@ -5,7 +5,7 @@ package graph
 	public class Edge extends GraphObject
 	{
 		public static const
-		CONSTANT:Number = 0.001;
+		CONSTANT:Number = 0.004;
 		
 		public var node1:String, node2:String;
 		

@@ -26,7 +26,7 @@
     <option es="False" />
     <option locale="" />
     <option loadConfig="" />
-    <option optimize="False" />
+    <option optimize="True" />
     <option omitTraces="True" />
     <option showActionScriptWarnings="True" />
     <option showBindingWarnings="True" />
@@ -34,7 +34,7 @@
     <option showDeprecationWarnings="True" />
     <option showUnusedTypeSelectorWarnings="True" />
     <option strict="True" />
-    <option useNetwork="True" />
+    <option useNetwork="False" />
     <option useResourceBundleMetadata="True" />
     <option warnings="True" />
     <option verboseStackTraces="False" />

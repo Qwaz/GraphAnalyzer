@@ -6,7 +6,7 @@ package graph
 	{
 		public static const
 		FRICTION:Number = 0.97,
-		CONSTANT:Number = 1;
+		CONSTANT:Number = 100;
 		
 		public var speedX:Number=0, speedY:Number=0;
 		

@@ -1,6 +1,7 @@
 package
 {
 	import flash.events.Event;
+	import flash.geom.Point;
 	
 	import spark.components.HSlider;
 	import spark.core.SpriteVisualElement;
@@ -142,25 +143,36 @@ package
 				nowNode = node[nowEdge.node1];
 				nextNode = node[nowEdge.node2];
 				
-				nowNode.speedX += Edge.CONSTANT*(nextNode.x-nowNode.x);
-				nowNode.speedY += Edge.CONSTANT*(nextNode.y-nowNode.y);
+				nowNode.speedX += Edge.CONSTANT * (nextNode.x - nowNode.x);
+				nowNode.speedY += Edge.CONSTANT * (nextNode.y - nowNode.y);
+				
+				nextNode.speedX -= Edge.CONSTANT * (nextNode.x - nowNode.x);
+				nextNode.speedY -= Edge.CONSTANT * (nextNode.y - nowNode.y);
 			}
+			
+			var r:Number;
 			
 			for each(nowNode in node){
 				for each(nextNode in node){
-					if(nextNode != nowNode){
-						nowNode.speedX -= Node.CONSTANT/(nextNode.x-nowNode.x);
-						nowNode.speedY -= Node.CONSTANT/(nextNode.y-nowNode.y);
+					if (nextNode != nowNode) {
+						r = Point.distance(new Point(nextNode.x, nextNode.y), new Point(nowNode.x, nowNode.y));
+						r = r * r * r;
+						
+						nowNode.speedX -= Node.CONSTANT * (nextNode.x - nowNode.x) / r;
+						nowNode.speedY -= Node.CONSTANT * (nextNode.y - nowNode.y) / r;
 					}
 				}
 				
 				nowNode.highlighted = false;
-				nowNode.update();
 				
 				if(dist > nowNode.distance(mouseX, mouseY)){
 					dist = nowNode.distance(mouseX, mouseY);
 					nearest = nowNode;
 				}
+			}
+			
+			for each(nowNode in node) {
+				nowNode.update();
 			}
 			
 			adjustEdge();
