@@ -20,11 +20,11 @@ package graph
 		
 		override public function distance(mouseX:Number, mouseY:Number):Number {
 			var x1:Number=this.x, x2:Number=x1+this.scaleX;
-			var y1:Number = this.y, y2:Number = y1 + this.scaleY;
-			var a:Number = Math.sqrt((x1-x2)*(x1-x2)+(y1-y2)*(y1-y2));
-			var b:Number = Math.sqrt((x1-mouseX)*(x1-mouseX)+(y1-mouseY)*(y1-mouseY));
-			var c:Number = Math.sqrt((x2-mouseX)*(x2-mouseX)+(y2-mouseY)*(y2-mouseY));
-			if (a + b < c || a + c < b) return Number.POSITIVE_INFINITY;
+			var y1:Number=this.y, y2:Number=y1+this.scaleY;
+			var a:Number = (x1-x2)*(x1-x2)+(y1-y2)*(y1-y2);
+			var b:Number = (x1-mouseX)*(x1-mouseX)+(y1-mouseY)*(y1-mouseY);
+			var c:Number = (x2-mouseX)*(x2-mouseX)+(y2-mouseY)*(y2-mouseY);
+			if (a+b < c || a+c < b) return Number.MAX_VALUE;
 			return (Math.abs((y2-y1)*mouseX-(x2-x1)*mouseY-x1*(y2-y1)+y1*(x2-x1))/
 				Math.sqrt((y2-y1)*(y2-y1)+(x2-x1)*(x2-x1)))+2;
 		}

@@ -5,6 +5,7 @@
   <target-player>11.0</target-player>
   <benchmark>false</benchmark>
   <static-link-runtime-shared-libraries>true</static-link-runtime-shared-libraries>
+  <use-network>false</use-network>
   <compiler>
     <define append="true">
       <name>CONFIG::debug</name>
@@ -32,15 +33,13 @@
     </define>
     <verbose-stacktraces>true</verbose-stacktraces>
     <source-path append="true">
-      <path-element>C:\Users\Qwaz\Documents\GitHub\GraphAnalyzer\src</path-element>
+      <path-element>C:\Users\Doyoung\Documents\GitHub\GraphAnalyzer\src</path-element>
       <path-element>C:\Program Files (x86)\FlashDevelop\Library\AS3\classes</path-element>
     </source-path>
-    <library-path append="true">
-      <path-element>C:\Users\Qwaz\Documents\GitHub\GraphAnalyzer\libs</path-element>
-    </library-path>
+    <library-path append="true" />
   </compiler>
   <file-specs>
-    <path-element>C:\Users\Qwaz\Documents\GitHub\GraphAnalyzer\src\GraphAnalyzer.mxml</path-element>
+    <path-element>C:\Users\Doyoung\Documents\GitHub\GraphAnalyzer\src\GraphAnalyzer.mxml</path-element>
   </file-specs>
   <default-background-color>#FFFFFF</default-background-color>
   <default-frame-rate>30</default-frame-rate>
