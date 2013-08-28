@@ -1,6 +1,7 @@
 package
 {
 	import flash.events.Event;
+	import flash.events.MouseEvent;
 	import flash.geom.Point;
 	
 	import spark.components.HSlider;
@@ -22,8 +23,15 @@ package
 		
 		private var node:Object, edge:Object;
 		
+		private var nearest:GraphObject, selected:GraphObject;
+		
 		public function Canvas()
 		{
+			addEventListener(Event.ADDED_TO_STAGE, addedToStageHandler);
+		}
+		
+		private function addedToStageHandler(e:Event):void {
+			stage.addEventListener(MouseEvent.CLICK, clickHandler);
 		}
 		
 		public function set slider(slider:HSlider):void {
@@ -61,6 +69,10 @@ package
 			for(str in source){
 				target[str] = source[str];
 			}
+		}
+		
+		private function clickHandler(e:MouseEvent):void {
+			selected = nearest;
 		}
 		
 		private function changeHandler(e:Event):void {
@@ -136,7 +148,7 @@ package
 		}
 		
 		private function enterFrameHandler(e:Event):void {
-			var nearest:GraphObject, dist:Number = MIN_DISTANCE;
+			var dist:Number = MIN_DISTANCE;
 			var nowNode:Node, nextNode:Node, nowEdge:Edge;
 			
 			for each(nowEdge in edge){
@@ -151,6 +163,8 @@ package
 			}
 			
 			var r:Number;
+			
+			nearest = null;
 			
 			for each(nowNode in node){
 				for each(nextNode in node){
@@ -186,8 +200,11 @@ package
 				}
 			}
 			
-			if(nearest)
+			if (nearest)
 				nearest.highlighted = true;
+				
+			if (selected)
+				selected.highlighted = true;
 		}
 		
 		private function adjustEdge():void {
