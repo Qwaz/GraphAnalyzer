@@ -9,6 +9,7 @@ package graph
 		CONSTANT:Number = 100;
 		
 		public var speedX:Number=0, speedY:Number=0;
+		public var dragging:Boolean = false;
 		
 		public function Node()
 		{
@@ -17,14 +18,38 @@ package graph
 		}
 		
 		public function update():void {
-			this.x += speedX;
-			this.y += speedY;
+			if (dragging)
+			{
+				x = parent.mouseX + (parent as Canvas).diffX;
+				y = parent.mouseY + (parent as Canvas).diffY;
+			}
+			else
+			{
+				this.x += speedX;
+				this.y += speedY;
+			}
 			
-			if(this.x < -50) this.x = -50;
-			else if(this.x > 50) this.x = 50;
-			
-			if(this.y < -50) this.y = -50;
-			else if(this.y > 50) this.y = 50;
+			if (this.x < -50)
+			{
+				this.x = -50;
+				speedX = 0;
+			}
+			else if (this.x > 50)
+			{
+				this.x = 50;
+				speedX = 0;
+			}
+	
+			if (this.y < -50)
+			{
+				this.y = -50;
+				speedY = 0;
+			}
+			else if (this.y > 50)
+			{
+				this.y = 50;
+				speedY = 0;
+			}
 			
 			speedX *= FRICTION;
 			speedY *= FRICTION;

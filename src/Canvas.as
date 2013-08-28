@@ -24,8 +24,8 @@ package
 		private var node:Object, edge:Object;
 		
 		private var nearest:GraphObject, selected:GraphObject, dragging:GraphObject;
-		
-		private var startX:Number, startY:Number, diffX:Number, diffY:Number;
+		private var startX:Number, startY:Number;
+		public var diffX:Number, diffY:Number;
 		
 		public function Canvas()
 		{
@@ -77,26 +77,30 @@ package
 		private function MouseDownHandler(e:MouseEvent):void {
 			if (nearest is Node)
 			{
-				dragging = nearest;
-				selected = null;
-				startX = mouseX;
-				startY = mouseY;
+				if (dragging && dragging is Node) (dragging as Node).dragging = false;
+				dragging = nearest as Node;
+				(dragging as Node).dragging = true;
 				diffX = dragging.x - mouseX;
 				diffY = dragging.y - mouseY;
 			}
 			else
 			{
-				dragging = null;
-				selected = nearest;
+				if (dragging && dragging is Node) (dragging as Node).dragging = false;
+				dragging = nearest;
 			}
+			
+			startX = mouseX;
+			startY = mouseY;
+			selected = null;
 		}
 		
 		private function MouseUpHandler(e:MouseEvent):void {
 			if ((startX - mouseX) * (startX - mouseX) +
-				(startY - mouseY) * (startY - mouseY) < MIN_DISTANCE * MIN_DISTANCE)
+				(startY - mouseY) * (startY - mouseY) <= MIN_DISTANCE * MIN_DISTANCE)
 			{
 				selected = dragging;
 			}
+			if (dragging && dragging is Node) (dragging as Node).dragging = false;
 			dragging = null;
 		}
 		
@@ -212,11 +216,6 @@ package
 			
 			for each(nowNode in node) {
 				nowNode.update();
-				if (dragging == nowNode)
-				{
-					nowNode.x = mouseX + diffX;
-					nowNode.y = mouseY + diffY;
-				}
 			}
 			
 			adjustEdge();
