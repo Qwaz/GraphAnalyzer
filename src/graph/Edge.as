@@ -33,7 +33,7 @@ package graph
 			if(_highlighted != val){
 				this.graphics.clear();
 				if(val){
-					this.graphics.lineStyle(1.5, 0x333333, 1, false, LineScaleMode.NONE);
+					this.graphics.lineStyle(1.5, 0x00FF00, 1, false, LineScaleMode.NONE);
 					this.graphics.lineTo(1, 1);
 				} else {
 					this.graphics.lineStyle(1, 0, 1, false, LineScaleMode.NONE);

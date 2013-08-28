@@ -38,7 +38,7 @@ package graph
 			if(_highlighted != val){
 				this.graphics.clear();
 				if(val){
-					this.graphics.beginFill(0xFF2222);
+					this.graphics.beginFill(0x00FF00);
 					this.graphics.drawCircle(0, 0, 1.3);
 				} else {
 					this.graphics.beginFill(0xFF0000);
