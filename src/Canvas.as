@@ -23,7 +23,9 @@ package
 		
 		private var node:Object, edge:Object;
 		
-		private var nearest:GraphObject, selected:GraphObject;
+		private var nearest:GraphObject, selected:GraphObject, dragging:GraphObject;
+		
+		private var startX:Number, startY:Number, diffX:Number, diffY:Number;
 		
 		public function Canvas()
 		{
@@ -31,7 +33,8 @@ package
 		}
 		
 		private function addedToStageHandler(e:Event):void {
-			stage.addEventListener(MouseEvent.CLICK, clickHandler);
+			stage.addEventListener(MouseEvent.MOUSE_DOWN, MouseDownHandler);
+			stage.addEventListener(MouseEvent.MOUSE_UP, MouseUpHandler);
 		}
 		
 		public function set slider(slider:HSlider):void {
@@ -71,8 +74,30 @@ package
 			}
 		}
 		
-		private function clickHandler(e:MouseEvent):void {
-			selected = nearest;
+		private function MouseDownHandler(e:MouseEvent):void {
+			if (nearest is Node)
+			{
+				dragging = nearest;
+				selected = null;
+				startX = mouseX;
+				startY = mouseY;
+				diffX = dragging.x - mouseX;
+				diffY = dragging.y - mouseY;
+			}
+			else
+			{
+				dragging = null;
+				selected = nearest;
+			}
+		}
+		
+		private function MouseUpHandler(e:MouseEvent):void {
+			if ((startX - mouseX) * (startX - mouseX) +
+				(startY - mouseY) * (startY - mouseY) < MIN_DISTANCE * MIN_DISTANCE)
+			{
+				selected = dragging;
+			}
+			dragging = null;
 		}
 		
 		private function changeHandler(e:Event):void {
@@ -187,6 +212,11 @@ package
 			
 			for each(nowNode in node) {
 				nowNode.update();
+				if (dragging == nowNode)
+				{
+					nowNode.x = mouseX + diffX;
+					nowNode.y = mouseY + diffY;
+				}
 			}
 			
 			adjustEdge();
@@ -200,11 +230,22 @@ package
 				}
 			}
 			
-			if (nearest)
-				nearest.highlighted = true;
+			if (dragging)
+			{
+				dragging.highlighted = true;
+			}
+			else
+			{
+				if (nearest)
+				{
+					nearest.highlighted = true;
+				}
 				
-			if (selected)
-				selected.highlighted = true;
+				if (selected)
+				{
+					selected.highlighted = true;
+				}
+			}
 		}
 		
 		private function adjustEdge():void {
