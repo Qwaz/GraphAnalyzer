@@ -34,7 +34,8 @@
 				
 			</s:Panel>
 			<s:Panel width="100%" title="속성" dropShadowVisible="true">
-				
+				<s:DataGrid width="100%" height="100%" dataProvider="{canvas.dataList}">
+				</s:DataGrid>
 			</s:Panel>
 		</mx:VDividedBox>
 	</mx:HDividedBox>

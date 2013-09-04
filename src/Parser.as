@@ -54,7 +54,7 @@ package
 			
 			var i:int, tp:Array;
 			
-			numNodeData = uint(split[1]);
+			numNodeData = uint(split[cnt++]);
 			nodeDataList = new Vector.<Data>;
 			nodeDictionary = new Object;
 			for(i=0; i<numNodeData; i++){
@@ -106,6 +106,7 @@ package
 						tInfo.mode = AlterInfo.ADD;
 						tp = split[cnt++].split(' ');
 						
+						tInfo.data[nodeDataList[0].name] = tInfo.node;
 						for(j=1; j<numNodeData; j++){
 							if(tp[j-1] != '.')
 								tInfo.data[nodeDataList[j].name] = nodeDataList[j].parse(tp[j-1]);
@@ -116,7 +117,7 @@ package
 						tInfo.mode = AlterInfo.CHANGE;
 						tp = split[cnt++].split(' ');
 						
-						tInfo[tp[0]] = nodeDictionary[tp[0]].parse(tp[1]);
+						tInfo.data[tp[0]] = nodeDictionary[tp[0]].parse(tp[1]);
 					} else
 						throw new Error("변경 모드 입력이 잘못되었습니다. Line : "+cnt);
 				} else {
@@ -179,7 +180,7 @@ package
 						tInfo.mode = AlterInfo.CHANGE;
 						tp = split[cnt++].split(' ');
 						
-						tInfo[tp[0]] = nodeDictionary[tp[0]].parse(tp[1]);
+						tInfo.data[tp[0]] = nodeDictionary[tp[0]].parse(tp[1]);
 					} else
 						throw new Error("변경 모드 입력이 잘못되었습니다. Line : "+cnt);
 				} else {

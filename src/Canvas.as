@@ -7,6 +7,8 @@ package
 	import spark.components.HSlider;
 	import spark.core.SpriteVisualElement;
 	
+	import mx.collections.ArrayCollection;
+	
 	import graph.Edge;
 	import graph.GraphObject;
 	import graph.Node;
@@ -23,10 +25,13 @@ package
 		
 		private var node:Object, edge:Object;
 		
-		private var nearest:GraphObject, selected:GraphObject;
+		[Bindable]
+		public var dataList:ArrayCollection;
+		private var nearest:GraphObject, _selected:GraphObject, emptyList:ArrayCollection;
 		
 		public function Canvas()
 		{
+			emptyList = new ArrayCollection();
 			addEventListener(Event.ADDED_TO_STAGE, addedToStageHandler);
 		}
 		
@@ -75,6 +80,25 @@ package
 			selected = nearest;
 		}
 		
+		private function get selected():GraphObject {
+			return _selected;
+		}
+		
+		private function set selected(selected:GraphObject):void {
+			_selected = selected;
+			
+			if (_selected) {
+				dataList = new ArrayCollection();
+				
+				var str:String;
+				for (str in _selected.data) {
+					dataList.addItem( { name:str, value:_selected.data[str] } );
+				}
+			} else {
+				dataList = emptyList;
+			}
+		}
+		
 		private function changeHandler(e:Event):void {
 			var now:AlterInfo, tEdge:Edge;
 			if(lastTime < _slider.value){
@@ -106,7 +130,7 @@ package
 							edge[now.hash()] = tEdge;
 							addChildAt(tEdge, 0);
 						}
-						apply(edge[now.hash()], now.data);
+						apply(edge[now.hash()].data, now.data);
 					}
 				}
 			} else if(lastTime > _slider.value) {
@@ -138,7 +162,7 @@ package
 							edge[now.hash()] = tEdge;
 							addChildAt(tEdge, 0);
 						}
-						apply(edge[now.hash()], now.prev);
+						apply(edge[now.hash()].data, now.prev);
 					}
 				}
 			}
