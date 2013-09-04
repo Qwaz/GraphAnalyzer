@@ -20,14 +20,18 @@ package
 		private var _slider:HSlider, parser:Parser;
 		
 		private var nodeAlterInfo:Vector.<AlterInfo>, edgeAlterInfo:Vector.<AlterInfo>;
+		private var nodeDataList:Vector.<Data>, edgeDataList:Vector.<Data>;
 		
 		private var lastTime:Number, nodeIndex:uint, edgeIndex:uint;
 		
 		private var node:Object, edge:Object;
 		
 		[Bindable]
-		public var dataList:ArrayCollection;
-		private var nearest:GraphObject, _selected:GraphObject, emptyList:ArrayCollection;
+		public var dataList:ArrayCollection, emptyList:ArrayCollection;
+		
+		private var nearest:GraphObject, _selected:GraphObject, dragging:GraphObject;
+		private var startX:Number, startY:Number;
+		public var diffX:Number, diffY:Number;
 		
 		public function Canvas()
 		{
@@ -36,7 +40,8 @@ package
 		}
 		
 		private function addedToStageHandler(e:Event):void {
-			stage.addEventListener(MouseEvent.CLICK, clickHandler);
+			stage.addEventListener(MouseEvent.MOUSE_DOWN, MouseDownHandler);
+			stage.addEventListener(MouseEvent.MOUSE_UP, MouseUpHandler);
 		}
 		
 		public function set slider(slider:HSlider):void {
@@ -58,6 +63,11 @@ package
 			nodeAlterInfo = parser.nodeAlterInfo;
 			edgeAlterInfo = parser.edgeAlterInfo;
 			
+			nodeDataList = parser.nodeDataList;
+			edgeDataList = parser.edgeDataList;
+			
+			nodeDataList
+			
 			node = new Object();
 			edge = new Object();
 			
@@ -76,8 +86,34 @@ package
 			}
 		}
 		
-		private function clickHandler(e:MouseEvent):void {
-			selected = nearest;
+		private function MouseDownHandler(e:MouseEvent):void {
+			if (nearest is Node)
+			{
+				if (dragging && dragging is Node) (dragging as Node).dragging = false;
+				dragging = nearest as Node;
+				(dragging as Node).dragging = true;
+				diffX = dragging.x - mouseX;
+				diffY = dragging.y - mouseY;
+			}
+			else
+			{
+				if (dragging && dragging is Node) (dragging as Node).dragging = false;
+				dragging = nearest;
+			}
+			
+			startX = mouseX;
+			startY = mouseY;
+			selected = null;
+		}
+		
+		private function MouseUpHandler(e:MouseEvent):void {
+			if ((startX - mouseX) * (startX - mouseX) +
+				(startY - mouseY) * (startY - mouseY) <= MIN_DISTANCE * MIN_DISTANCE)
+			{
+				selected = dragging;
+			}
+			if (dragging && dragging is Node) (dragging as Node).dragging = false;
+			dragging = null;
 		}
 		
 		private function get selected():GraphObject {
@@ -90,9 +126,17 @@ package
 			if (_selected) {
 				dataList = new ArrayCollection();
 				
-				var str:String;
-				for (str in _selected.data) {
-					dataList.addItem( { name:str, value:_selected.data[str] } );
+				var i:int, str:String;
+				if (selected is Node) {
+					for (i = 0; i < nodeDataList.length; i++) {
+						str = nodeDataList[i].name;
+						dataList.addItem( { name:str, value:_selected.data[str] } );
+					}
+				} else if (selected is Edge) {
+					for (i = 0; i < edgeDataList.length; i++) {
+						str = edgeDataList[i].name;
+						dataList.addItem( { name:str, value:_selected.data[str] } );
+					}
 				}
 			} else {
 				dataList = emptyList;
@@ -224,11 +268,22 @@ package
 				}
 			}
 			
-			if (nearest)
-				nearest.highlighted = true;
+			if (dragging)
+			{
+				dragging.highlighted = true;
+			}
+			else
+			{
+				if (nearest)
+				{
+					nearest.highlighted = true;
+				}
 				
-			if (selected)
-				selected.highlighted = true;
+				if (selected)
+				{
+					selected.highlighted = true;
+				}
+			}
 		}
 		
 		private function adjustEdge():void {
