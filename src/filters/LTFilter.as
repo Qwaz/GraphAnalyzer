@@ -20,17 +20,29 @@ package filters
 		
 		override public function check(obj:Object):Boolean
 		{
-			if (parameter[0] is int && parameter[1] is int)
+			var a:Object, b:Object;
+			
+			if (parameter[0] is Value && parameter[1] is Value)
 			{
-				return (parameter[0] as int) < (parameter[1] as int);
+				a = (parameter[0] as Value).Get(obj);
+				b = (parameter[1] as Value).Get(obj);
 			}
-			else if (parameter[0] is Number && parameter[1] is Number)
+			else
 			{
-				return (parameter[0] as Number) < (parameter[1] as Number);
+				throw new Error("LTFilter.check() : Type mismatch!");
 			}
-			else if (parameter[0] is String && parameter[1] is String)
+			
+			if (a is int && b is int)
 			{
-				return (parameter[0] as String) < (parameter[1] as String);
+				return (a as int) < (b as int);
+			}
+			else if (a is Number && b is Number)
+			{
+				return (a as Number) < (b as Number);
+			}
+			else if (a is String && b is String)
+			{
+				return (a as String) < (b as String);
 			}
 			else
 			{

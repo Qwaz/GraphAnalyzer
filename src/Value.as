@@ -6,9 +6,9 @@ package
 	 */
 	public class Value 
 	{
-		var constant:Boolean;
-		var name:String;
-		var val:Object;
+		private var constant:Boolean;
+		private var name:String;
+		private var val:Object;
 		
 		/**
 		 * 변수면 constant를 false로, name에는 이름.
