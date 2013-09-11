@@ -7,6 +7,8 @@ package
 	import spark.components.HSlider;
 	import spark.core.SpriteVisualElement;
 	
+	import mx.collections.ArrayCollection;
+	
 	import graph.Edge;
 	import graph.GraphObject;
 	import graph.Node;
@@ -18,17 +20,22 @@ package
 		private var _slider:HSlider, parser:Parser;
 		
 		private var nodeAlterInfo:Vector.<AlterInfo>, edgeAlterInfo:Vector.<AlterInfo>;
+		private var nodeDataList:Vector.<Data>, edgeDataList:Vector.<Data>;
 		
 		private var lastTime:Number, nodeIndex:uint, edgeIndex:uint;
 		
 		private var node:Object, edge:Object;
 		
-		private var nearest:GraphObject, selected:GraphObject, dragging:GraphObject;
+		[Bindable]
+		public var dataList:ArrayCollection, emptyList:ArrayCollection;
+		
+		private var nearest:GraphObject, _selected:GraphObject, dragging:GraphObject;
 		private var startX:Number, startY:Number;
 		public var diffX:Number, diffY:Number;
 		
 		public function Canvas()
 		{
+			emptyList = new ArrayCollection();
 			addEventListener(Event.ADDED_TO_STAGE, addedToStageHandler);
 		}
 		
@@ -55,6 +62,11 @@ package
 			
 			nodeAlterInfo = parser.nodeAlterInfo;
 			edgeAlterInfo = parser.edgeAlterInfo;
+			
+			nodeDataList = parser.nodeDataList;
+			edgeDataList = parser.edgeDataList;
+			
+			nodeDataList
 			
 			node = new Object();
 			edge = new Object();
@@ -104,6 +116,33 @@ package
 			dragging = null;
 		}
 		
+		private function get selected():GraphObject {
+			return _selected;
+		}
+		
+		private function set selected(selected:GraphObject):void {
+			_selected = selected;
+			
+			if (_selected) {
+				dataList = new ArrayCollection();
+				
+				var i:int, str:String;
+				if (selected is Node) {
+					for (i = 0; i < nodeDataList.length; i++) {
+						str = nodeDataList[i].name;
+						dataList.addItem( { name:str, value:_selected.data[str] } );
+					}
+				} else if (selected is Edge) {
+					for (i = 0; i < edgeDataList.length; i++) {
+						str = edgeDataList[i].name;
+						dataList.addItem( { name:str, value:_selected.data[str] } );
+					}
+				}
+			} else {
+				dataList = emptyList;
+			}
+		}
+		
 		private function changeHandler(e:Event):void {
 			var now:AlterInfo, tEdge:Edge;
 			if(lastTime < _slider.value){
@@ -135,7 +174,7 @@ package
 							edge[now.hash()] = tEdge;
 							addChildAt(tEdge, 0);
 						}
-						apply(edge[now.hash()], now.data);
+						apply(edge[now.hash()].data, now.data);
 					}
 				}
 			} else if(lastTime > _slider.value) {
@@ -167,7 +206,7 @@ package
 							edge[now.hash()] = tEdge;
 							addChildAt(tEdge, 0);
 						}
-						apply(edge[now.hash()], now.prev);
+						apply(edge[now.hash()].data, now.prev);
 					}
 				}
 			}
@@ -248,13 +287,21 @@ package
 		}
 		
 		private function adjustEdge():void {
+			const ZERO:Number = 0.001;
+			
 			var nowEdge:Edge;
 			for each(nowEdge in edge){
 				nowEdge.x = node[nowEdge.node1].x;
 				nowEdge.y = node[nowEdge.node1].y;
 				
-				nowEdge.scaleX = node[nowEdge.node2].x-node[nowEdge.node1].x;
-				nowEdge.scaleY = node[nowEdge.node2].y-node[nowEdge.node1].y;
+				nowEdge.scaleX = node[nowEdge.node2].x - node[nowEdge.node1].x;
+				if (nowEdge.scaleX == 0) {
+					nowEdge.scaleX = ZERO;
+				}
+				nowEdge.scaleY = node[nowEdge.node2].y - node[nowEdge.node1].y;
+				if (nowEdge.scaleY == 0) {
+					nowEdge.scaleY = ZERO;
+				}
 			}
 		}
 	}

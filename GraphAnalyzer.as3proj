@@ -6,8 +6,8 @@
     <movie input="" />
     <movie path="bin-debug\GraphAnalyzer.swf" />
     <movie fps="30" />
-    <movie width="800" />
-    <movie height="600" />
+    <movie width="960" />
+    <movie height="540" />
     <movie version="11" />
     <movie minorVersion="0" />
     <movie platform="Flash Player" />

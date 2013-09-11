@@ -16,7 +16,7 @@ package
 		private var frameLoader:URLLoader, graphLoader:URLLoader, edgeLoader:URLLoader;
 		
 		private var numNodeData:uint, numEdgeData:uint;
-		private var nodeDataList:Vector.<Data>, edgeDataList:Vector.<Data>;
+		private var _nodeDataList:Vector.<Data>, _edgeDataList:Vector.<Data>;
 		
 		private var nodeDictionary:Object, edgeDictionary:Object;
 		private var _nodeAlterInfo:Vector.<AlterInfo>, _edgeAlterInfo:Vector.<AlterInfo>;
@@ -54,22 +54,22 @@ package
 			
 			var i:int, tp:Array;
 			
-			numNodeData = uint(split[1]);
-			nodeDataList = new Vector.<Data>;
+			numNodeData = uint(split[cnt++]);
+			_nodeDataList = new Vector.<Data>;
 			nodeDictionary = new Object;
 			for(i=0; i<numNodeData; i++){
 				tp = split[cnt++].split(' ');
-				nodeDataList.push(new Data(tp[0], tp[1]));
-				nodeDictionary[tp[1]] = nodeDataList[nodeDataList.length-1]; 
+				_nodeDataList.push(new Data(tp[0], tp[1]));
+				nodeDictionary[tp[1]] = _nodeDataList[_nodeDataList.length-1]; 
 			}
 			
 			numEdgeData = uint(split[cnt++]);
-			edgeDataList = new Vector.<Data>;
+			_edgeDataList = new Vector.<Data>;
 			edgeDictionary = new Object;
 			for(i=0; i<numEdgeData; i++){
 				tp = split[cnt++].split(' ');
-				edgeDataList.push(new Data(tp[0], tp[1]));
-				edgeDictionary[tp[1]] = edgeDataList[edgeDataList.length-1];
+				_edgeDataList.push(new Data(tp[0], tp[1]));
+				edgeDictionary[tp[1]] = _edgeDataList[_edgeDataList.length-1];
 			}
 			
 			parseGraph();
@@ -106,9 +106,10 @@ package
 						tInfo.mode = AlterInfo.ADD;
 						tp = split[cnt++].split(' ');
 						
+						tInfo.data[_nodeDataList[0].name] = tInfo.node;
 						for(j=1; j<numNodeData; j++){
 							if(tp[j-1] != '.')
-								tInfo.data[nodeDataList[j].name] = nodeDataList[j].parse(tp[j-1]);
+								tInfo.data[_nodeDataList[j].name] = _nodeDataList[j].parse(tp[j-1]);
 						}
 					} else if(tp[2] == '-')
 						tInfo.mode = AlterInfo.REMOVE;
@@ -116,7 +117,7 @@ package
 						tInfo.mode = AlterInfo.CHANGE;
 						tp = split[cnt++].split(' ');
 						
-						tInfo[tp[0]] = nodeDictionary[tp[0]].parse(tp[1]);
+						tInfo.data[tp[0]] = nodeDictionary[tp[0]].parse(tp[1]);
 					} else
 						throw new Error("변경 모드 입력이 잘못되었습니다. Line : "+cnt);
 				} else {
@@ -125,7 +126,7 @@ package
 					
 					for(j=1; j<numNodeData; j++){
 						if(tp[j-1] != '.')
-							tInfo.data[nodeDataList[j].name] = nodeDataList[j].parse(tp[j-1]);
+							tInfo.data[_nodeDataList[j].name] = _nodeDataList[j].parse(tp[j-1]);
 					}
 				}
 				
@@ -171,7 +172,7 @@ package
 						
 						for(j=0; j<numEdgeData; j++){
 							if(tp[j] != '.')
-								tInfo.data[edgeDataList[j].name] = edgeDataList[j].parse(tp[j]);
+								tInfo.data[_edgeDataList[j].name] = _edgeDataList[j].parse(tp[j]);
 						}
 					} else if(tp[3] == '-')
 						tInfo.mode = AlterInfo.REMOVE;
@@ -179,7 +180,7 @@ package
 						tInfo.mode = AlterInfo.CHANGE;
 						tp = split[cnt++].split(' ');
 						
-						tInfo[tp[0]] = nodeDictionary[tp[0]].parse(tp[1]);
+						tInfo.data[tp[0]] = nodeDictionary[tp[0]].parse(tp[1]);
 					} else
 						throw new Error("변경 모드 입력이 잘못되었습니다. Line : "+cnt);
 				} else {
@@ -188,7 +189,7 @@ package
 					
 					for(j=0; j<numEdgeData; j++){
 						if(tp[j] != '.')
-							tInfo.data[edgeDataList[j].name] = edgeDataList[j].parse(tp[j]);
+							tInfo.data[_edgeDataList[j].name] = _edgeDataList[j].parse(tp[j]);
 					}
 				}
 				
@@ -245,12 +246,21 @@ package
 			}
 		}
 		
-		public function get nodeAlterInfo():Vector.<AlterInfo>{
+		public function get nodeAlterInfo():Vector.<AlterInfo> {
 			return _nodeAlterInfo;
 		}
 		
-		public function get edgeAlterInfo():Vector.<AlterInfo>{
+		public function get edgeAlterInfo():Vector.<AlterInfo> {
 			return _edgeAlterInfo;
 		}
+		
+		public function get nodeDataList():Vector.<Data> {
+			return _nodeDataList;
+		}
+		
+		public function get edgeDataList():Vector.<Data> {
+			return _edgeDataList;
+		}
+		
 	}
 }
