@@ -50,6 +50,10 @@ package filters
 			}
 		}
 		
+		public static function getName():String {
+			return "값 비교";
+		}
+		
 	}
 
 }

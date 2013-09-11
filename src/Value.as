@@ -6,7 +6,7 @@ package
 	 */
 	public class Value 
 	{
-		private var isConstant:Boolean;
+		private var _isConstant:Boolean;
 		private var val:String;
 		
 		/**
@@ -15,7 +15,7 @@ package
 		 */
 		public function Value(isConstant:Boolean, val:String = "")
 		{
-			this.isConstant = isConstant;
+			this._isConstant = isConstant;
 			this.val = val;
 		}
 		/**
@@ -23,18 +23,18 @@ package
 		 */
 		public function Get(obj:Object=null):Object
 		{
-			if (isConstant)
+			if (_isConstant)
 			{
 				return Number(val);
 			}
 			else
 			{
-				return obj[name];
+				return obj[val];
 			}
 		}
 		
 		public function get isConstant():Boolean {
-			return this.isConstant;
+			return _isConstant;
 		}
 		
 	}

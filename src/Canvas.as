@@ -7,7 +7,7 @@ package
 	import spark.components.HSlider;
 	import spark.core.SpriteVisualElement;
 	
-	import mx.collections.ArrayCollection;
+	import mx.collections.ArrayList;
 	
 	import graph.Edge;
 	import graph.GraphObject;
@@ -27,7 +27,7 @@ package
 		private var node:Object, edge:Object;
 		
 		[Bindable]
-		public var dataList:ArrayCollection, emptyList:ArrayCollection;
+		public var dataList:ArrayList, emptyList:ArrayList;
 		
 		private var nearest:GraphObject, _selected:GraphObject, dragging:GraphObject;
 		private var startX:Number, startY:Number;
@@ -35,12 +35,12 @@ package
 		
 		public function Canvas()
 		{
-			emptyList = new ArrayCollection();
+			emptyList = new ArrayList();
 			addEventListener(Event.ADDED_TO_STAGE, addedToStageHandler);
 		}
 		
 		private function addedToStageHandler(e:Event):void {
-			stage.addEventListener(MouseEvent.MOUSE_DOWN, MouseDownHandler);
+			this.parent.addEventListener(MouseEvent.MOUSE_DOWN, MouseDownHandler);
 			stage.addEventListener(MouseEvent.MOUSE_UP, MouseUpHandler);
 		}
 		
@@ -124,7 +124,7 @@ package
 			_selected = selected;
 			
 			if (_selected) {
-				dataList = new ArrayCollection();
+				dataList = new ArrayList();
 				
 				var i:int, str:String;
 				if (selected is Node) {

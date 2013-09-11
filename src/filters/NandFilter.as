@@ -30,6 +30,9 @@ package filters
 			}
 		}
 		
+		public static function getName():String {
+			return "NAND";
+		}
 	}
 
 }
