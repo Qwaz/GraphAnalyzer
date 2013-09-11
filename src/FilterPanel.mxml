@@ -7,13 +7,13 @@
 			import mx.collections.ArrayList;
 			import flash.utils.getQualifiedClassName;
 			import filters.Filter;
-			import filters.ConditionFilter;
-			import filters.TimeFilter;
+			import filters.LTFilter;
+			import filters.NandFilter;
 			
 			[Bindable]
 			private var filterList:ArrayList = new ArrayList([
-			{label:'작다', filter:ConditionFilter },
-			{label:'NOR', filter:TimeFilter },
+			{label:'변수 비교', filter:LTFilter },
+			{label:'NAND', filter:NandFilter },
 			]);
 		]]>
 	</fx:Script>

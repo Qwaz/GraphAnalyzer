@@ -13,12 +13,12 @@ package filters
 			
 		}
 		
-		public function getAttribute():Array
+		override public function getAttribute():Array
 		{
 			return [Value, Value];
 		}
 		
-		public function check(obj:Object):Boolean
+		override public function check(obj:Object):Boolean
 		{
 			if (parameter[0] is int && parameter[1] is int)
 			{

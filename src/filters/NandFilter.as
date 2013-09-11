@@ -13,12 +13,12 @@ package filters
 			
 		}
 		
-		public function getAttribute():Array
+		override public function getAttribute():Array
 		{
 			return [ConditionFilter, ConditionFilter];
 		}
 		
-		public function check(obj:Object):Boolean
+		override public function check(obj:Object):Boolean
 		{
 			if (parameter[0] is ConditionFilter && parameter[1] is ConditionFilter)
 			{
