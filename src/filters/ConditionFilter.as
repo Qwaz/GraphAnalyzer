@@ -14,7 +14,7 @@ package filters
 		
 		public function check(obj:Object):Boolean
 		{
-			
+			return false;
 		}
 		
 	}

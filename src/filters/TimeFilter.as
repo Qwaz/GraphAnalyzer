@@ -14,7 +14,7 @@ package filters
 		
 		public function check(node:String):Boolean
 		{
-			
+			return false;
 		}
 		
 	}

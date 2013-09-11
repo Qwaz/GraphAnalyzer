@@ -13,9 +13,9 @@ package filters
 			
 		}
 		
-		public function getAttribute(void):Array
+		public function getAttribute():Array
 		{
-			
+			return [];
 		}
 		
 	}
