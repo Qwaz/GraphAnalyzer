@@ -15,7 +15,7 @@ package filters
 		
 		public function getAttribute():Array
 		{
-			
+			return [];
 		}
 		
 	}

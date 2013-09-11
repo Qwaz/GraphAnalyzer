@@ -23,9 +23,9 @@
 		]]>
 	</fx:Script>
 	<mx:HDividedBox liveDragging="true" width="100%" height="100%">
-		<s:Panel width="20%" height="100%" title="검색" dropShadowVisible="true">
+		<local:FilterPanel width="20%" height="100%" title="검색" dropShadowVisible="true">
 			
-		</s:Panel>
+		</local:FilterPanel>
 		<s:BorderContainer id="leftPanel" width="60%" height="100%" backgroundColor="0x333333" resize="resizeCanvas()">
 			<s:BorderContainer id="container" verticalCenter="-10" horizontalCenter="0" dropShadowVisible="true">
 				<local:Canvas id="canvas" slider="{timeSlider}" verticalCenter="0" horizontalCenter="0"/>
