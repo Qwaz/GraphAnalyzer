@@ -287,13 +287,21 @@ package
 		}
 		
 		private function adjustEdge():void {
+			const ZERO:Number = 0.001;
+			
 			var nowEdge:Edge;
 			for each(nowEdge in edge){
 				nowEdge.x = node[nowEdge.node1].x;
 				nowEdge.y = node[nowEdge.node1].y;
 				
-				nowEdge.scaleX = node[nowEdge.node2].x-node[nowEdge.node1].x;
-				nowEdge.scaleY = node[nowEdge.node2].y-node[nowEdge.node1].y;
+				nowEdge.scaleX = node[nowEdge.node2].x - node[nowEdge.node1].x;
+				if (nowEdge.scaleX == 0) {
+					nowEdge.scaleX = ZERO;
+				}
+				nowEdge.scaleY = node[nowEdge.node2].y - node[nowEdge.node1].y;
+				if (nowEdge.scaleY == 0) {
+					nowEdge.scaleY = ZERO;
+				}
 			}
 		}
 	}

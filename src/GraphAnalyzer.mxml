@@ -23,20 +23,18 @@
 		]]>
 	</fx:Script>
 	<mx:HDividedBox liveDragging="true" width="100%" height="100%">
-		<s:BorderContainer id="leftPanel" width="80%" height="100%" backgroundColor="0x333333" resize="resizeCanvas()">
+		<s:Panel width="20%" height="100%" title="검색" dropShadowVisible="true">
+			
+		</s:Panel>
+		<s:BorderContainer id="leftPanel" width="60%" height="100%" backgroundColor="0x333333" resize="resizeCanvas()">
 			<s:BorderContainer id="container" verticalCenter="-10" horizontalCenter="0" dropShadowVisible="true">
 				<local:Canvas id="canvas" slider="{timeSlider}" verticalCenter="0" horizontalCenter="0"/>
 			</s:BorderContainer>
 			<s:HSlider id="timeSlider" y="{container.y+container.height+10}" horizontalCenter="0" />
 		</s:BorderContainer>
-		<mx:VDividedBox width="20%" liveDragging="true" height="100%">
-			<s:Panel width="100%" title="검색" dropShadowVisible="true">
-				
-			</s:Panel>
-			<s:Panel width="100%" title="속성" dropShadowVisible="true">
-				<s:DataGrid width="100%" height="100%" dataProvider="{canvas.dataList}">
-				</s:DataGrid>
-			</s:Panel>
-		</mx:VDividedBox>
+		<s:Panel width="20%" height="100%" title="속성" dropShadowVisible="true">
+			<s:DataGrid width="100%" height="100%" dataProvider="{canvas.dataList}">
+			</s:DataGrid>
+		</s:Panel>
 	</mx:HDividedBox>
 </s:Application>
