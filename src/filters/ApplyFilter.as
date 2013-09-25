@@ -4,6 +4,9 @@ package filters
 	{
 		public function ApplyFilter() 
 		{
+		}
+		
+		public function apply():void{
 			
 		}
 	}

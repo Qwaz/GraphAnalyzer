@@ -24,7 +24,7 @@ package
 		
 		private var lastTime:Number, nodeIndex:uint, edgeIndex:uint;
 		
-		private var node:Object, edge:Object;
+		public static var node:Object, edge:Object;
 		
 		[Bindable]
 		public var dataList:ArrayList, emptyList:ArrayList;

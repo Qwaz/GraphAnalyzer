@@ -17,11 +17,13 @@
 			[Bindable]
 			private var variableName:String;
 			
+			//필터 이름과 변수 명을 초기화한다.
 			private function creationComplete():void {
 				filterName = getDefinitionByName(getQualifiedClassName(data)).getName();
 				variableName = "필터 이름";
 			}
 			
+			//삭제 버튼 클릭 시 아이템 삭제
 			private function deleteItem():void {
 				var parentList:List = this.owner as List;
 				parentList.dataProvider.removeItemAt(parentList.dataProvider.getItemIndex(data));
