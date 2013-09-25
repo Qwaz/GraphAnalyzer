@@ -1,16 +1,10 @@
 package filters 
 {
-	/**
-	 * ...
-	 * @author 함도영
-	 */
 	public class LTFilter extends ConditionFilter 
 	{
-		
 		public function LTFilter() 
 		{
 			super();
-			
 		}
 		
 		override public function getAttribute():Array
@@ -53,7 +47,5 @@ package filters
 		public static function getName():String {
 			return "값 비교";
 		}
-		
 	}
-
 }

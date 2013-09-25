@@ -19,12 +19,12 @@ package
 		
 		private var _slider:HSlider, parser:Parser;
 		
-		private var nodeAlterInfo:Vector.<AlterInfo>, edgeAlterInfo:Vector.<AlterInfo>;
+		public static var nodeAlterInfo:Vector.<AlterInfo>, edgeAlterInfo:Vector.<AlterInfo>;
 		private var nodeDataList:Vector.<Data>, edgeDataList:Vector.<Data>;
 		
 		private var lastTime:Number, nodeIndex:uint, edgeIndex:uint;
 		
-		public static var node:Object, edge:Object;
+		public var node:Object, edge:Object;
 		
 		[Bindable]
 		public var dataList:ArrayList, emptyList:ArrayList;
