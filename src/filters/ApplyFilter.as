@@ -1,7 +1,12 @@
 package filters 
 {
+	/**
+	 * ...
+	 * @author 배예찬
+	 */
 	public class ApplyFilter extends Filter
 	{
+		
 		public function ApplyFilter() 
 		{
 		}
@@ -9,5 +14,10 @@ package filters
 		public function apply():void{
 			
 		}
+		
+		public function apply():void {
+			
+		}
+		
 	}
 }

@@ -24,7 +24,7 @@ package
 		
 		private var lastTime:Number, nodeIndex:uint, edgeIndex:uint;
 		
-		public static var node:Object, edge:Object;
+		public var node:Object, edge:Object;
 		
 		[Bindable]
 		public var dataList:ArrayList, emptyList:ArrayList;
@@ -79,7 +79,7 @@ package
 			addEventListener(Event.ENTER_FRAME, enterFrameHandler);
 		}
 		
-		public static function apply(target:Object, source:Object):void {
+		private function apply(target:Object, source:Object):void {
 			var str:String;
 			for(str in source){
 				target[str] = source[str];
