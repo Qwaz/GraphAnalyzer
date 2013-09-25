@@ -13,8 +13,7 @@ package filters
 			return [];
 		}
 		
-		public static function getName():String {
-			return "하위 클래스에서 구현 되지 않음";
-		}
+		// 모든 필터들에 이 함수를 구현하세요.
+		// public static function getName():String {}
 	}
 }

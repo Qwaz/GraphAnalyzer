@@ -45,7 +45,7 @@ package filters
 		}
 		
 		public static function getName():String {
-			return "값 비교";
+			return "작은지 비교";
 		}
 	}
 }
