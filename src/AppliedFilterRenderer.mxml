@@ -9,6 +9,7 @@
 		<![CDATA[
 			import flash.utils.getQualifiedClassName;
 			import flash.utils.getDefinitionByName;
+			import spark.components.List;
 			
 			[Bindable]
 			private var filterName:String;
@@ -18,7 +19,12 @@
 			
 			private function creationComplete():void {
 				filterName = getDefinitionByName(getQualifiedClassName(data)).getName();
-				variableName = "FilterName"
+				variableName = "필터 이름";
+			}
+			
+			private function deleteItem():void {
+				var parentList:List = this.owner as List;
+				parentList.dataProvider.removeItemAt(parentList.dataProvider.getItemIndex(data));
 			}
 		]]>
 	</fx:Script>
@@ -31,7 +37,8 @@
 	
 	<s:HGroup width="95%" paddingLeft="5" paddingRight="5" paddingTop="5">
 		<s:Label width="30%" paddingTop="6" textAlign="center" text="{filterName}"/>
-		<s:TextInput width="70%" text="@{variableName}" />
+		<s:TextInput width="45%" text="@{variableName}"/>
+		<s:Button width="25%" click="{deleteItem()}" >삭제</s:Button>
 	</s:HGroup>
 	<s:DataGrid width="95%">
 	</s:DataGrid>
