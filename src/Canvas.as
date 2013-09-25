@@ -19,7 +19,7 @@ package
 		
 		private var _slider:HSlider, parser:Parser;
 		
-		private var nodeAlterInfo:Vector.<AlterInfo>, edgeAlterInfo:Vector.<AlterInfo>;
+		public static var nodeAlterInfo:Vector.<AlterInfo>, edgeAlterInfo:Vector.<AlterInfo>;
 		private var nodeDataList:Vector.<Data>, edgeDataList:Vector.<Data>;
 		
 		private var lastTime:Number, nodeIndex:uint, edgeIndex:uint;
@@ -79,7 +79,7 @@ package
 			addEventListener(Event.ENTER_FRAME, enterFrameHandler);
 		}
 		
-		private function apply(target:Object, source:Object):void {
+		public static function apply(target:Object, source:Object):void {
 			var str:String;
 			for(str in source){
 				target[str] = source[str];
