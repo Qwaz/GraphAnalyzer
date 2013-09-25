@@ -4,6 +4,8 @@ bin-debug/
 bin-release/
 html-template/
 
+obj/
+
 # Other files and folders
 
 edge.txt

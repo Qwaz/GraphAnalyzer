@@ -43,5 +43,9 @@ package filters
 				throw new Error("LTFilter.check() : Type mismatch!");
 			}
 		}
+		
+		public static function getName():String {
+			return "값 비교";
+		}
 	}
 }

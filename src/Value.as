@@ -6,18 +6,16 @@ package
 	 */
 	public class Value 
 	{
-		private var constant:Boolean;
-		private var name:String;
-		private var val:Object;
+		private var _isConstant:Boolean;
+		private var val:String;
 		
 		/**
 		 * 변수면 constant를 false로, name에는 이름.
 		 * 상수면 constant를  true로, name은 무시되고, val에 값을.
 		 */
-		public function Value(constant:Boolean, name:String = "", val:Object = null)
+		public function Value(isConstant:Boolean, val:String = "")
 		{
-			this.constant = constant;
-			this.name = name;
+			this._isConstant = isConstant;
 			this.val = val;
 		}
 		/**
@@ -25,14 +23,18 @@ package
 		 */
 		public function Get(obj:Object=null):Object
 		{
-			if (constant)
+			if (_isConstant)
 			{
-				return val;
+				return Number(val);
 			}
 			else
 			{
-				return obj[name];
+				return obj[val];
 			}
+		}
+		
+		public function get isConstant():Boolean {
+			return _isConstant;
 		}
 		
 	}

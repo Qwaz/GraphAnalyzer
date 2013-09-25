@@ -23,5 +23,9 @@ package filters
 				throw new Error("NandFilter.check() : Type mismatch!");
 			}
 		}
+		
+		public static function getName():String {
+			return "NAND";
+		}
 	}
 }

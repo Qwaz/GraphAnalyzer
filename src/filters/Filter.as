@@ -13,6 +13,10 @@ package filters
 			return [];
 		}
 		
+		public static function getName():String {
+			return "하위 클래스에서 구현 되지 않음";
+		}
+		
 	}
 
 }
