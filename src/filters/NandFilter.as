@@ -1,16 +1,10 @@
 package filters 
 {
-	/**
-	 * ...
-	 * @author ...
-	 */
 	public class NandFilter extends ConditionFilter 
 	{
-		
 		public function NandFilter() 
 		{
 			super();
-			
 		}
 		
 		override public function getAttribute():Array
@@ -29,7 +23,5 @@ package filters
 				throw new Error("NandFilter.check() : Type mismatch!");
 			}
 		}
-		
 	}
-
 }

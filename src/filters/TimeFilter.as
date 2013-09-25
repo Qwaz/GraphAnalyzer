@@ -1,22 +1,15 @@
 package filters 
 {
-	/**
-	 * ...
-	 * @author 함도영
-	 */
 	public class TimeFilter extends Filter
 	{
-		
 		public function TimeFilter() 
 		{
-			
+			super();
 		}
 		
-		public function check(node:String):Boolean
+		public function getNodeList():Vector.<String>
 		{
-			return false;
+			return null;
 		}
-		
 	}
-
 }

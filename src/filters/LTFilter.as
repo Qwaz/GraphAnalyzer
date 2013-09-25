@@ -1,16 +1,10 @@
 package filters 
 {
-	/**
-	 * ...
-	 * @author 함도영
-	 */
 	public class LTFilter extends ConditionFilter 
 	{
-		
 		public function LTFilter() 
 		{
 			super();
-			
 		}
 		
 		override public function getAttribute():Array
@@ -49,7 +43,5 @@ package filters
 				throw new Error("LTFilter.check() : Type mismatch!");
 			}
 		}
-		
 	}
-
 }
