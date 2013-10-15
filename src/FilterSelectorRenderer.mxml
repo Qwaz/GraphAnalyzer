@@ -2,19 +2,44 @@
 <s:ItemRenderer xmlns:fx="http://ns.adobe.com/mxml/2009" 
                xmlns:s="library://ns.adobe.com/flex/spark" 
                xmlns:mx="library://ns.adobe.com/flex/halo"
-				autoDrawBackground="false">
+				autoDrawBackground="false"
+				dataChange="resetBGColor()">
 			   
 	<fx:Script>
 		<![CDATA[
+			import filters.ApplyFilter;
+			import filters.ConditionFilter;
+			import filters.Filter;
+			import filters.LTFilter;
+			import filters.TimeFilter;
+			
 			private function calcColor():uint {
-				return 0xFF0000;
+				var filter:Filter = new data();
+				try {
+					if (filter is TimeFilter) {
+						return 0x0000FF;
+					} else if (filter is ApplyFilter) {
+						return 0x00FF00;
+					} else if (filter is ConditionFilter) {
+						return 0xFF0000;
+					} else {
+						return 0xFFFFFF;
+					}
+				} catch (e:Error) {
+					return 0xFFFFFF;
+				}
+				return 0xFFFFFF;
+			}
+			
+			private function resetBGColor():void {
+				bg.color = calcColor();
 			}
 		]]>
 	</fx:Script>
 	
 	<s:BorderContainer width="100%" height="100%">
 		<s:backgroundFill>
-			<s:SolidColor alpha="0.4" color="{calcColor()}"/>
+			<s:SolidColor id="bg" alpha="0.4"/>
 		</s:backgroundFill>
 		<s:Label paddingTop="5" paddingBottom="5" paddingLeft="5" paddingRight="5" text="{data.getName()}"/>
 	</s:BorderContainer>

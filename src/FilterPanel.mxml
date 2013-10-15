@@ -10,15 +10,12 @@
 			[Bindable]
 			private var filterList:ArrayList = new ArrayList([
 			LTFilter,
-			NandFilter
+			NandFilter,
+			AlwaysFilter
 			]);
 			
 			[Bindable]
 			private var appliedList:ArrayList = new ArrayList();
-			
-			private function getFilterName(obj:Object):String {
-				return obj.getName();
-			}
 			
 			private function addFilter():void {
 				var selectedFilter:Class = filterList.getItemAt(filterSelector.selectedIndex) as Class;

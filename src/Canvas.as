@@ -79,7 +79,7 @@ package
 			addEventListener(Event.ENTER_FRAME, enterFrameHandler);
 		}
 		
-		private function apply(target:Object, source:Object):void {
+		public static function apply(target:Object, source:Object):void {
 			var str:String;
 			for(str in source){
 				target[str] = source[str];

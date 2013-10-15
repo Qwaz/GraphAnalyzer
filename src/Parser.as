@@ -2,6 +2,7 @@ package
 {
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
+	import flash.events.IOErrorEvent;
 	import flash.net.URLLoader;
 	import flash.net.URLRequest;
 
@@ -33,9 +34,14 @@ package
 			parseFrame();
 		}
 		
+		private function ioErrorHandler(e:IOErrorEvent):void {
+			trace('에러가 발생했습니다.');
+		}
+		
 		private function parseFrame():void {
 			frameLoader = new URLLoader();
 			frameLoader.addEventListener(Event.COMPLETE, frameLoadCompleteHandler);
+			frameLoader.addEventListener(IOErrorEvent.IO_ERROR, ioErrorHandler);
 			frameLoader.load(new URLRequest(FRAME));
 		}
 		
@@ -79,6 +85,7 @@ package
 		private function parseGraph():void {
 			graphLoader = new URLLoader();
 			graphLoader.addEventListener(Event.COMPLETE, graphLoadCompleteHandler);
+			graphLoader.addEventListener(IOErrorEvent.IO_ERROR, ioErrorHandler);
 			graphLoader.load(new URLRequest(GRAPH));
 		}
 		
@@ -142,6 +149,7 @@ package
 		private function parseEdge():void {
 			edgeLoader = new URLLoader();
 			edgeLoader.addEventListener(Event.COMPLETE, edgeLoadCompleteHandler);
+			edgeLoader.addEventListener(IOErrorEvent.IO_ERROR, ioErrorHandler);
 			edgeLoader.load(new URLRequest(EDGE));
 		}
 		
@@ -215,7 +223,7 @@ package
 					if(now.mode == AlterInfo.ADD){
 						nowNode[now.node] = new Object();
 					}
-					overwrite(nowNode[now.node], now, now.mode != AlterInfo.ADD);
+					overwrite(nowNode[now.node], now);
 					if(now.mode == AlterInfo.REMOVE){
 						delete nowNode[now.node];
 					}
@@ -226,7 +234,7 @@ package
 					if(now.mode == AlterInfo.ADD){
 						nowEdge[now.hash()] = new Object();
 					}
-					overwrite(nowEdge[now.hash()], now, now.mode != AlterInfo.ADD);
+					overwrite(nowEdge[now.hash()], now);
 					if(now.mode == AlterInfo.REMOVE){
 						delete nowEdge[now.hash()];
 					}
@@ -236,13 +244,19 @@ package
 			}
 		}
 		
-		private function overwrite(target:Object, source:AlterInfo, savePrev:Boolean):void {
+		private function overwrite(target:Object, source:AlterInfo):void {
 			var str:String;
-			for(str in source.data){
-				if(savePrev){
+			if (source.mode == AlterInfo.REMOVE) {
+				for (str in target) {
 					source.prev[str] = target[str];
 				}
-				target[str] = source.data[str];
+			} else {
+				for(str in source.data){
+					if(source.mode != AlterInfo.ADD){
+						source.prev[str] = target[str];
+					}
+					target[str] = source.data[str];
+				}
 			}
 		}
 		

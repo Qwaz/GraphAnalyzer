@@ -37,7 +37,7 @@
 		</s:VerticalLayout>
 	</s:layout>
 	
-	<s:HGroup width="95%" paddingLeft="5" paddingRight="5" paddingTop="5">
+	<s:HGroup width="90%" paddingLeft="5" paddingRight="5" paddingTop="5">
 		<s:Label width="30%" paddingTop="6" textAlign="center" text="{filterName}"/>
 		<s:TextInput width="45%" text="@{variableName}"/>
 		<s:Button width="25%" click="{deleteItem()}" >삭제</s:Button>

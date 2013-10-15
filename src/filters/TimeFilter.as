@@ -16,7 +16,7 @@ package filters
 		{
 			var node:Object;
 			var now:AlterInfo;
-			var str:String;
+			var i:int, str:String;
 			var ret:Vector.<String> = new Vector.<String>;
 			
 			for (i = 0; i < Canvas.nodeAlterInfo.length && Canvas.nodeAlterInfo[i].time <= time; ++i)
