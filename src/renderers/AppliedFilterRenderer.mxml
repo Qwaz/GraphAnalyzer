@@ -79,7 +79,7 @@
 			<s:DataGrid id="grid" width="95%" editable="true">
 				<s:columns>
 					<s:ArrayList>
-						<s:GridColumn dataField="value" headerText="매개변수" itemRenderer="FilterRenderer">
+						<s:GridColumn dataField="value" headerText="매개변수" itemRenderer="renderers.FilterRenderer">
 						</s:GridColumn>
 					</s:ArrayList>
 				</s:columns>

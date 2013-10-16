@@ -1,8 +1,8 @@
 package filters 
 {
-	public class LTFilter extends ConditionFilter 
+	public class C_LTFilter extends ConditionFilter 
 	{
-		public function LTFilter() 
+		public function C_LTFilter() 
 		{
 			super();
 		}

@@ -1,8 +1,10 @@
 package filters 
 {
-	public class AlwaysFilter extends TimeFilter 
+	import data.AlterInfo;
+	
+	public class T_AlwaysFilter extends TimeFilter 
 	{
-		public function AlwaysFilter() 
+		public function T_AlwaysFilter() 
 		{
 			super();
 		}

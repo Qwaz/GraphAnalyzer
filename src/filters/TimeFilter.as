@@ -1,5 +1,7 @@
 package filters 
 {
+	import data.AlterInfo;
+	
 	public class TimeFilter extends Filter
 	{
 		public function TimeFilter() 

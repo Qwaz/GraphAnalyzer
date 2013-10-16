@@ -1,8 +1,8 @@
 package filters 
 {
-	public class NandFilter extends ConditionFilter 
+	public class C_NandFilter extends ConditionFilter 
 	{
-		public function NandFilter() 
+		public function C_NandFilter() 
 		{
 			super();
 		}

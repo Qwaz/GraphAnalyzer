@@ -9,9 +9,10 @@
 			
 			[Bindable]
 			private var filterList:ArrayList = new ArrayList([
-				LTFilter,
-				NandFilter,
-				AlwaysFilter,
+				C_LTFilter,
+				C_NandFilter,
+				T_AlwaysFilter,
+				A_InvisibleFilter,
 			]);
 			
 			[Bindable]
@@ -26,10 +27,10 @@
 	
 	<mx:VDividedBox width="100%" height="100%" liveDragging="true">
 		<s:List id="appliedFilter" verticalScrollPolicy="on" horizontalScrollPolicy="off"
-		width="100%" height="70%" dataProvider="{appliedList}" itemRenderer="AppliedFilterRenderer">
+		width="100%" height="70%" dataProvider="{appliedList}" itemRenderer="renderers.AppliedFilterRenderer">
 		</s:List>
 		
-		<s:List id="filterSelector" width="100%" height="30%" dataProvider="{filterList}" itemRenderer="FilterSelectorRenderer"
+		<s:List id="filterSelector" width="100%" height="30%" dataProvider="{filterList}" itemRenderer="renderers.FilterSelectorRenderer"
 		doubleClickEnabled="true" doubleClick="addFilter()">
 		</s:List>
 	</mx:VDividedBox>

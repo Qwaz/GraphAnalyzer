@@ -9,6 +9,10 @@ package
 	
 	import mx.collections.ArrayList;
 	
+	import data.AlterInfo;
+	import data.Data;
+	import data.Parser;
+	
 	import graph.Edge;
 	import graph.GraphObject;
 	import graph.Node;
@@ -24,7 +28,7 @@ package
 		
 		private var lastTime:Number, nodeIndex:uint, edgeIndex:uint;
 		
-		public var node:Object, edge:Object;
+		public static var node:Object, edge:Object;
 		
 		[Bindable]
 		public var dataList:ArrayList, emptyList:ArrayList;

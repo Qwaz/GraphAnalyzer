@@ -1,10 +1,10 @@
-package 
+package filters 
 {
 	import graph.Node;
 	
-	public class InvisibleFilter extends ApplyFilter
+	public class A_InvisibleFilter extends ApplyFilter
 	{
-		public function InvisibleFilter() {
+		public function A_InvisibleFilter() {
 			super();
 		}
 		
@@ -26,7 +26,7 @@ package
 		}
 		
 		public static function getName():String {
-			return "보이지 않게 하기";
+			return "보이지 않게";
 		}
 	}
 	
