@@ -8,7 +8,7 @@ package
 			super();
 		}
 		
-		override public function getAttribute():Array {
+		override public function getParameters():Array {
 			return [TimeFilter];
 		}
 		

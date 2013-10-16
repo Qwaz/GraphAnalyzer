@@ -6,6 +6,11 @@ package filters
 		{
 			super();
 		}
+		
+		override public function getParameters():Array
+		{
+			return [ConditionFilter, Value, Value];
+		}
 
 		override public function getNodeList():Vector.<String>
 		{

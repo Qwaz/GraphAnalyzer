@@ -8,7 +8,28 @@ package filters
 		{
 		}
 		
-		public function getAttribute():Array
+		public static function getColor(targetClass:Class):uint {
+			if (targetClass == Value) return 0x000000;
+			
+			var filter:Object = new targetClass();
+			
+			try {
+				if (filter is TimeFilter) {
+					return 0x0000FF;
+				} else if (filter is ApplyFilter) {
+					return 0x00FF00;
+				} else if (filter is ConditionFilter) {
+					return 0xFF0000;
+				} else {
+					return 0xFFFFFF;
+				}
+			} catch (e:Error) {
+				return 0xFFFFFF;
+			}
+			return 0xFFFFFF;
+		}
+		
+		public function getParameters():Array
 		{
 			return [];
 		}

@@ -7,9 +7,13 @@
 	
 	<fx:Script>
 		<![CDATA[
+			import filters.*;
 			import flash.utils.getQualifiedClassName;
 			import flash.utils.getDefinitionByName;
+			import mx.collections.ArrayList;
 			import spark.components.List;
+			
+			private var classPointer:Class;
 			
 			[Bindable]
 			private var filterName:String;
@@ -17,10 +21,38 @@
 			[Bindable]
 			private var variableName:String;
 			
+			[Bindable]
+			private var params:ArrayList = new ArrayList();
+			
 			//필터 이름과 변수 명을 초기화한다.
 			private function creationComplete():void {
-				filterName = getDefinitionByName(getQualifiedClassName(data)).getName();
+				classPointer = getDefinitionByName(getQualifiedClassName(data)) as Class;
+				filterName = Object(classPointer).getName();
 				variableName = "필터 이름";
+				
+				params = new ArrayList();
+				grid.dataProvider = params;
+				
+				var paramList:Array = Filter(data).getParameters();
+				var i:int;
+				for (i = 0; i < paramList.length; i++) {
+					switch(paramList[i]) {
+						case ConditionFilter:
+							params.addItem({value:"조건 필터", type:ConditionFilter});
+							break;
+						case TimeFilter:
+							params.addItem({value:"시간 필터", type:TimeFilter});
+							break;
+						case ApplyFilter:
+							params.addItem({value:"적용 필터", type:ApplyFilter});
+							break;
+						case Value:
+							params.addItem({value:"값", type:Value});
+							break;
+					}
+				}
+				
+				bg.color = Filter.getColor(classPointer);
 			}
 			
 			//삭제 버튼 클릭 시 아이템 삭제
@@ -31,17 +63,27 @@
 		]]>
 	</fx:Script>
 	
-	<s:layout>
-		<s:VerticalLayout>
-			<s:horizontalAlign>center</s:horizontalAlign>
-		</s:VerticalLayout>
-	</s:layout>
-	
-	<s:HGroup width="90%" paddingLeft="5" paddingRight="5" paddingTop="5">
-		<s:Label width="30%" paddingTop="6" textAlign="center" text="{filterName}"/>
-		<s:TextInput width="45%" text="@{variableName}"/>
-		<s:Button width="25%" click="{deleteItem()}" >삭제</s:Button>
-	</s:HGroup>
-	<s:DataGrid width="95%">
-	</s:DataGrid>
+	<s:Group width="100%" height="100%">
+		<s:Rect width="100%" height="100%">
+			<s:fill>
+				<s:SolidColor id="bg" alpha="0.4"></s:SolidColor>
+			</s:fill>
+		</s:Rect>
+		
+		<s:VGroup width="100%" height="100%" horizontalAlign="center" paddingBottom="5" paddingRight="5">
+			<s:HGroup width="100%" paddingLeft="5" paddingRight="5" paddingTop="5">
+				<s:Label width="30%" paddingTop="6" textAlign="center" text="{filterName}"/>
+				<s:TextInput width="45%" text="@{variableName}"/>
+				<s:Button width="25%" click="deleteItem()" >삭제</s:Button>
+			</s:HGroup>
+			<s:DataGrid id="grid" width="95%" editable="true">
+				<s:columns>
+					<s:ArrayList>
+						<s:GridColumn dataField="value" headerText="매개변수" itemRenderer="FilterRenderer">
+						</s:GridColumn>
+					</s:ArrayList>
+				</s:columns>
+			</s:DataGrid>
+		</s:VGroup>
+	</s:Group>
 </s:ItemRenderer>

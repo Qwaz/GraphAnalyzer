@@ -7,32 +7,10 @@
 			   
 	<fx:Script>
 		<![CDATA[
-			import filters.ApplyFilter;
-			import filters.ConditionFilter;
 			import filters.Filter;
-			import filters.LTFilter;
-			import filters.TimeFilter;
-			
-			private function calcColor():uint {
-				var filter:Filter = new data();
-				try {
-					if (filter is TimeFilter) {
-						return 0x0000FF;
-					} else if (filter is ApplyFilter) {
-						return 0x00FF00;
-					} else if (filter is ConditionFilter) {
-						return 0xFF0000;
-					} else {
-						return 0xFFFFFF;
-					}
-				} catch (e:Error) {
-					return 0xFFFFFF;
-				}
-				return 0xFFFFFF;
-			}
 			
 			private function resetBGColor():void {
-				bg.color = calcColor();
+				bg.color = Filter.getColor(data as Class);
 			}
 		]]>
 	</fx:Script>
