@@ -12,7 +12,5 @@ package filters
 		{
 			return false;
 		}
-		
 	}
-
 }
