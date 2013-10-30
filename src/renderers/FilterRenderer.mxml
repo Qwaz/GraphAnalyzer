@@ -13,7 +13,7 @@
 			import filters.Filter;
 			
 			public function dataChangedHandler():void {
-				labelDisplay.setStyle('color', Filter.getColor(data.type as Class));
+				labelDisplay.setStyle('color', Filter.getBoldColor(data.type as Class));
 			}
 		]]>
 	</fx:Script>

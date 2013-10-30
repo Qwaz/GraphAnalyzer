@@ -1,9 +1,5 @@
-package  
+package filters
 {
-	/**
-	 * ...
-	 * @author ...
-	 */
 	public class Value 
 	{
 		private var _isConstant:Boolean;
@@ -29,7 +25,11 @@ package
 			}
 			else
 			{
-				return obj[val];
+				//속성이 없으면 에러 출력
+				if(obj[val])
+					return obj[val];
+				else
+					throw new Error("속성 " + val + " 찾을 수 없습니다.");
 			}
 		}
 		
