@@ -11,6 +11,9 @@
 			private var filterList:ArrayList = new ArrayList([
 				C_LTFilter,
 				C_NandFilter,
+				C_AndFilter,
+				C_OrFilter,
+				C_NotFilter,
 				T_AlwaysFilter,
 				A_InvisibleFilter,
 			]);
