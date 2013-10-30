@@ -31,8 +31,24 @@
 				_appliedList.addItem(new selectedFilter());
 			}
 			
+			private function reset():void
+			{
+				for (var i:int = 0; i < filterList.length; i++) {
+					var filter:Class = filterList.getItemAt(i) as Class;
+					var kakaotalk:Object = new filter;
+					
+					if (kakaotalk is ApplyFilter)
+					{
+						(kakaotalk as ApplyFilter).reset();
+					}
+				}
+			}
+			
 			public function render():void {
 				var i:int, j:int, end:int;
+				
+				reset();
+				
 				for (i = 0; i < _appliedList.length; i++) {
 					var now:Filter = _appliedList.getItemAt(i) as Filter;
 					
