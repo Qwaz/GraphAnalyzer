@@ -62,9 +62,11 @@
 					nowFilter.filterName = (_appliedList.getItemAt(i) as Filter).filterName;
 					len = nowFilter.getParameters().length;
 					
-					for (var j:int = 0; i < len; ++i)
+					nowFilter.params.removeAll();
+					for (var j:int = 0; j < len; ++j)
 					{
-						nowFilter.params[j] = (_appliedList.getItemAt(i) as Filter).params[j];
+						nowFilter.params.addItem(
+							(_appliedList.getItemAt(i) as Filter).params.getItemAt(j));
 					}
 					
 					nowFilter.initParameter(LastAppliedList);

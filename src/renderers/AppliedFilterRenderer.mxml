@@ -32,7 +32,7 @@
 				<s:TextInput width="45%" id="nameLabel" text="@{data.filterName}" />
 				<s:Button width="25%" click="deleteItem()">삭제</s:Button>
 			</s:HGroup>
-			<s:DataGrid width="95%" editable="true" dataProvider="@{data.params}" gridItemEditorSessionSave="data.initParameter(FilterPanel.appliedList)">
+			<s:DataGrid width="95%" editable="true" dataProvider="{data.params}">
 				<s:columns>
 					<s:ArrayList>
 						<s:GridColumn dataField="value" headerText="매개변수" itemRenderer="renderers.FilterRenderer">

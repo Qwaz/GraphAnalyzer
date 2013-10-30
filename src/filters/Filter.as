@@ -38,7 +38,7 @@ package filters
 			}
 		}
 			
-		private function initParameter(filterList:ArrayList):void {
+		public function initParameter(filterList:ArrayList):void {
 			var i:int, j:int;
 			for (i = 0; i < params.length; i++) {
 				var ithParam:Object = params.getItemAt(i);
