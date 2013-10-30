@@ -16,5 +16,9 @@ package filters
 			
 		}
 		
+		public function reset():void {
+			
+		}
+		
 	}
 }

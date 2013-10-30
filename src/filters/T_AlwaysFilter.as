@@ -26,7 +26,7 @@ package filters
 			var b:Boolean;
 			var ret:Vector.<String> = new Vector.<String>;
 
-			if (parameter[0] is ConditionFilter && parameter[1] is Number && parameter[2] is Number)
+			if (parameter[0] is ConditionFilter && parameter[1] is Value && parameter[2] is Value)
 			{
 				condition = parameter[0] as ConditionFilter;
 				start = parameter[1] as Number;
@@ -37,9 +37,9 @@ package filters
 				throw new Error("AlwaysFilter.getNodeList() : Type mismatch!");
 			}
 
-			for (i = 0; i < Canvas.nodeAlterInfo.length && Canvas.nodeAlterInfo[i].time <= start; ++i)
+			for (i = 0; i < Canvas.canvas.nodeAlterInfo.length && Canvas.canvas.nodeAlterInfo[i].time <= start; ++i)
 			{
-				now = Canvas.nodeAlterInfo[i];
+				now = Canvas.canvas.nodeAlterInfo[i];
 				if (now.mode == AlterInfo.REMOVE)
 				{
 					delete node[now.node];
@@ -63,9 +63,9 @@ package filters
 				}
 			}
 
-			for (; i < Canvas.nodeAlterInfo.length; ++i)
+			for (; i < Canvas.canvas.nodeAlterInfo.length; ++i)
 			{
-				now = Canvas.nodeAlterInfo[i];
+				now = Canvas.canvas.nodeAlterInfo[i];
 
 				if (now.mode == AlterInfo.REMOVE)
 				{

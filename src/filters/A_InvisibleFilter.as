@@ -16,12 +16,15 @@ package filters
 			var nameList:Vector.<String> = parameter[0].getNodeList();
 			var node:Node;
 			
-			for each(node in Canvas.node) {
-				node.visible = true;
+			if (Canvas.canvas.node[nameList]) {
+				Canvas.canvas.node[nameList].visible = false;
 			}
-			
-			if (Canvas.node[nameList]) {
-				Canvas.node[nameList].visible = false;
+		}
+		
+		override public function reset():void {
+			var node:Node;
+			for each(node in Canvas.canvas.node) {
+				node.visible = true;
 			}
 		}
 		

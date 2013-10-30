@@ -7,17 +7,25 @@
 			   
 	<fx:Script>
 		<![CDATA[
+			import events.ListClickEvent;
 			import filters.Filter;
 			
 			private function resetBGColor():void {
-				bg.color = Filter.getColor(data as Class);
+				bg.color = Filter.getLightColor(data as Class);
+			}
+			
+			private function doubleClicked():void {
+				var listClickEvent:ListClickEvent = new ListClickEvent("listClickEvent");
+				listClickEvent.index = itemIndex;
+				owner.dispatchEvent(listClickEvent);
 			}
 		]]>
 	</fx:Script>
 	
-	<s:BorderContainer width="100%" height="100%">
+	<s:BorderContainer width="100%" height="100%"
+	doubleClickEnabled = "true" doubleClick="doubleClicked()">
 		<s:backgroundFill>
-			<s:SolidColor id="bg" alpha="0.4"/>
+			<s:SolidColor id="bg"/>
 		</s:backgroundFill>
 		<s:Label paddingTop="5" paddingBottom="5" paddingLeft="5" paddingRight="5" text="{data.getName()}"/>
 	</s:BorderContainer>

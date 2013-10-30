@@ -21,14 +21,16 @@ package
 	{	
 		public static const SIZE:Number = 100, MIN_DISTANCE:Number = 7;
 		
+		public static var canvas:Canvas;
+		
 		private var _slider:HSlider, parser:Parser;
 		
-		public static var nodeAlterInfo:Vector.<AlterInfo>, edgeAlterInfo:Vector.<AlterInfo>;
+		public var nodeAlterInfo:Vector.<AlterInfo>, edgeAlterInfo:Vector.<AlterInfo>;
 		private var nodeDataList:Vector.<Data>, edgeDataList:Vector.<Data>;
 		
 		private var lastTime:Number, nodeIndex:uint, edgeIndex:uint;
 		
-		public static var node:Object, edge:Object;
+		public var node:Object, edge:Object;
 		
 		[Bindable]
 		public var dataList:ArrayList, emptyList:ArrayList;
@@ -39,6 +41,8 @@ package
 		
 		public function Canvas()
 		{
+			canvas = this;
+			
 			emptyList = new ArrayList();
 			addEventListener(Event.ADDED_TO_STAGE, addedToStageHandler);
 		}

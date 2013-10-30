@@ -4,11 +4,12 @@
 		 xmlns:mx="library://ns.adobe.com/flex/mx" xmlns:local="*">
 	<fx:Script>
 		<![CDATA[
+			import events.ListClickEvent;
 			import mx.collections.ArrayList;
 			import filters.*;
 			
 			[Bindable]
-			private var filterList:ArrayList = new ArrayList([
+			private static var filterList:ArrayList = new ArrayList([
 				C_LTFilter,
 				C_NandFilter,
 				T_AlwaysFilter,
@@ -16,22 +17,59 @@
 			]);
 			
 			[Bindable]
-			private var appliedList:ArrayList = new ArrayList();
+			private static var _appliedList:ArrayList = new ArrayList();
 			
-			private function addFilter():void {
-				var selectedFilter:Class = filterList.getItemAt(filterSelector.selectedIndex) as Class;
-				appliedList.addItem(new selectedFilter());
+			public static function get appliedList():ArrayList {
+				return _appliedList;
+			}
+			
+			private function addFilter(e:ListClickEvent):void {
+				var selectedFilter:Class = filterList.getItemAt(e.index) as Class;
+				_appliedList.addItem(new selectedFilter());
+			}
+			
+			public function render():void {
+				var i:int, j:int, end:int;
+				for (i = 0; i < _appliedList.length; i++) {
+					var now:Filter = _appliedList.getItemAt(i) as Filter;
+					
+					end = now.getParameters().length;
+					for (j = 0; j < end; j++) {
+						if (!now.parameter[j]) {
+							result.text = (i + 1) + "번째 필터의 " + (j + 1) + "번째 매개변수에 오류";
+							break;
+						}
+					}
+					
+					if (j == end) {
+						//필터 매개변수 체크 성공시
+						if (now is ApplyFilter) {
+							(now as ApplyFilter).apply();
+						}
+					} else break;
+				}
+				
+				if(i == _appliedList.length){
+					result.text = "성공!";
+				}
 			}
 		]]>
 	</fx:Script>
 	
 	<mx:VDividedBox width="100%" height="100%" liveDragging="true">
-		<s:List id="appliedFilter" verticalScrollPolicy="on" horizontalScrollPolicy="off"
-		width="100%" height="70%" dataProvider="{appliedList}" itemRenderer="renderers.AppliedFilterRenderer">
-		</s:List>
+		<s:VGroup width="100%" height="70%">
+			<s:List id="appliedFilter" verticalScrollPolicy="on" horizontalScrollPolicy="off"
+			width="100%" height="100%" dataProvider="{_appliedList}" itemRenderer="renderers.AppliedFilterRenderer">
+			</s:List>
+
+			<s:HGroup width="100%" height="20">
+				<s:Label id="result" width="100%">초기화</s:Label>
+				<s:Button click="render()">적용</s:Button>
+			</s:HGroup>
+		</s:VGroup>
 		
 		<s:List id="filterSelector" width="100%" height="30%" dataProvider="{filterList}" itemRenderer="renderers.FilterSelectorRenderer"
-		doubleClickEnabled="true" doubleClick="addFilter()">
+		creationComplete="filterSelector.addEventListener('listClickEvent', addFilter);">
 		</s:List>
 	</mx:VDividedBox>
 </s:Panel>
