@@ -77,8 +77,8 @@
 				
 				reset();
 				
-				for (i = 0; i < _appliedList.length; i++) {
-					var now:Filter = _appliedList.getItemAt(i) as Filter;
+				for (i = 0; i < LastAppliedList.length; i++) {
+					var now:Filter = LastAppliedList.getItemAt(i) as Filter;
 					
 					end = now.getParameters().length;
 					for (j = 0; j < end; j++) {
@@ -96,7 +96,7 @@
 					} else break;
 				}
 				
-				if(i == _appliedList.length){
+				if(i == LastAppliedList.length){
 					result.text = "성공!";
 				}
 			}
