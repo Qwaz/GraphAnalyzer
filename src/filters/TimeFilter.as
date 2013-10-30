@@ -21,9 +21,9 @@ package filters
 			var i:int, str:String;
 			var ret:Vector.<String> = new Vector.<String>;
 			
-			for (i = 0; i < Canvas.nodeAlterInfo.length && Canvas.nodeAlterInfo[i].time <= time; ++i)
+			for (i = 0; i < Canvas.canvas.nodeAlterInfo.length && Canvas.canvas.nodeAlterInfo[i].time <= time; ++i)
 			{
-				now = Canvas.nodeAlterInfo[i];
+				now = Canvas.canvas.nodeAlterInfo[i];
 				if (now.mode == AlterInfo.REMOVE)
 				{
 					delete node[now.node];
