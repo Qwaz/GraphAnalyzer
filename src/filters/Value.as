@@ -25,11 +25,12 @@ package filters
 			}
 			else
 			{
-				//속성이 없으면 에러 출력
-				if(obj[val])
+				// 속성이 없으면 에러 출력
+				if (obj[val])
 					return obj[val];
 				else
-					throw new Error("속성 " + val + " 찾을 수 없습니다.");
+					// TODO : catch하기
+					throw new Error("속성 '" + val + "'을 찾을 수 없습니다.");
 			}
 		}
 		

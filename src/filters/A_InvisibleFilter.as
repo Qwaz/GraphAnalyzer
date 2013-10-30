@@ -16,8 +16,11 @@ package filters
 			var nameList:Vector.<String> = parameter[0].getNodeList();
 			var node:Node;
 			
-			if (Canvas.canvas.node[nameList]) {
-				Canvas.canvas.node[nameList].visible = false;
+			for (var i:int = 0; i < nameList.length; ++i)
+			{
+				if (Canvas.canvas.node[nameList[i]]) {
+					Canvas.canvas.node[nameList[i]].visible = false;
+				}
 			}
 		}
 		

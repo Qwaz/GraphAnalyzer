@@ -15,10 +15,6 @@ package filters
 			
 		}
 		
-		public function apply():void {
-			
-		}
-		
 		public function reset():void {
 			
 		}
