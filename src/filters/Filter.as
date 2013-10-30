@@ -37,6 +37,38 @@ package filters
 				}
 			}
 		}
+			
+		private function initParameter(filterList:ArrayList):void {
+			var i:int, j:int;
+			for (i = 0; i < params.length; i++) {
+				var ithParam:Object = params.getItemAt(i);
+				
+				if (ithParam.type == Value) {
+					parameter[i] = new Value(!isNaN(Number(ithParam.value)), ithParam.value);
+				} else if (ithParam.type == Number) {
+					if (!isNaN(Number(ithParam.value))) {
+						parameter[i] = Number(ithParam.value);
+					} else {
+						parameter[i] = null;
+						break;
+					}
+				} else {
+					for (j = filterList.getItemIndex(this) - 1; j >= 0; j--) {
+						var jthFilter:Filter = filterList.getItemAt(j) as Filter;
+						if (ithParam.value == jthFilter.filterName && jthFilter is ithParam.type) {
+							parameter[i] = jthFilter;
+							break;
+						}
+					}
+				}
+					
+				//매개변수를 찾지 못함
+				if (j == -1) {
+					parameter[i] = null;
+					break;
+				}
+			}
+		}
 		
 		public static function getBoldColor(targetClass:Class):uint {
 			if (targetClass == Value) return 0x000000;

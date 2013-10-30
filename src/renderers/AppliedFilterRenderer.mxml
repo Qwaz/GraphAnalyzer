@@ -11,47 +11,10 @@
 			import mx.collections.ArrayList;
 			import spark.components.List;
 			
-			private function initParams():void {
-				var i:int, j:int;
-				for (i = 0; i < data.params.length; i++) {
-					var ithParam:Object = data.params.getItemAt(i);
-					
-					if (ithParam.type == Value) {
-						data.parameter[i] = new Value(!isNaN(Number(ithParam.value)), ithParam.value);
-					} else if (ithParam.type == Number) {
-						if (!isNaN(Number(ithParam.value))) {
-							data.parameter[i] = Number(ithParam.value);
-						} else {
-							data.parameter[i] = null;
-							break;
-						}
-					} else {
-						for (j = itemIndex - 1; j >= 0; j--) {
-							var jthFilter:Filter = FilterPanel.appliedList.getItemAt(j) as Filter;
-							if (ithParam.value == jthFilter.filterName && jthFilter is ithParam.type) {
-								data.parameter[i] = jthFilter;
-								break;
-							}
-						}
-					}
-						
-					//매개변수를 찾지 못함
-					if (j == -1) {
-						data.parameter[i] = null;
-						break;
-					}
-				}
-			}
-			
 			//삭제 버튼 클릭 시 아이템 삭제
 			private function deleteItem():void {
 				var parentList:List = this.owner as List;
 				parentList.dataProvider.removeItemAt(parentList.dataProvider.getItemIndex(data));
-			}
-			
-			private function updateData():void {
-				//params에 값 넣기
-				initParams();
 			}
 		]]>
 	</fx:Script>
@@ -69,7 +32,7 @@
 				<s:TextInput width="45%" id="nameLabel" text="@{data.filterName}" />
 				<s:Button width="25%" click="deleteItem()">삭제</s:Button>
 			</s:HGroup>
-			<s:DataGrid width="95%" editable="true" dataProvider="@{data.params}" gridItemEditorSessionSave="updateData()">
+			<s:DataGrid width="95%" editable="true" dataProvider="@{data.params}" gridItemEditorSessionSave="data.initParameter(FilterPanel.appliedList)">
 				<s:columns>
 					<s:ArrayList>
 						<s:GridColumn dataField="value" headerText="매개변수" itemRenderer="renderers.FilterRenderer">
