@@ -1,13 +1,38 @@
 package filters 
 {
+	import mx.collections.ArrayList;
 	public class Filter 
 	{
 		public static const DEFAULT_FILTER_NAME:String = "필터 이름";
 		
-		public var parameter:Array=[], filterName:String=DEFAULT_FILTER_NAME;
+		public var parameter:Array = [];
+		
+		[Bindable]
+		public var filterName:String = DEFAULT_FILTER_NAME;
+		
+		[Bindable]
+		public var params:ArrayList = new ArrayList();
 		
 		public function Filter() 
 		{
+			var paramList:Array = this.getParameters();
+			var i:int;
+			for (i = 0; i < paramList.length; i++) {
+				switch(paramList[i]) {
+					case ConditionFilter:
+						params.addItem({value:"조건 필터", type:ConditionFilter});
+						break;
+					case TimeFilter:
+						params.addItem({value:"시간 필터", type:TimeFilter});
+						break;
+					case ApplyFilter:
+						params.addItem({value:"적용 필터", type:ApplyFilter});
+						break;
+					case Value:
+						params.addItem({value:"값", type:Value});
+						break;
+				}
+			}
 		}
 		
 		public static function getBoldColor(targetClass:Class):uint {
