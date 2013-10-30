@@ -15,9 +15,6 @@ package filters
 			
 		}
 		
-		public function apply():void {
-			
-		}
 		
 	}
 }
