@@ -12,15 +12,9 @@
 			private static var filterList:ArrayList = new ArrayList([
 				C_LTFilter,
 				C_NandFilter,
-<<<<<<< HEAD
 				C_NotFilter,
 				C_OrFilter,
 				C_AndFilter,
-=======
-				C_AndFilter,
-				C_OrFilter,
-				C_NotFilter,
->>>>>>> origin/wj2dy
 				T_AlwaysFilter,
 				A_InvisibleFilter,
 			]);
