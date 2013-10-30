@@ -11,7 +11,7 @@ package filters
 		
 		override public function getParameters():Array
 		{
-			return [ConditionFilter, Value, Value];
+			return [ConditionFilter, Number, Number];
 		}
 
 		override public function getNodeList():Vector.<String>
@@ -26,7 +26,7 @@ package filters
 			var b:Boolean;
 			var ret:Vector.<String> = new Vector.<String>;
 
-			if (parameter[0] is ConditionFilter && parameter[1] is Value && parameter[2] is Value)
+			if (parameter[0] is ConditionFilter && parameter[1] is Number && parameter[2] is Number)
 			{
 				condition = parameter[0] as ConditionFilter;
 				start = parameter[1] as Number;

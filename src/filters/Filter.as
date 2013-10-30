@@ -31,12 +31,16 @@ package filters
 					case Value:
 						params.addItem({value:"값", type:Value});
 						break;
+					case Number:
+						params.addItem( { value:"시간", type:Number } );
+						break;
 				}
 			}
 		}
 		
 		public static function getBoldColor(targetClass:Class):uint {
 			if (targetClass == Value) return 0x000000;
+			else if (targetClass == Number) return 0xFF00FF;
 			
 			var filter:Object = new targetClass();
 			

@@ -18,6 +18,13 @@
 					
 					if (ithParam.type == Value) {
 						data.parameter[i] = new Value(!isNaN(Number(ithParam.value)), ithParam.value);
+					} else if (ithParam.type == Number) {
+						if (!isNaN(Number(ithParam.value))) {
+							data.parameter[i] = Number(ithParam.value);
+						} else {
+							data.parameter[i] = null;
+							break;
+						}
 					} else {
 						for (j = itemIndex - 1; j >= 0; j--) {
 							var jthFilter:Filter = FilterPanel.appliedList.getItemAt(j) as Filter;
@@ -26,12 +33,12 @@
 								break;
 							}
 						}
+					}
 						
-						//매개변수를 찾지 못함
-						if (j == -1) {
-							data.parameter[i] = null;
-							break;
-						}
+					//매개변수를 찾지 못함
+					if (j == -1) {
+						data.parameter[i] = null;
+						break;
 					}
 				}
 			}
