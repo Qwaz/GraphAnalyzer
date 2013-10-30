@@ -7,6 +7,7 @@
 			import events.ListClickEvent;
 			import mx.collections.ArrayList;
 			import filters.*;
+			import utils.getClassReference;
 			
 			[Bindable]
 			private static var filterList:ArrayList = new ArrayList([
@@ -21,6 +22,8 @@
 			
 			[Bindable]
 			private static var _appliedList:ArrayList = new ArrayList();
+			
+			private static var LastAppliedList:ArrayList;
 			
 			public static function get appliedList():ArrayList {
 				return _appliedList;
@@ -42,6 +45,31 @@
 						(kakaotalk as ApplyFilter).reset();
 					}
 				}
+			}
+			
+			public function ApplyButtonPressed():void
+			{
+				LastAppliedList = new ArrayList();
+				for (var i:int = 0; i < _appliedList.length; ++i)
+				{
+					var selectedFilter:Class;
+					var nowFilter:Filter;
+					var len:int;
+					
+					selectedFilter = getClassReference(_appliedList.getItemAt(i));
+					nowFilter = new selectedFilter;
+					LastAppliedList.addItem(nowFilter);
+					nowFilter.filterName = (_appliedList.getItemAt(i) as Filter).filterName;
+					len = nowFilter.getParameters().length;
+					
+					for (var j:int = 0; i < len; ++i)
+					{
+						nowFilter.params[j] = (_appliedList.getItemAt(i) as Filter).params[j];
+					}
+					
+					nowFilter.initParameter(LastAppliedList);
+				}
+				render();
 			}
 			
 			public function render():void {
@@ -83,7 +111,7 @@
 
 			<s:HGroup width="100%" height="20">
 				<s:Label id="result" width="100%">초기화</s:Label>
-				<s:Button click="render()">적용</s:Button>
+				<s:Button click="ApplyButtonPressed()">적용</s:Button>
 			</s:HGroup>
 		</s:VGroup>
 		
