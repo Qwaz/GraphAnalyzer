@@ -18,7 +18,7 @@ package filters
 		{
 			var condition:ConditionFilter;
 			var start:Number, end:Number;
-			var node:Object;
+			var node:Object = new Object;
 			var now:AlterInfo;
 			var str:String;
 			var i:int, j:int;
