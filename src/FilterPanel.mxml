@@ -89,7 +89,7 @@
 					
 					end = now.getParameters().length;
 					for (j = 0; j < end; j++) {
-						if (!now.parameter[j]) {
+						if (now.parameter[j] == null) {
 							result.text = (i + 1) + "번째 필터의 " + (j + 1) + "번째 매개변수에 오류";
 							break;
 						}
