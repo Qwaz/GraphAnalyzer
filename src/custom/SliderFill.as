@@ -10,25 +10,31 @@ package custom
 		
 		public var linePosition:Vector.<Number>;
 		
+		private var lastWidth:Number = 0;
+		
 		public function SliderFill():void {
-			addEventListener(Event.ENTER_FRAME, checkInited);
+			addEventListener(Event.ENTER_FRAME, checkResizing);
 		}
 		
-		private function checkInited(e:Event):void {
-			if (linePosition && linePosition.length > 0 && this.width > 0) {
-				this.graphics.beginFill(0xFFFFFF);
-				this.graphics.drawRect(0, 0, this.width, this.height);
+		private function checkResizing(e:Event):void {
+			if (linePosition && linePosition.length > 0 && this.width != lastWidth) {
+				redraw();
+				lastWidth = this.width;
+			}
+		}
+		
+		private function redraw():void {
+			this.graphics.clear();
+			this.graphics.beginFill(0xFFFFFF);
+			this.graphics.drawRect(0, 0, this.width, this.height);
+			
+			this.graphics.beginFill(0xFF0000);
+			
+			var i:int;
+			for (i = 0; i < linePosition.length; i++) {
+				var num:Number = linePosition[i];
 				
-				this.graphics.beginFill(0xFF0000);
-				
-				var i:int;
-				for (i = 0; i < linePosition.length; i++) {
-					var num:Number = linePosition[i];
-					
-					this.graphics.drawRect(this.width * num - WIDTH / 2, 0, WIDTH, this.height);
-				}
-				
-				removeEventListener(Event.ENTER_FRAME, checkInited);
+				this.graphics.drawRect(this.width * num - WIDTH / 2, 0, WIDTH, this.height);
 			}
 		}
 	}

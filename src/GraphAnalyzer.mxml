@@ -28,7 +28,7 @@
 		<local:FilterPanel width="33%" height="100%" title="검색" dropShadowVisible="true"/>
 		<mx:HDividedBox liveDragging="true" width="67%" height="100%">
 			<s:BorderContainer id="leftPanel" width="70%" height="100%" backgroundColor="0x333333" resize="resizeCanvas()">
-				<s:BorderContainer id="container" verticalCenter="-10" horizontalCenter="0" dropShadowVisible="true">
+				<s:BorderContainer id="container" verticalCenter="-30" horizontalCenter="0" dropShadowVisible="true">
 					<local:Canvas id="canvas" slider="{timeSlider}" verticalCenter="0" horizontalCenter="0"/>
 				</s:BorderContainer>
 				<custom:Slider id="timeSlider" y="{container.y+container.height+10}" height="20" horizontalCenter="0" skinClass="skins.CustomHSliderSkin" />
