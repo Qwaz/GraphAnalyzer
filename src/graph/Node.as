@@ -6,9 +6,9 @@ package graph
 
 	public class Node extends GraphObject
 	{
-		public static const
-		FRICTION:Number = 0.97,
-		CONSTANT:Number = 100;
+		public static const FRICTION:Number = 0.97;
+		public static const CONSTANT:Number = 100;
+		private const HIGHLIGHT_SCALING:Number = 1.3;
 		
 		public var speedX:Number=0, speedY:Number=0;
 		public var dragging:Boolean = false;
@@ -17,10 +17,9 @@ package graph
 		
 		public function Node(idName:String)
 		{
-			this.idName = idName;
+			super();
 			
-			this.graphics.beginFill(0xFF0000);
-			this.graphics.drawCircle(0, 0, 1);
+			this.idName = idName;
 			
 			nameLabel = new TextField();
 			nameLabel.text = idName;
@@ -31,9 +30,27 @@ package graph
 			nameLabel.setTextFormat(tf);
 			
 			this.addChild(nameLabel);
+			
+			updateShape();
 		}
 		
-		public function update():void {
+		private function updateShape():void
+		{
+			this.graphics.clear();
+			
+			if (_highlighted)
+			{
+				this.graphics.beginFill(0x00FF00);
+				this.graphics.drawCircle(0, 0, size * HIGHLIGHT_SCALING);
+			}
+			else
+			{
+				this.graphics.beginFill(0xFF0000);
+				this.graphics.drawCircle(0, 0, size);
+			}
+		}
+		
+		public function updatePosition():void {
 			if (dragging)
 			{
 				x = parent.mouseX + (parent as Canvas).diffX;
@@ -76,16 +93,10 @@ package graph
 		}
 		
 		override public function set highlighted(val:Boolean):void {
-			if(_highlighted != val){
-				this.graphics.clear();
-				if(val){
-					this.graphics.beginFill(0x00FF00);
-					this.graphics.drawCircle(0, 0, 1.3);
-				} else {
-					this.graphics.beginFill(0xFF0000);
-					this.graphics.drawCircle(0, 0, 1);
-				}
+			if (_highlighted != val)
+			{
 				_highlighted = val;
+				updateShape();
 			}
 		}
 		
