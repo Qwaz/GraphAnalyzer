@@ -81,29 +81,40 @@
 			
 			public function render():void {
 				var i:int, j:int, end:int;
+				var fail:Boolean;
 				
 				reset();
 				
+				fail = false;
 				for (i = 0; i < LastAppliedList.length; i++) {
 					var now:Filter = LastAppliedList.getItemAt(i) as Filter;
 					
-					end = now.getParameters().length;
-					for (j = 0; j < end; j++) {
+					for (j = 0; j < now.getParameters().length; j++) {
 						if (now.parameter[j] == null) {
 							result.text = (i + 1) + "번째 필터의 " + (j + 1) + "번째 매개변수에 오류";
+							fail = true;
 							break;
 						}
 					}
+					if (fail) break;
 					
-					if (j == end) {
-						//필터 매개변수 체크 성공시
-						if (now is ApplyFilter) {
+					if (now is ApplyFilter)
+					{
+						try
+						{
 							(now as ApplyFilter).apply();
 						}
-					} else break;
+						catch (e:Error)
+						{
+							result.text = e.message;
+							fail = true;
+							break;
+						}
+					}
 				}
 				
-				if(i == LastAppliedList.length){
+				if (!fail)
+				{
 					result.text = "성공!";
 				}
 			}

@@ -29,8 +29,7 @@ package filters
 				if (obj[val] != null)
 					return obj[val];
 				else
-					// TODO : catch하기
-					throw new Error("속성 '" + val + "'을 찾을 수 없습니다.");
+					throw new Error("속성 '" + val + "'을(를) 찾을 수 없습니다.");
 			}
 		}
 		

@@ -235,7 +235,6 @@ package
 				nowEdge.update();
 			}
 			
-			// TODO : a
 			UpdateDatalist();
 			
 			lastTime = _slider.value;
