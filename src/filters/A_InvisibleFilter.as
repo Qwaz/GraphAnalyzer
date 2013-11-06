@@ -13,13 +13,26 @@ package filters
 		}
 		
 		override public function apply():void {
-			var nameList:Vector.<String> = parameter[0].getNodeList();
-			var node:Node;
+			var nodeList:Object = parameter[0].getNodeList();
+			var str:String;
 			
-			for (var i:int = 0; i < nameList.length; ++i)
+			for (str in nodeList)
 			{
-				if (Canvas.canvas.node[nameList[i]]) {
-					Canvas.canvas.node[nameList[i]].visible = false;
+				if (Canvas.canvas.node[str]) {
+					Canvas.canvas.node[str].visible = false;
+					Canvas.canvas.node[str].consider = false;
+				}
+			}
+			
+			for (str in Canvas.canvas.edge)
+			{
+				if (Canvas.canvas.edge[str])
+				{
+					if (nodeList[Canvas.canvas.edge[str].node1] || nodeList[Canvas.canvas.edge[str].node2])
+					{
+						Canvas.canvas.edge[str].visible = false;
+						Canvas.canvas.edge[str].consider = false;
+					}
 				}
 			}
 		}
@@ -28,6 +41,7 @@ package filters
 			var node:Node;
 			for each(node in Canvas.canvas.node) {
 				node.visible = true;
+				node.consider = true;
 			}
 		}
 		

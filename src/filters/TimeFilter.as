@@ -9,7 +9,7 @@ package filters
 			super();
 		}
 		
-		public function getNodeList():Vector.<String>
+		public function getNodeList():Object
 		{
 			return null;
 		}

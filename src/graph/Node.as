@@ -34,7 +34,7 @@ package graph
 			updateShape();
 		}
 		
-		private function updateShape():void
+		public function updateShape():void
 		{
 			this.graphics.clear();
 			
@@ -53,8 +53,8 @@ package graph
 		public function updatePosition():void {
 			if (dragging)
 			{
-				x = parent.mouseX + (parent as Canvas).diffX;
-				y = parent.mouseY + (parent as Canvas).diffY;
+				x = parent.mouseX + Canvas.canvas.diffX;
+				y = parent.mouseY + Canvas.canvas.diffY;
 			}
 			else
 			{

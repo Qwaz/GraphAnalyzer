@@ -6,6 +6,7 @@ package graph
 	public class GraphObject extends Sprite
 	{
 		public var data:Object;
+		public var consider:Boolean;
 		public var weight:Number;
 		public var size:Number;
 		
@@ -13,6 +14,7 @@ package graph
 		
 		public function GraphObject() {
 			data = new Object();
+			consider = true;
 			weight = 1;
 			size = 1;
 		}

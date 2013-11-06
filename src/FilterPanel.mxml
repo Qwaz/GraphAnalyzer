@@ -23,6 +23,8 @@
 				T_OnceFilter,
 				A_InvisibleFilter,
 				A_VisibleFilter,
+				A_WeightFilter,
+				A_LinearWeightFilter,
 			]);
 			
 			[Bindable]
@@ -76,6 +78,7 @@
 					
 					nowFilter.initParameter(LastAppliedList);
 				}
+				
 				render();
 			}
 			
@@ -115,6 +118,7 @@
 				
 				if (!fail)
 				{
+					Canvas.canvas.reDraw();
 					result.text = "성공!";
 				}
 			}
