@@ -153,7 +153,7 @@ package
 		}
 		
 		private function changeHandler(e:Event):void {
-			var now:AlterInfo, tEdge:Edge;
+			var now:AlterInfo, tEdge:Edge, nowEdge:Edge;
 			if(lastTime < _slider.value){
 				//오른쪽으로 드래그 한 경우
 				for(; nodeIndex < nodeAlterInfo.length && nodeAlterInfo[nodeIndex].time <= _slider.value; nodeIndex++){
@@ -219,7 +219,10 @@ package
 					}
 				}
 			}
-			adjustEdge();
+			
+			for each(nowEdge in edge){
+				nowEdge.update();
+			}
 			
 			lastTime = _slider.value;
 			
@@ -268,8 +271,6 @@ package
 				nowNode.update();
 			}
 			
-			adjustEdge();
-			
 			for each(nowEdge in edge){
 				nowEdge.highlighted = false;
 				
@@ -293,25 +294,6 @@ package
 				if (selected)
 				{
 					selected.highlighted = true;
-				}
-			}
-		}
-		
-		private function adjustEdge():void {
-			const ZERO:Number = 0.001;
-			
-			var nowEdge:Edge;
-			for each(nowEdge in edge){
-				nowEdge.x = node[nowEdge.node1].x;
-				nowEdge.y = node[nowEdge.node1].y;
-				
-				nowEdge.scaleX = node[nowEdge.node2].x - node[nowEdge.node1].x;
-				if (nowEdge.scaleX == 0) {
-					nowEdge.scaleX = ZERO;
-				}
-				nowEdge.scaleY = node[nowEdge.node2].y - node[nowEdge.node1].y;
-				if (nowEdge.scaleY == 0) {
-					nowEdge.scaleY = ZERO;
 				}
 			}
 		}
