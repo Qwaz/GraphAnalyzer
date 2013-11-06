@@ -88,5 +88,10 @@ package graph
 				_highlighted = val;
 			}
 		}
+		
+		public function GetName():String
+		{
+			return idName;
+		}
 	}
 }

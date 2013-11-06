@@ -98,7 +98,7 @@ package
 			if (nearest is Node)
 			{
 				if (dragging && dragging is Node) (dragging as Node).dragging = false;
-				dragging = nearest as Node;
+				dragging = nearest;
 				(dragging as Node).dragging = true;
 				diffX = dragging.x - mouseX;
 				diffY = dragging.y - mouseY;
@@ -124,32 +124,37 @@ package
 			dragging = null;
 		}
 		
+		private function UpdateDatalist():void
+		{
+			var i:int, str:String;
+				
+			if (selected) {
+				dataList = new ArrayList();
+				
+				if (selected is Node) {
+					for (i = 0; i < nodeDataList.length; i++) {
+						str = nodeDataList[i].name;
+						dataList.addItem( { name:str, value:selected.data[str] } );
+					}
+				} else if (selected is Edge) {
+					dataList.addItem( { name:'식별자', value:Object(selected).node1 + '->' + Object(selected).node2 } );
+					for (i = 0; i < edgeDataList.length; i++) {
+						str = edgeDataList[i].name;
+						dataList.addItem( { name:str, value:selected.data[str] } );
+					}
+				}
+			} else {
+				dataList = emptyList;
+			}
+		}
+		
 		private function get selected():GraphObject {
 			return _selected;
 		}
 		
 		private function set selected(selected:GraphObject):void {
 			_selected = selected;
-			
-			if (_selected) {
-				dataList = new ArrayList();
-				
-				var i:int, str:String;
-				if (_selected is Node) {
-					for (i = 0; i < nodeDataList.length; i++) {
-						str = nodeDataList[i].name;
-						dataList.addItem( { name:str, value:_selected.data[str] } );
-					}
-				} else if (_selected is Edge) {
-					dataList.addItem( { name:'식별자', value:Object(_selected).node1 + '->' + Object(_selected).node2 } );
-					for (i = 0; i < edgeDataList.length; i++) {
-						str = edgeDataList[i].name;
-						dataList.addItem( { name:str, value:_selected.data[str] } );
-					}
-				}
-			} else {
-				dataList = emptyList;
-			}
+			UpdateDatalist();
 		}
 		
 		private function changeHandler(e:Event):void {
@@ -158,7 +163,8 @@ package
 				//오른쪽으로 드래그 한 경우
 				for(; nodeIndex < nodeAlterInfo.length && nodeAlterInfo[nodeIndex].time <= _slider.value; nodeIndex++){
 					now = nodeAlterInfo[nodeIndex];
-					if(now.mode == AlterInfo.REMOVE){
+					if (now.mode == AlterInfo.REMOVE) {
+						if (selected && selected is Node && (selected as Node).GetName() == now.node) selected = null;
 						node[now.node].dispose();
 						delete node[now.node];
 					} else {
@@ -175,6 +181,8 @@ package
 				for(; edgeIndex < edgeAlterInfo.length && edgeAlterInfo[edgeIndex].time <= _slider.value; edgeIndex++){
 					now = edgeAlterInfo[edgeIndex];
 					if(now.mode == AlterInfo.REMOVE){
+						if (selected && selected is Edge &&
+							(selected as Edge).node1 == now.node && (selected as Edge).node2 == now.node2) selected = null;
 						edge[now.hash()].dispose();
 						delete edge[now.hash()];
 					} else {
@@ -191,6 +199,7 @@ package
 				for(; nodeIndex > 0 && nodeAlterInfo[nodeIndex-1].time > _slider.value; nodeIndex--){
 					now = nodeAlterInfo[nodeIndex-1];
 					if(now.mode == AlterInfo.ADD){
+						if (selected && selected is Node && (selected as Node).GetName() == now.node) selected = null;
 						node[now.node].dispose();
 						delete node[now.node];
 					} else {
@@ -207,6 +216,8 @@ package
 				for(; edgeIndex > 0 && edgeAlterInfo[edgeIndex-1].time > _slider.value; edgeIndex--){
 					now = edgeAlterInfo[edgeIndex-1];
 					if(now.mode == AlterInfo.ADD){
+						if (selected && selected is Edge &&
+							(selected as Edge).node1 == now.node && (selected as Edge).node2 == now.node2) selected = null;
 						edge[now.hash()].dispose();
 						delete edge[now.hash()];
 					} else {
@@ -223,6 +234,9 @@ package
 			for each(nowEdge in edge){
 				nowEdge.update();
 			}
+			
+			// TODO : a
+			UpdateDatalist();
 			
 			lastTime = _slider.value;
 			
