@@ -6,6 +6,7 @@ package graph
 	{
 		public static const CONSTANT:Number = 0.004;
 		public const SEPARATION:Number = .5;
+		private const HIGHLIGHT_SCALING:Number = 1.5;
 		
 		public var node1:String, node2:String;
 		
@@ -30,11 +31,11 @@ package graph
 			
 			if (_highlighted)
 			{
-				this.graphics.lineStyle(1.5, 0x00FF00, 1, false, LineScaleMode.NONE);
+				this.graphics.lineStyle(size * HIGHLIGHT_SCALING, 0x00FF00, 1, false, LineScaleMode.NONE);
 			}
 			else
 			{
-				this.graphics.lineStyle(1, 0, 1, false, LineScaleMode.NONE);
+				this.graphics.lineStyle(size, 0, 1, false, LineScaleMode.NONE);
 			}
 			
 			this.graphics.lineTo(x2 - x1, y2 - y1);

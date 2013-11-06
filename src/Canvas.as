@@ -250,11 +250,11 @@ package
 				nowNode = node[nowEdge.node1];
 				nextNode = node[nowEdge.node2];
 				
-				nowNode.speedX += Edge.CONSTANT * (nextNode.x - nowNode.x);
-				nowNode.speedY += Edge.CONSTANT * (nextNode.y - nowNode.y);
+				nowNode.speedX += nowEdge.weight * Edge.CONSTANT * (nextNode.x - nowNode.x);
+				nowNode.speedY += nowEdge.weight * Edge.CONSTANT * (nextNode.y - nowNode.y);
 				
-				nextNode.speedX -= Edge.CONSTANT * (nextNode.x - nowNode.x);
-				nextNode.speedY -= Edge.CONSTANT * (nextNode.y - nowNode.y);
+				nextNode.speedX -= nowEdge.weight * Edge.CONSTANT * (nextNode.x - nowNode.x);
+				nextNode.speedY -= nowEdge.weight * Edge.CONSTANT * (nextNode.y - nowNode.y);
 			}
 			
 			var r:Number;
@@ -265,10 +265,11 @@ package
 				for each(nextNode in node){
 					if (nextNode != nowNode) {
 						r = Point.distance(new Point(nextNode.x, nextNode.y), new Point(nowNode.x, nowNode.y));
+						if (r < 0.1) r = 0.1;
 						r = r * r * r;
 						
-						nowNode.speedX -= Node.CONSTANT * (nextNode.x - nowNode.x) / r;
-						nowNode.speedY -= Node.CONSTANT * (nextNode.y - nowNode.y) / r;
+						nowNode.speedX -= nowNode.weight * nextNode.weight * Node.CONSTANT * (nextNode.x - nowNode.x) / r;
+						nowNode.speedY -= nowNode.weight * nextNode.weight * Node.CONSTANT * (nextNode.y - nowNode.y) / r;
 					}
 				}
 				
@@ -281,7 +282,7 @@ package
 			}
 			
 			for each(nowNode in node) {
-				nowNode.update();
+				nowNode.updatePosition();
 			}
 			
 			for each(nowEdge in edge){

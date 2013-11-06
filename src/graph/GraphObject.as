@@ -6,11 +6,15 @@ package graph
 	public class GraphObject extends Sprite
 	{
 		public var data:Object;
+		public var weight:Number;
+		public var size:Number;
 		
 		protected var _highlighted:Boolean = false;
 		
 		public function GraphObject() {
 			data = new Object();
+			weight = 1;
+			size = 1;
 		}
 		
 		public function dispose():void {
