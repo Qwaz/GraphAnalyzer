@@ -22,6 +22,8 @@ package data
 		private var nodeDictionary:Object, edgeDictionary:Object;
 		private var _nodeAlterInfo:Vector.<AlterInfo>, _edgeAlterInfo:Vector.<AlterInfo>;
 		
+		private var _timeList:Vector.<Number>;
+		
 		public var minimum:Number, maximum:Number, stepSize:Number;
 		
 		private var nodeLoaded:Boolean = false, edgeLoaded:Boolean = false;
@@ -47,6 +49,8 @@ package data
 		
 		private function frameLoadCompleteHandler(e:Event):void {
 			frameLoader.removeEventListener(Event.COMPLETE, frameLoadCompleteHandler);
+			
+			_timeList = new Vector.<Number>;
 			
 			var rawString:String = frameLoader.data;
 			var split:Array = rawString.split(/\r?\n/);
@@ -137,6 +141,7 @@ package data
 					}
 				}
 				
+				_timeList.push(tInfo.time);
 				_nodeAlterInfo.push(tInfo);
 			}
 			
@@ -201,6 +206,7 @@ package data
 					}
 				}
 				
+				_timeList.push(tInfo.time);
 				_edgeAlterInfo.push(tInfo);
 			}
 			
@@ -211,13 +217,15 @@ package data
 		}
 		
 		private function initCheck():void {
-			if(nodeLoaded && edgeLoaded){
+			if (nodeLoaded && edgeLoaded) {
+				var i:int, now:AlterInfo;
+				
+				_timeList.sort(function(a:Number, b:Number):int { return a == b ? 0 : a < b ? -1 : 1; } );
+				
 				var nowNode:Object, nowEdge:Object;
 				
 				nowNode = new Object();
 				nowEdge = new Object();
-				
-				var i:int, now:AlterInfo;
 				for(i=0; i<_nodeAlterInfo.length; i++){
 					now = _nodeAlterInfo[i];
 					if(now.mode == AlterInfo.ADD){
@@ -274,6 +282,10 @@ package data
 		
 		public function get edgeDataList():Vector.<Data> {
 			return _edgeDataList;
+		}
+		
+		public function get timeList():Vector.<Number> {
+			return _timeList;
 		}
 		
 	}
