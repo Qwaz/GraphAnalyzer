@@ -63,7 +63,7 @@ package filters
 				}
 			}
 
-			for (; i < Canvas.canvas.nodeAlterInfo.length; ++i)
+			for (; i < Canvas.canvas.nodeAlterInfo.length && Canvas.canvas.nodeAlterInfo[i].time <= end; ++i)
 			{
 				now = Canvas.canvas.nodeAlterInfo[i];
 
