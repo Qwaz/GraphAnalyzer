@@ -2,9 +2,10 @@ package filters
 {
 	import graph.Node;
 	
-	public class A_InvisibleFilter extends ApplyFilter
+	public class A_VisibleFilter extends ApplyFilter 
 	{
-		public function A_InvisibleFilter() {
+		public function A_VisibleFilter() 
+		{
 			super();
 		}
 		
@@ -19,20 +20,17 @@ package filters
 			for (var i:int = 0; i < nameList.length; ++i)
 			{
 				if (Canvas.canvas.node[nameList[i]]) {
-					Canvas.canvas.node[nameList[i]].visible = false;
+					Canvas.canvas.node[nameList[i]].visible = true;
 				}
 			}
 		}
 		
 		override public function reset():void {
-			var node:Node;
-			for each(node in Canvas.canvas.node) {
-				node.visible = true;
-			}
+			// A_InvisibleFilter의 reset()이 처리함
 		}
 		
 		public static function getName():String {
-			return "보이지 않게";
+			return "보이게";
 		}
 	}
 }
