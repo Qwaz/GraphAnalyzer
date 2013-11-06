@@ -11,7 +11,7 @@
 	<fx:Script>
 		<![CDATA[
 			private function resizeCanvas():void {
-				var min:int = Math.min(leftPanel.width, leftPanel.height-20)-15;
+				var min:int = Math.min(leftPanel.width, leftPanel.height-30)-15;
 				
 				container.width = min;
 				container.height = min;
@@ -19,7 +19,8 @@
 				canvas.scaleX = (min-30)/Canvas.SIZE;
 				canvas.scaleY = (min-30)/Canvas.SIZE;
 				
-				timeSlider.width = min;
+				sliderGroup.width = min;
+				timeSlider.width = min - 35;
 			}
 		]]>
 	</fx:Script>
@@ -28,10 +29,13 @@
 		<local:FilterPanel width="33%" height="100%" title="검색" dropShadowVisible="true"/>
 		<mx:HDividedBox liveDragging="true" width="67%" height="100%">
 			<s:BorderContainer id="leftPanel" width="70%" height="100%" backgroundColor="0x333333" resize="resizeCanvas()">
-				<s:BorderContainer id="container" verticalCenter="-30" horizontalCenter="0" dropShadowVisible="true">
+				<s:BorderContainer id="container" verticalCenter="-15" horizontalCenter="0" dropShadowVisible="true">
 					<local:Canvas id="canvas" slider="{timeSlider}" verticalCenter="0" horizontalCenter="0"/>
 				</s:BorderContainer>
-				<custom:Slider id="timeSlider" y="{container.y+container.height+10}" height="20" horizontalCenter="0" skinClass="skins.CustomHSliderSkin" />
+				<s:HGroup id="sliderGroup" horizontalCenter="0" y="{container.y+container.height+10}">
+					<custom:Slider id="timeSlider" height="20" horizontalCenter="0" skinClass="skins.CustomHSliderSkin" />
+					<s:Label width="30" color="0xFFFFFF" paddingTop="5" text="{timeSlider.value}"/>
+				</s:HGroup>
 			</s:BorderContainer>
 			<s:Panel width="30%" height="100%" title="속성" dropShadowVisible="true">
 				<s:DataGrid width="100%" height="100%" dataProvider="{canvas.dataList}">
