@@ -3,11 +3,11 @@ package filters
 	import data.AlterInfo;
 	
 	/**
-	 * 주어진 시간 동안 항상 존재하고, 항상 조건을 만족해야 함.
+	 * 주어진 시간 동안 한 번이라도 존재해서 조건을 만족하면 됨.
 	 */
-	public class T_AlwaysFilter extends TimeFilter 
+	public class T_OnceFilter extends TimeFilter 
 	{
-		public function T_AlwaysFilter() 
+		public function T_OnceFilter() 
 		{
 			super();
 		}
@@ -37,7 +37,7 @@ package filters
 			}
 			else
 			{
-				throw new Error("AlwaysFilter.getNodeList() : Type mismatch!");
+				throw new Error("Once.getNodeList() : Type mismatch!");
 			}
 
 			for (i = 0; i < Canvas.canvas.nodeAlterInfo.length && Canvas.canvas.nodeAlterInfo[i].time <= start; ++i)
@@ -73,7 +73,6 @@ package filters
 				if (now.mode == AlterInfo.REMOVE)
 				{
 					delete node[now.node];
-					temp[now.node] = 0;
 				}
 				else
 				{
@@ -83,9 +82,9 @@ package filters
 					}
 					Canvas.apply(node[now.node], now.data);
 
-					if (!condition.check(node[now.node]))
+					if (condition.check(node[now.node]))
 					{
-						temp[now.node] = 0;
+						temp[now.node] = 1;
 					}
 				}
 			}
@@ -102,7 +101,7 @@ package filters
 		}
 
 		public static function getName():String {
-			return "항상 만족";
+			return "한 번이라도 만족";
 		}
 	}
 }

@@ -20,7 +20,9 @@
 				C_OrFilter,
 				C_NotFilter,
 				T_AlwaysFilter,
+				T_OnceFilter,
 				A_InvisibleFilter,
+				A_VisibleFilter,
 			]);
 			
 			[Bindable]
