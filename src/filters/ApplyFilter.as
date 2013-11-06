@@ -1,12 +1,7 @@
 package filters 
 {
-	/**
-	 * ...
-	 * @author 배예찬
-	 */
 	public class ApplyFilter extends Filter
 	{
-		
 		public function ApplyFilter() 
 		{
 		}
@@ -14,14 +9,7 @@ package filters
 		public function apply():void{
 			
 		}
-		
-<<<<<<< HEAD
-		
-=======
->>>>>>> origin/wj2dy
-		public function reset():void {
-			
+		public function reset():void{
 		}
-		
 	}
 }

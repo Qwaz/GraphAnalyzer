@@ -2,8 +2,7 @@
 <s:ItemRenderer xmlns:fx="http://ns.adobe.com/mxml/2009" 
 				xmlns:s="library://ns.adobe.com/flex/spark" 
 				xmlns:mx="library://ns.adobe.com/flex/halo"
-				autoDrawBackground="false"
-				creationComplete="creationComplete()">
+				autoDrawBackground="false">
 	
 	<fx:Script>
 		<![CDATA[
@@ -12,88 +11,10 @@
 			import mx.collections.ArrayList;
 			import spark.components.List;
 			
-			private var classPointer:Class;
-			
-			[Bindable]
-			private var filterName:String;
-			
-			[Bindable]
-			private var params:ArrayList = new ArrayList();
-			
-			//필터 이름과 변수 명을 초기화한다.
-			private function creationComplete():void {
-				classPointer = getClassReference(data);
-				filterName = Object(classPointer).getName();
-				
-				nameLabel.text = Filter.DEFAULT_FILTER_NAME;
-				
-				params = new ArrayList();
-				grid.dataProvider = params;
-				
-				var paramList:Array = Filter(data).getParameters();
-				var i:int;
-				for (i = 0; i < paramList.length; i++) {
-					switch(paramList[i]) {
-						case ConditionFilter:
-							params.addItem({value:"조건 필터", type:ConditionFilter});
-							break;
-						case TimeFilter:
-							params.addItem({value:"시간 필터", type:TimeFilter});
-							break;
-						case ApplyFilter:
-							params.addItem({value:"적용 필터", type:ApplyFilter});
-							break;
-						case Value:
-							params.addItem({value:"값", type:Value});
-							break;
-					}
-				}
-				
-				initParams();
-				
-				bg.color = Filter.getLightColor(classPointer);
-			}
-			
-			private function initParams():void {
-				var i:int, j:int;
-				var nowIndex:int = FilterPanel.appliedList.getItemIndex(data);
-				for (i = 0; i < params.length; i++) {
-					var ithParam:Object = params.getItemAt(i);
-					
-					if (ithParam.type == Value) {
-						data.parameter[i] = new Value(!isNaN(Number(ithParam.value)), ithParam.value);
-					} else {
-						for (j = nowIndex - 1; j >= 0; j--) {
-							var jthFilter:Filter = FilterPanel.appliedList.getItemAt(j) as Filter;
-							if (ithParam.value == jthFilter.filterName && jthFilter is ithParam.type) {
-								data.parameter[i] = jthFilter;
-								break;
-							}
-						}
-						
-						//매개변수를 찾지 못함
-						if (j == -1) {
-							data.parameter[i] = null;
-							break;
-						}
-					}
-				}
-			}
-			
 			//삭제 버튼 클릭 시 아이템 삭제
 			private function deleteItem():void {
 				var parentList:List = this.owner as List;
 				parentList.dataProvider.removeItemAt(parentList.dataProvider.getItemIndex(data));
-			}
-			
-			private function updateFilterName():void {
-				//필터 이름 업데이트
-				data.filterName = nameLabel.text;
-			}
-			
-			private function updateData():void {
-				//params에 값 넣기
-				initParams();
 			}
 		]]>
 	</fx:Script>
@@ -101,17 +22,17 @@
 	<s:Group width="100%" height="100%">
 		<s:Rect width="100%" height="100%">
 			<s:fill>
-				<s:SolidColor id="bg"></s:SolidColor>
+				<s:SolidColor id="bg" color="{data?Filter.getLightColor(getClassReference(data)):0xFFFFFF}"/>
 			</s:fill>
 		</s:Rect>
 		
 		<s:VGroup width="100%" height="100%" horizontalAlign="center" paddingBottom="5" paddingRight="5">
 			<s:HGroup width="100%" paddingLeft="5" paddingRight="5" paddingTop="5">
-				<s:Label width="30%" paddingTop="6" textAlign="center" text="{filterName}"/>
-				<s:TextInput width="45%" id="nameLabel" change="updateFilterName()" />
-				<s:Button width="25%" click="deleteItem()" >삭제</s:Button>
+				<s:Label width="30%" paddingTop="6" textAlign="center" text="{data?Object(getClassReference(data)).getName():''}"/>
+				<s:TextInput width="45%" id="nameLabel" text="@{data.filterName}" />
+				<s:Button width="25%" click="deleteItem()">삭제</s:Button>
 			</s:HGroup>
-			<s:DataGrid id="grid" width="95%" editable="true" gridItemEditorSessionSave="updateData()">
+			<s:DataGrid width="95%" editable="true" dataProvider="{data.params}">
 				<s:columns>
 					<s:ArrayList>
 						<s:GridColumn dataField="value" headerText="매개변수" itemRenderer="renderers.FilterRenderer">

@@ -7,6 +7,7 @@
 			import events.ListClickEvent;
 			import mx.collections.ArrayList;
 			import filters.*;
+			import utils.getClassReference;
 			
 			[Bindable]
 			private static var filterList:ArrayList = new ArrayList([
@@ -16,11 +17,15 @@
 				C_OrFilter,
 				C_AndFilter,
 				T_AlwaysFilter,
+				T_OnceFilter,
 				A_InvisibleFilter,
+				A_VisibleFilter,
 			]);
 			
 			[Bindable]
 			private static var _appliedList:ArrayList = new ArrayList();
+			
+			private static var LastAppliedList:ArrayList;
 			
 			public static function get appliedList():ArrayList {
 				return _appliedList;
@@ -31,10 +36,53 @@
 				_appliedList.addItem(new selectedFilter());
 			}
 			
+			private function reset():void
+			{
+				for (var i:int = 0; i < filterList.length; i++) {
+					var filter:Class = filterList.getItemAt(i) as Class;
+					var kakaotalk:Object = new filter;
+					
+					if (kakaotalk is ApplyFilter)
+					{
+						(kakaotalk as ApplyFilter).reset();
+					}
+				}
+			}
+			
+			public function ApplyButtonPressed():void
+			{
+				LastAppliedList = new ArrayList();
+				for (var i:int = 0; i < _appliedList.length; ++i)
+				{
+					var selectedFilter:Class;
+					var nowFilter:Filter;
+					var len:int;
+					
+					selectedFilter = getClassReference(_appliedList.getItemAt(i));
+					nowFilter = new selectedFilter;
+					LastAppliedList.addItem(nowFilter);
+					nowFilter.filterName = (_appliedList.getItemAt(i) as Filter).filterName;
+					len = nowFilter.getParameters().length;
+					
+					nowFilter.params.removeAll();
+					for (var j:int = 0; j < len; ++j)
+					{
+						nowFilter.params.addItem(
+							(_appliedList.getItemAt(i) as Filter).params.getItemAt(j));
+					}
+					
+					nowFilter.initParameter(LastAppliedList);
+				}
+				render();
+			}
+			
 			public function render():void {
 				var i:int, j:int, end:int;
-				for (i = 0; i < _appliedList.length; i++) {
-					var now:Filter = _appliedList.getItemAt(i) as Filter;
+				
+				reset();
+				
+				for (i = 0; i < LastAppliedList.length; i++) {
+					var now:Filter = LastAppliedList.getItemAt(i) as Filter;
 					
 					end = now.getParameters().length;
 					for (j = 0; j < end; j++) {
@@ -52,7 +100,7 @@
 					} else break;
 				}
 				
-				if(i == _appliedList.length){
+				if(i == LastAppliedList.length){
 					result.text = "성공!";
 				}
 			}
@@ -67,7 +115,7 @@
 
 			<s:HGroup width="100%" height="20">
 				<s:Label id="result" width="100%">초기화</s:Label>
-				<s:Button click="render()">적용</s:Button>
+				<s:Button click="ApplyButtonPressed()">적용</s:Button>
 			</s:HGroup>
 		</s:VGroup>
 		

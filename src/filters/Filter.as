@@ -1,17 +1,78 @@
 package filters 
 {
+	import mx.collections.ArrayList;
 	public class Filter 
 	{
 		public static const DEFAULT_FILTER_NAME:String = "필터 이름";
 		
-		public var parameter:Array=[], filterName:String=DEFAULT_FILTER_NAME;
+		public var parameter:Array = [];
+		
+		[Bindable]
+		public var filterName:String = DEFAULT_FILTER_NAME;
+		
+		[Bindable]
+		public var params:ArrayList = new ArrayList();
 		
 		public function Filter() 
 		{
+			var paramList:Array = this.getParameters();
+			var i:int;
+			for (i = 0; i < paramList.length; i++) {
+				switch(paramList[i]) {
+					case ConditionFilter:
+						params.addItem({value:"조건 필터", type:ConditionFilter});
+						break;
+					case TimeFilter:
+						params.addItem({value:"시간 필터", type:TimeFilter});
+						break;
+					case ApplyFilter:
+						params.addItem({value:"적용 필터", type:ApplyFilter});
+						break;
+					case Value:
+						params.addItem({value:"값", type:Value});
+						break;
+					case Number:
+						params.addItem( { value:"시간", type:Number } );
+						break;
+				}
+			}
+		}
+			
+		public function initParameter(filterList:ArrayList):void {
+			var i:int, j:int;
+			for (i = 0; i < params.length; i++) {
+				var ithParam:Object = params.getItemAt(i);
+				
+				if (ithParam.type == Value) {
+					parameter[i] = new Value(!isNaN(Number(ithParam.value)), ithParam.value);
+				} else if (ithParam.type == Number) {
+					if (!isNaN(Number(ithParam.value))) {
+						parameter[i] = Number(ithParam.value);
+					} else {
+						parameter[i] = null;
+						break;
+					}
+				} else {
+					for (j = filterList.getItemIndex(this) - 1; j >= 0; j--) {
+						var jthFilter:Filter = filterList.getItemAt(j) as Filter;
+						if (ithParam.value == jthFilter.filterName && jthFilter is ithParam.type) {
+							parameter[i] = jthFilter;
+							break;
+						}
+					}
+				}
+					
+				//매개변수를 찾지 못함
+				if (j == -1) {
+					parameter[i] = null;
+					break;
+				}
+			}
 		}
 		
 		public static function getBoldColor(targetClass:Class):uint {
 			if (targetClass == Value) return 0x000000;
+			else if (targetClass == Number) return 0xFF00FF;
 			
 			var filter:Object = new targetClass();
 			
