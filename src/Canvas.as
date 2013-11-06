@@ -4,10 +4,11 @@ package
 	import flash.events.MouseEvent;
 	import flash.geom.Point;
 	
-	import spark.components.HSlider;
 	import spark.core.SpriteVisualElement;
 	
 	import mx.collections.ArrayList;
+	
+	import custom.Slider;
 	
 	import data.AlterInfo;
 	import data.Data;
@@ -23,7 +24,7 @@ package
 		
 		public static var canvas:Canvas;
 		
-		private var _slider:HSlider, parser:Parser;
+		private var _slider:Slider, parser:Parser;
 		
 		public var nodeAlterInfo:Vector.<AlterInfo>, edgeAlterInfo:Vector.<AlterInfo>;
 		private var nodeDataList:Vector.<Data>, edgeDataList:Vector.<Data>;
@@ -52,7 +53,7 @@ package
 			stage.addEventListener(MouseEvent.MOUSE_UP, MouseUpHandler);
 		}
 		
-		public function set slider(slider:HSlider):void {
+		public function set slider(slider:Slider):void {
 			_slider = slider;
 			parser = new Parser();
 			parser.addEventListener(Event.COMPLETE, parseComplete);
@@ -63,6 +64,13 @@ package
 			_slider.minimum = parser.minimum;
 			_slider.maximum = parser.maximum;
 			_slider.stepSize = parser.stepSize;
+			
+			var i:int;
+			for (i = 0; i < parser.timeList.length; i++) {
+				if (i == 0 || parser.timeList[i] != parser.timeList[i - 1]){
+					_slider.linePosition.push((parser.timeList[i]-parser.minimum)/(parser.maximum-parser.minimum));
+				}
+			}
 			
 			lastTime = Number.MIN_VALUE;
 			nodeIndex = 0;
