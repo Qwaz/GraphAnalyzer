@@ -29,8 +29,8 @@ package filters
 			if (parameter[0] is ConditionFilter && parameter[1] is Value && parameter[2] is Value)
 			{
 				condition = parameter[0] as ConditionFilter;
-				start = parameter[1] as Number;
-				end = parameter[2] as Number;
+				start = parameter[1].Get() as Number;
+				end = parameter[2].Get() as Number;
 			}
 			else
 			{

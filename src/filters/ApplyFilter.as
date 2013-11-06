@@ -15,7 +15,10 @@ package filters
 			
 		}
 		
+<<<<<<< HEAD
 		
+=======
+>>>>>>> origin/wj2dy
 		public function reset():void {
 			
 		}
