@@ -1,6 +1,10 @@
 package graph
 {
 	import flash.display.LineScaleMode;
+	import flash.display.Sprite;
+    import flash.display.Shape;
+    import flash.geom.Matrix; 
+    import flash.display.GradientType;
 
 	public class Edge extends GraphObject
 	{
@@ -24,6 +28,12 @@ package graph
 			var x1:Number = node[this.node1].x, x2:Number = node[this.node2].x;
 			var y1:Number = node[this.node1].y, y2:Number = node[this.node2].y;
 			
+			
+            var gradientBoxMatrix:Matrix = new Matrix();
+  
+            
+  
+            			
 			this.x = x1 - SEPARATION * (y2 - y1) / Math.sqrt((y2 - y1) * (y2 - y1) + (x2 - x1) * (x2 - x1));
 			this.y = y1 + SEPARATION * (x2 - x1) / Math.sqrt((y2 - y1) * (y2 - y1) + (x2 - x1) * (x2 - x1));
 			
@@ -35,7 +45,10 @@ package graph
 			}
 			else
 			{
-				this.graphics.lineStyle(size, 0, 1, false, LineScaleMode.NONE);
+				gradientBoxMatrix.createGradientBox( (x2-x1), (y2-y1), 0 , 0, 0);  
+				this.graphics.lineStyle(size);
+				this.graphics.lineGradientStyle(GradientType.LINEAR, [0xFF0000, 0x0000FF], [1,1], [20, 255], gradientBoxMatrix);
+				//this.graphics.lineStyle(size, 0, 1, false, LineScaleMode.NONE);
 			}
 			
 			this.graphics.lineTo(x2 - x1, y2 - y1);
