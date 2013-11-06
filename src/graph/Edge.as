@@ -11,6 +11,8 @@ package graph
 		
 		public function Edge(node1:String, node2:String)
 		{
+			super();
+			
 			this.node1 = node1;
 			this.node2 = node2;
 			
