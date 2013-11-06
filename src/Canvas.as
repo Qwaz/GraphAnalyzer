@@ -135,12 +135,13 @@ package
 				dataList = new ArrayList();
 				
 				var i:int, str:String;
-				if (selected is Node) {
+				if (_selected is Node) {
 					for (i = 0; i < nodeDataList.length; i++) {
 						str = nodeDataList[i].name;
 						dataList.addItem( { name:str, value:_selected.data[str] } );
 					}
-				} else if (selected is Edge) {
+				} else if (_selected is Edge) {
+					dataList.addItem( { name:'식별자', value:Object(_selected).node1 + '->' + Object(_selected).node2 } );
 					for (i = 0; i < edgeDataList.length; i++) {
 						str = edgeDataList[i].name;
 						dataList.addItem( { name:str, value:_selected.data[str] } );
@@ -162,7 +163,7 @@ package
 						delete node[now.node];
 					} else {
 						if(now.mode == AlterInfo.ADD){
-							node[now.node] = new Node();
+							node[now.node] = new Node(now.node);
 							addChild(node[now.node]);
 							node[now.node].x = Math.random()*SIZE-SIZE/2;
 							node[now.node].y = Math.random()*SIZE-SIZE/2;
@@ -194,7 +195,7 @@ package
 						delete node[now.node];
 					} else {
 						if(now.mode == AlterInfo.REMOVE){
-							node[now.node] = new Node();
+							node[now.node] = new Node(now.node);
 							addChild(node[now.node]);
 							node[now.node].x = Math.random()*SIZE-SIZE/2;
 							node[now.node].y = Math.random()*SIZE-SIZE/2;

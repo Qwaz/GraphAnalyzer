@@ -1,6 +1,8 @@
 package graph
 {
 	import flash.geom.Point;
+	import flash.text.TextField;
+	import flash.text.TextFormat;
 
 	public class Node extends GraphObject
 	{
@@ -11,10 +13,24 @@ package graph
 		public var speedX:Number=0, speedY:Number=0;
 		public var dragging:Boolean = false;
 		
-		public function Node()
+		private var idName:String, nameLabel:TextField;
+		
+		public function Node(idName:String)
 		{
+			this.idName = idName;
+			
 			this.graphics.beginFill(0xFF0000);
 			this.graphics.drawCircle(0, 0, 1);
+			
+			nameLabel = new TextField();
+			nameLabel.text = idName;
+			nameLabel.selectable = false;
+			
+			var tf:TextFormat = nameLabel.getTextFormat();
+			tf.size = 3;
+			nameLabel.setTextFormat(tf);
+			
+			this.addChild(nameLabel);
 		}
 		
 		public function update():void {
