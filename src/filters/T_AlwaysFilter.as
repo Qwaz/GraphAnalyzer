@@ -17,7 +17,7 @@ package filters
 			return [ConditionFilter, Number, Number];
 		}
 
-		override public function getNodeList():Vector.<String>
+		override public function getNodeList():Object
 		{
 			var condition:ConditionFilter;
 			var start:Number, end:Number;
@@ -25,9 +25,8 @@ package filters
 			var now:AlterInfo;
 			var str:String;
 			var i:int, j:int;
-			var temp:Object = new Object;
+			var ret:Object = new Object;
 			var b:Boolean;
-			var ret:Vector.<String> = new Vector.<String>;
 
 			if (parameter[0] is ConditionFilter && parameter[1] is Number && parameter[2] is Number)
 			{
@@ -62,7 +61,7 @@ package filters
 			{
 				if (node[str] && condition.check(node[str]))
 				{
-					temp[str] = 1;
+					ret[str] = 1;
 				}
 			}
 
@@ -73,7 +72,7 @@ package filters
 				if (now.mode == AlterInfo.REMOVE)
 				{
 					delete node[now.node];
-					temp[now.node] = 0;
+					ret[now.node] = 0;
 				}
 				else
 				{
@@ -85,16 +84,8 @@ package filters
 
 					if (!condition.check(node[now.node]))
 					{
-						temp[now.node] = 0;
+						ret[now.node] = 0;
 					}
-				}
-			}
-
-			for (str in temp)
-			{
-				if (temp[str] == 1)
-				{
-					ret.push(str);
 				}
 			}
 

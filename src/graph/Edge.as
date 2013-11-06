@@ -20,7 +20,7 @@ package graph
 		
 		public function update():void
 		{
-			var node:Object = (parent as Canvas).node;
+			var node:Object = Canvas.canvas.node;
 			var x1:Number = node[this.node1].x, x2:Number = node[this.node2].x;
 			var y1:Number = node[this.node1].y, y2:Number = node[this.node2].y;
 			
@@ -42,7 +42,7 @@ package graph
 		}
 		
 		override public function distance(mouseX:Number, mouseY:Number):Number {
-			var node:Object = (parent as Canvas).node;
+			var node:Object = Canvas.canvas.node;
 			var x1:Number = node[this.node1].x, x2:Number = node[this.node2].x;
 			var y1:Number = node[this.node1].y, y2:Number = node[this.node2].y;
 			var a:Number = (x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2);

@@ -157,6 +157,21 @@ package
 			UpdateDatalist();
 		}
 		
+		public function reDraw():void
+		{
+			var nowNode:Node, nowEdge:Edge;
+			
+			for each (nowNode in node)
+			{
+				nowNode.updateShape();
+			}
+			
+			for each (nowEdge in edge)
+			{
+				nowEdge.update();
+			}
+		}
+		
 		private function changeHandler(e:Event):void {
 			var now:AlterInfo, tEdge:Edge, nowEdge:Edge;
 			if(lastTime < _slider.value){
@@ -231,35 +246,35 @@ package
 				}
 			}
 			
-			for each(nowEdge in edge){
-				nowEdge.update();
-			}
-			
 			UpdateDatalist();
 			
 			lastTime = _slider.value;
 			
-			if(FilterPanel.panel) FilterPanel.panel.render();
+			if (FilterPanel.panel) FilterPanel.panel.render();
 		}
 		
 		private function enterFrameHandler(e:Event):void {
 			var dist:Number = MIN_DISTANCE;
 			var nowNode:Node, nextNode:Node, nowEdge:Edge;
+			var r:Number;
+			
+			nearest = null;
 			
 			for each(nowEdge in edge){
 				nowNode = node[nowEdge.node1];
 				nextNode = node[nowEdge.node2];
 				
-				nowNode.speedX += nowEdge.weight * Edge.CONSTANT * (nextNode.x - nowNode.x);
-				nowNode.speedY += nowEdge.weight * Edge.CONSTANT * (nextNode.y - nowNode.y);
+				if (nowEdge.consider)
+				{
+					nowNode.speedX += nowEdge.weight * Edge.CONSTANT * (nextNode.x - nowNode.x);
+					nowNode.speedY += nowEdge.weight * Edge.CONSTANT * (nextNode.y - nowNode.y);
+					
+					nextNode.speedX -= nowEdge.weight * Edge.CONSTANT * (nextNode.x - nowNode.x);
+					nextNode.speedY -= nowEdge.weight * Edge.CONSTANT * (nextNode.y - nowNode.y);
+				}
 				
-				nextNode.speedX -= nowEdge.weight * Edge.CONSTANT * (nextNode.x - nowNode.x);
-				nextNode.speedY -= nowEdge.weight * Edge.CONSTANT * (nextNode.y - nowNode.y);
+				nowEdge.highlighted = false;
 			}
-			
-			var r:Number;
-			
-			nearest = null;
 			
 			for each(nowNode in node){
 				for each(nextNode in node){
@@ -268,8 +283,11 @@ package
 						if (r < 0.1) r = 0.1;
 						r = r * r * r;
 						
-						nowNode.speedX -= nowNode.weight * nextNode.weight * Node.CONSTANT * (nextNode.x - nowNode.x) / r;
-						nowNode.speedY -= nowNode.weight * nextNode.weight * Node.CONSTANT * (nextNode.y - nowNode.y) / r;
+						if (nowNode.consider && nextNode.consider)
+						{
+							nowNode.speedX -= nowNode.weight * nextNode.weight * Node.CONSTANT * (nextNode.x - nowNode.x) / r;
+							nowNode.speedY -= nowNode.weight * nextNode.weight * Node.CONSTANT * (nextNode.y - nowNode.y) / r;
+						}
 					}
 				}
 				
@@ -286,8 +304,7 @@ package
 			}
 			
 			for each(nowEdge in edge){
-				nowEdge.highlighted = false;
-				
+				nowEdge.update();
 				if(dist > nowEdge.distance(mouseX, mouseY)){
 					dist = nowEdge.distance(mouseX, mouseY);
 					nearest = nowEdge;
