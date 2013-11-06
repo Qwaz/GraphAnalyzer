@@ -221,6 +221,8 @@ package
 			adjustEdge();
 			
 			lastTime = _slider.value;
+			
+			if(FilterPanel.panel) FilterPanel.panel.render();
 		}
 		
 		private function enterFrameHandler(e:Event):void {
