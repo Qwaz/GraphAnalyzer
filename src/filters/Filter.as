@@ -36,35 +36,59 @@ package filters
 				}
 			}
 		}
-			
+
 		public function initParameter(filterList:ArrayList):void {
 			var i:int, j:int;
 			for (i = 0; i < params.length; i++) {
 				var ithParam:Object = params.getItemAt(i);
+				var t:Number;
 				
-				if (ithParam.type == Value) {
-					parameter[i] = new Value(!isNaN(Number(ithParam.value)), ithParam.value);
-				} else if (ithParam.type == Number) {
-					if (!isNaN(Number(ithParam.value))) {
-						parameter[i] = Number(ithParam.value);
-					} else {
-						parameter[i] = null;
-						break;
+				t = Number(ithParam.value);
+				
+				if (ithParam.type == Value)
+				{
+					if (!isNaN(t)) // Number
+					{
+						parameter[i] = new Value(true, t);
 					}
-				} else {
-					for (j = filterList.getItemIndex(this) - 1; j >= 0; j--) {
+					else if (ithParam.value.charAt(0) == '@') // String constant
+					{
+						parameter[i] = new Value(true, ithParam.value.substring(1));
+					}
+					else // Variable
+					{
+						parameter[i] = new Value(false, ithParam.value);
+					}
+				}
+				else if (ithParam.type == Number)
+				{
+					if (!isNaN(t))
+					{
+						parameter[i] = t;
+					}
+					else
+					{
+						parameter[i] = null;
+						throw new Error((i + 1) + "번째 필터의 " + (j + 1) + "번째 매개변수가 잘못되었습니다.");
+					}
+				}
+				else // Filter
+				{
+					for (j = filterList.getItemIndex(this) - 1; j >= 0; j--)
+					{
 						var jthFilter:Filter = filterList.getItemAt(j) as Filter;
-						if (ithParam.value == jthFilter.filterName && jthFilter is ithParam.type) {
+						if (ithParam.value == jthFilter.filterName && jthFilter is ithParam.type)
+						{
 							parameter[i] = jthFilter;
 							break;
 						}
 					}
-				}
 					
-				//매개변수를 찾지 못함
-				if (j == -1) {
-					parameter[i] = null;
-					break;
+					if (j == -1)
+					{
+						parameter[i] = null;
+						throw new Error((i + 1) + "번째 필터의 " + (j + 1) + "번째 매개변수가 잘못되었습니다.");
+					}
 				}
 			}
 		}
