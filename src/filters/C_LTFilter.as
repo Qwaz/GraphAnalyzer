@@ -1,5 +1,7 @@
 package filters 
 {
+	import utils.TrivialError;
+	
 	public class C_LTFilter extends ConditionFilter 
 	{
 		public function C_LTFilter() 
@@ -12,12 +14,19 @@ package filters
 			return [Value, Value];
 		}
 		
-		override public function check(obj:Object):Boolean
+		override public function check(node:String, data:Object):Boolean
 		{
 			var a:Object, b:Object;
 			
-			a = (parameter[0] as Value).Get(obj);
-			b = (parameter[1] as Value).Get(obj);
+			try
+			{
+				a = (parameter[0] as Value).Get(node, data);
+				b = (parameter[1] as Value).Get(node, data);
+			}
+			catch (e:TrivialError)
+			{
+				return false;
+			}
 			
 			if (a is int && b is int)
 			{

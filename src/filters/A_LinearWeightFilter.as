@@ -28,11 +28,11 @@ package filters
 			{
 				if (Canvas.canvas.node[str])
 				{
-					if (!((parameter[1] as Value).Get(Canvas.canvas.node[str].data) is Number))
+					if (!((parameter[1] as Value).Get(str) is Number))
 					{
 						throw new Error("선형 가중치 필터에는 실수를 입력하세요");
 					}
-					min = max = (parameter[1] as Value).Get(Canvas.canvas.node[str].data) as Number;
+					min = max = (parameter[1] as Value).Get(str) as Number;
 					break;
 				}
 			}
@@ -41,7 +41,7 @@ package filters
 			{
 				if (Canvas.canvas.node[str])
 				{
-					w = (parameter[1] as Value).Get(Canvas.canvas.node[str].data) as Number;
+					w = (parameter[1] as Value).Get(str) as Number;
 					if (w < min) min = w;
 					if (w > max) max = w;
 				}
@@ -63,7 +63,7 @@ package filters
 				{
 					if (Canvas.canvas.node[str])
 					{
-						w = (parameter[1] as Value).Get(Canvas.canvas.node[str].data) as Number;
+						w = (parameter[1] as Value).Get(str) as Number;
 						ratio = (w - min) / (max - min);
 						Canvas.canvas.node[str].weight =
 							(A_WeightFilter.WEIGHT_MAX - A_WeightFilter.WEIGHT_MIN) * ratio + A_WeightFilter.WEIGHT_MIN;

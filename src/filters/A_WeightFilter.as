@@ -32,7 +32,7 @@ package filters
 			{
 				if (Canvas.canvas.node[str])
 				{
-					if (!((parameter[1] as Value).Get(Canvas.canvas.node[str].data) is Number))
+					if (!((parameter[1] as Value).Get(str) is Number))
 					{
 						throw new Error("가중치 필터에는 실수를 입력하세요");
 					}
@@ -44,7 +44,7 @@ package filters
 			{
 				if (Canvas.canvas.node[str])
 				{
-					w = (parameter[1] as Value).Get(Canvas.canvas.node[str].data) as Number;
+					w = (parameter[1] as Value).Get(str) as Number;
 					Canvas.canvas.node[str].weight = w;
 					if (Canvas.canvas.node[str].weight > WEIGHT_MAX) Canvas.canvas.node[str].weight = WEIGHT_MAX;
 					if (Canvas.canvas.node[str].weight < WEIGHT_MIN) Canvas.canvas.node[str].weight = WEIGHT_MIN;

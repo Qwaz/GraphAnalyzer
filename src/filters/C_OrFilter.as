@@ -12,9 +12,9 @@ package filters
 			return [ConditionFilter, ConditionFilter];
 		}
 		
-		override public function check(obj:Object):Boolean
+		override public function check(node:String, data:Object):Boolean
 		{
-			return (parameter[0] as ConditionFilter).check(obj) || (parameter[1] as ConditionFilter).check(obj);
+			return (parameter[0] as ConditionFilter).check(node, data) || (parameter[1] as ConditionFilter).check(node, data);
 		}
 		
 		public static function getName():String {

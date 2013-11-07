@@ -10,6 +10,7 @@
 			
 			import mx.collections.ArrayList;
 			import utils.getClassReference;
+			import utils.TrivialError;
 			
 			public static var panel:FilterPanel;
 			
