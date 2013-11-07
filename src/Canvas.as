@@ -22,6 +22,8 @@ package
 	{	
 		public static const SIZE:Number = 100, MIN_DISTANCE:Number = 7;
 		
+		private static const cornerPoint:Array = [new Point(-51, -51), new Point(51, -51), new Point(-51, 51), new Point(51, 51)];
+		
 		public static var canvas:Canvas;
 		
 		private var _slider:Slider, parser:Parser;
@@ -294,6 +296,21 @@ package
 							nowNode.speedX -= nowNode.weight * nextNode.weight * Node.CONSTANT * (nextNode.x - nowNode.x) / r;
 							nowNode.speedY -= nowNode.weight * nextNode.weight * Node.CONSTANT * (nextNode.y - nowNode.y) / r;
 						}
+					}
+				}
+				
+				var i:int;
+				for (i = 0; i < 4; i++) {
+					var nextPoint:Point = cornerPoint[i];
+					
+					r = Point.distance(new Point(nextPoint.x, nextPoint.y), new Point(nowNode.x, nowNode.y));
+					if (r < 0.1) r = 0.1;
+					r = r * r * r;
+					
+					if (nowNode.consider && nextNode.consider)
+					{
+						nowNode.speedX -= nowNode.weight * Node.CORNER_WEIGHT * Node.CONSTANT * (nextPoint.x - nowNode.x) / r;
+						nowNode.speedY -= nowNode.weight * Node.CORNER_WEIGHT * Node.CONSTANT * (nextPoint.y - nowNode.y) / r;
 					}
 				}
 				

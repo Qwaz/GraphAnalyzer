@@ -8,6 +8,7 @@ package graph
 	{
 		public static const FRICTION:Number = 0.97;
 		public static const CONSTANT:Number = 100;
+		public static const CORNER_WEIGHT:Number = 1;
 		private static const HIGHLIGHT_SCALING:Number = 1.3;
 		
 		public var speedX:Number=0, speedY:Number=0;
