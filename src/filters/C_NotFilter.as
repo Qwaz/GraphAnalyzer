@@ -14,14 +14,7 @@ package filters
 		
 		override public function check(obj:Object):Boolean
 		{
-			if (parameter[0] is ConditionFilter)
-			{
-				return !(parameter[0] as ConditionFilter).check(obj);
-			}
-			else
-			{
-				throw new Error("NotFilter.check() : Type mismatch!");
-			}
+			return !(parameter[0] as ConditionFilter).check(obj);
 		}
 		
 		public static function getName():String {

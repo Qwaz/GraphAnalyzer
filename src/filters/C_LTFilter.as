@@ -16,15 +16,8 @@ package filters
 		{
 			var a:Object, b:Object;
 			
-			if (parameter[0] is Value && parameter[1] is Value)
-			{
-				a = (parameter[0] as Value).Get(obj);
-				b = (parameter[1] as Value).Get(obj);
-			}
-			else
-			{
-				throw new Error("LTFilter.check() : Type mismatch!");
-			}
+			a = (parameter[0] as Value).Get(obj);
+			b = (parameter[1] as Value).Get(obj);
 			
 			if (a is int && b is int)
 			{
@@ -40,7 +33,7 @@ package filters
 			}
 			else
 			{
-				throw new Error("LTFilter.check() : Type mismatch!");
+				throw new Error("서로 같은 타입의 크기만 비교할 수 있습니다.");
 			}
 		}
 		

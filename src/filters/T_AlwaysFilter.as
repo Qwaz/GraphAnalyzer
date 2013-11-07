@@ -28,16 +28,9 @@ package filters
 			var ret:Object = new Object;
 			var b:Boolean;
 
-			if (parameter[0] is ConditionFilter && parameter[1] is Number && parameter[2] is Number)
-			{
-				condition = parameter[0] as ConditionFilter;
-				start = parameter[1] as Number;
-				end = parameter[2] as Number;
-			}
-			else
-			{
-				throw new Error("AlwaysFilter.getNodeList() : Type mismatch!");
-			}
+			condition = parameter[0] as ConditionFilter;
+			start = parameter[1] as Number;
+			end = parameter[2] as Number;
 
 			for (i = 0; i < Canvas.canvas.nodeAlterInfo.length && Canvas.canvas.nodeAlterInfo[i].time <= start; ++i)
 			{

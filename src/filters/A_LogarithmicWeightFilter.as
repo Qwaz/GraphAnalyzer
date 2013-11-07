@@ -8,9 +8,9 @@ package filters
 	 * 슬라이더를 움직이면 표시되고 있는 값으로 설정된다.
 	 */
 	
-	public class A_LinearWeightFilter extends ApplyFilter 
+	public class A_LogarithmicWeightFilter extends ApplyFilter 
 	{
-		public function A_LinearWeightFilter() 
+		public function A_LogarithmicWeightFilter() 
 		{
 			super();
 		}
@@ -22,7 +22,7 @@ package filters
 		override public function apply():void {
 			var nodeList:Object = parameter[0].getNodeList();
 			var str:String;
-			var w:Number, max:Number, min:Number, ratio:Number;
+			var w:Number, max:Number, min:Number, ratio:Number, l:Number;
 			
 			for (str in nodeList)
 			{
@@ -30,7 +30,7 @@ package filters
 				{
 					if (!((parameter[1] as Value).Get(Canvas.canvas.node[str].data) is Number))
 					{
-						throw new Error("선형 가중치 필터에는 실수를 입력하세요");
+						throw new Error("로그 가중치 필터에는 실수를 입력하세요");
 					}
 					min = max = (parameter[1] as Value).Get(Canvas.canvas.node[str].data) as Number;
 					break;
@@ -47,29 +47,23 @@ package filters
 				}
 			}
 			
-			if (min == max)
+			if (min <= 0)
 			{
-				for (str in nodeList)
-				{
-					if (Canvas.canvas.node[str])
-					{
-						Canvas.canvas.node[str].weight = Canvas.canvas.node[str].size = 1;
-					}
-				}
+				throw new Error("로그 가중치 필터에는 양수를 입력하세요.");
 			}
-			else
+			
+			l = Math.log(max / min);
+			for (str in nodeList)
 			{
-				for (str in nodeList)
+				if (Canvas.canvas.node[str])
 				{
-					if (Canvas.canvas.node[str])
-					{
-						w = (parameter[1] as Value).Get(Canvas.canvas.node[str].data) as Number;
-						ratio = (w - min) / (max - min);
-						Canvas.canvas.node[str].weight =
-							(A_WeightFilter.WEIGHT_MAX - A_WeightFilter.WEIGHT_MIN) * ratio + A_WeightFilter.WEIGHT_MIN;
-						Canvas.canvas.node[str].size =
-							(A_WeightFilter.SIZE_MAX - A_WeightFilter.SIZE_MIN) * ratio + A_WeightFilter.SIZE_MIN;
-					}
+					w = (parameter[1] as Value).Get(Canvas.canvas.node[str].data) as Number;
+					ratio = Math.log(w/min) / l;
+					
+					Canvas.canvas.node[str].weight =
+						(A_WeightFilter.WEIGHT_MAX - A_WeightFilter.WEIGHT_MIN) * ratio + A_WeightFilter.WEIGHT_MIN;
+					Canvas.canvas.node[str].size =
+						(A_WeightFilter.SIZE_MAX - A_WeightFilter.SIZE_MIN) * ratio + A_WeightFilter.SIZE_MIN;
 				}
 			}
 		}
@@ -79,7 +73,7 @@ package filters
 		}
 		
 		public static function getName():String {
-			return "선형 가중치 설정";
+			return "로그 가중치 설정";
 		}
 	}
 }

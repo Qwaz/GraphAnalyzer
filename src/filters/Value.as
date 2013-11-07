@@ -25,7 +25,6 @@ package filters
 			}
 			else
 			{
-				// 속성이 없으면 에러 출력
 				if (obj[val] != null)
 					return obj[val];
 				else

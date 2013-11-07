@@ -15,7 +15,6 @@
 			[Bindable]
 			private static var filterList:ArrayList = new ArrayList([
 				C_LTFilter,
-				C_NandFilter,
 				C_NotFilter,
 				C_OrFilter,
 				C_AndFilter,
@@ -25,12 +24,14 @@
 				A_VisibleFilter,
 				A_WeightFilter,
 				A_LinearWeightFilter,
+				A_LogarithmicWeightFilter,
 			]);
 			
 			[Bindable]
 			private static var _appliedList:ArrayList = new ArrayList();
 			
 			private static var LastAppliedList:ArrayList;
+			private static var ncon:int = 1, ntime:int = 1, napply:int = 1;
 			
 			public static function get appliedList():ArrayList {
 				return _appliedList;
@@ -38,7 +39,26 @@
 			
 			private function addFilter(e:ListClickEvent):void {
 				var selectedFilter:Class = filterList.getItemAt(e.index) as Class;
-				_appliedList.addItem(new selectedFilter());
+				var newFilter:Filter = new selectedFilter();
+				
+				if (newFilter is ConditionFilter)
+				{
+					newFilter.filterName = "C" + (ncon++).toString();
+				}
+				else if (newFilter is TimeFilter)
+				{
+					newFilter.filterName = "T" + (ntime++).toString();
+				}
+				else if (newFilter is ApplyFilter)
+				{
+					newFilter.filterName = "A" + (napply++).toString();
+				}
+				else
+				{
+					throw new Error("새로운 필터????");
+				}
+				
+				_appliedList.addItem(newFilter);
 			}
 			
 			private function reset():void
@@ -97,7 +117,7 @@
 					
 					for (j = 0; j < now.getParameters().length; j++) {
 						if (now.parameter[j] == null) {
-							result.text = (i + 1) + "번째 필터의 " + (j + 1) + "번째 매개변수에 오류";
+							result.text = (i + 1) + "번째 필터의 " + (j + 1) + "번째 매개변수가 잘못되었습니다.";
 							fail = true;
 							break;
 						}

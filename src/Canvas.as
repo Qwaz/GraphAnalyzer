@@ -82,8 +82,6 @@ package
 			nodeDataList = parser.nodeDataList;
 			edgeDataList = parser.edgeDataList;
 			
-			nodeDataList
-			
 			node = new Object();
 			edge = new Object();
 			
