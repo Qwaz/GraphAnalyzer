@@ -64,7 +64,10 @@
 					var len:int;
 					
 					selectedFilter = getClassReference(_appliedList.getItemAt(i));
-					nowFilter = new selectedFilter;
+					nowFilter = new selectedFilter();
+					if (nowFilter is ApplyFilter) {
+						ApplyFilter(nowFilter).activated = ApplyFilter(_appliedList.getItemAt(i)).activated;
+					}
 					LastAppliedList.addItem(nowFilter);
 					nowFilter.filterName = (_appliedList.getItemAt(i) as Filter).filterName;
 					len = nowFilter.getParameters().length;
@@ -101,7 +104,7 @@
 					}
 					if (fail) break;
 					
-					if (now is ApplyFilter)
+					if (now is ApplyFilter && (now as ApplyFilter).activated)
 					{
 						try
 						{
