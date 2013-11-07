@@ -1,5 +1,6 @@
 package filters 
 {
+	import graph.Edge;
 	import graph.Node;
 	
 	public class A_InvisibleFilter extends ApplyFilter
@@ -37,11 +38,20 @@ package filters
 			}
 		}
 		
-		override public function reset():void {
-			var node:Node;
-			for each(node in Canvas.canvas.node) {
+		override public function reset():void
+		{
+			var node:Node, edge:Edge;
+			
+			for each (node in Canvas.canvas.node)
+			{
 				node.visible = true;
 				node.consider = true;
+			}
+			
+			for each (edge in Canvas.canvas.edge)
+			{
+				edge.visible = true;
+				edge.consider = true;
 			}
 		}
 		

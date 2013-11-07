@@ -325,7 +325,7 @@ package
 				
 				nowNode.highlighted = false;
 				
-				if(dist > nowNode.distance(mouseX, mouseY)){
+				if (dist > nowNode.distance(mouseX, mouseY) && nowNode.visible){
 					dist = nowNode.distance(mouseX, mouseY);
 					nearest = nowNode;
 				}
@@ -337,7 +337,7 @@ package
 			
 			for each(nowEdge in edge){
 				nowEdge.update();
-				if(dist > nowEdge.distance(mouseX, mouseY)){
+				if (dist > nowEdge.distance(mouseX, mouseY) && nowEdge.visible){
 					dist = nowEdge.distance(mouseX, mouseY);
 					nearest = nowEdge;
 				}

@@ -8,7 +8,7 @@ package filters
 			super();
 		}
 		
-		public function check(obj:Object):Boolean
+		public function check(node:String, data:Object):Boolean
 		{
 			return false;
 		}
