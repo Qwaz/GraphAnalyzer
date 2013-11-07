@@ -10,7 +10,8 @@ package graph
 	{
 		public static const CONSTANT:Number = 0.004;
 		public const SEPARATION:Number = .5;
-		private const HIGHLIGHT_SCALING:Number = 1.5;
+		private const HIGHLIGHT_SCALING:Number = 1.1;
+		private const DEFAULT_SCALING:Number = 3;
 		
 		public var node1:String, node2:String;
 		
@@ -28,12 +29,8 @@ package graph
 			var x1:Number = node[this.node1].x, x2:Number = node[this.node2].x;
 			var y1:Number = node[this.node1].y, y2:Number = node[this.node2].y;
 			
-			
             var gradientBoxMatrix:Matrix = new Matrix();
-  
-            
-  
-            			
+			
 			this.x = x1 - SEPARATION * (y2 - y1) / Math.sqrt((y2 - y1) * (y2 - y1) + (x2 - x1) * (x2 - x1));
 			this.y = y1 + SEPARATION * (x2 - x1) / Math.sqrt((y2 - y1) * (y2 - y1) + (x2 - x1) * (x2 - x1));
 			
@@ -41,14 +38,14 @@ package graph
 			
 			if (_highlighted)
 			{
-				this.graphics.lineStyle(size * HIGHLIGHT_SCALING, 0x00FF00, 1, false, LineScaleMode.NONE);
+				this.graphics.lineStyle(size * DEFAULT_SCALING * HIGHLIGHT_SCALING, 0x00FF00, 1, false, LineScaleMode.NONE);
 			}
 			else
 			{
 				if(x1==x2) gradientBoxMatrix.createGradientBox( 1, (y2 - y1), Math.PI/2 , 0, 0);
 				else if (Math.abs(x1-x2)>Math.abs(y1-y2)) gradientBoxMatrix.createGradientBox( x2-x1, (y2 - y1), 0 , 0, 0);
 				else gradientBoxMatrix.createGradientBox( x2-x1, (y2 - y1), Math.PI/2 , 0, 0);
-				this.graphics.lineStyle(size*3, 0x00FF00, 1, false, LineScaleMode.NONE);
+				this.graphics.lineStyle(size * DEFAULT_SCALING, 0x00FF00, 1, false, LineScaleMode.NONE);
 				this.graphics.lineGradientStyle(GradientType.LINEAR, [0xFF0000, 0x0000FF], [0.7, 0.7], [55, 200], gradientBoxMatrix);
 
 			}
