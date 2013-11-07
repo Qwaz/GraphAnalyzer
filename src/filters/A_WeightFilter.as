@@ -9,6 +9,11 @@ package filters
 	
 	public class A_WeightFilter extends ApplyFilter 
 	{
+		public static const WEIGHT_MAX:Number = 3;
+		public static const WEIGHT_MIN:Number = 1;
+		public static const SIZE_MAX:Number = 3;
+		public static const SIZE_MIN:Number = 1;
+		
 		public function A_WeightFilter() 
 		{
 			super();
@@ -29,7 +34,7 @@ package filters
 				{
 					if (!((parameter[1] as Value).Get(Canvas.canvas.node[str].data) is Number))
 					{
-						throw new Error("WeightFilter.apply() : Type mismatch!");
+						throw new Error("가중치 필터에는 실수를 입력하세요");
 					}
 					break;
 				}
@@ -41,7 +46,11 @@ package filters
 				{
 					w = (parameter[1] as Value).Get(Canvas.canvas.node[str].data) as Number;
 					Canvas.canvas.node[str].weight = w;
+					if (Canvas.canvas.node[str].weight > WEIGHT_MAX) Canvas.canvas.node[str].weight = WEIGHT_MAX;
+					if (Canvas.canvas.node[str].weight < WEIGHT_MIN) Canvas.canvas.node[str].weight = WEIGHT_MIN;
 					Canvas.canvas.node[str].size = w;
+					if (Canvas.canvas.node[str].size > SIZE_MAX) Canvas.canvas.node[str].size = SIZE_MAX;
+					if (Canvas.canvas.node[str].size < SIZE_MIN) Canvas.canvas.node[str].size = SIZE_MIN;
 				}
 			}
 		}

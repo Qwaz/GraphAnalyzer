@@ -32,7 +32,7 @@ package filters
 						params.addItem({value:"값", type:Value});
 						break;
 					case Number:
-						params.addItem( { value:"시간", type:Number } );
+						params.addItem({value:"시간", type:Number});
 						break;
 				}
 			}
