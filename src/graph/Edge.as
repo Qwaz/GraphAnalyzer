@@ -11,7 +11,7 @@ package graph
 		public static const CONSTANT:Number = 0.004;
 		public static const SEPARATION:Number = .5;
 		private static const HIGHLIGHT_SCALING:Number = 1.1;
-		private static const DEFAULT_SCALING:Number = 3;
+		private static const DEFAULT_SCALING:Number = 2;
 		
 		public var node1:String, node2:String;
 		
@@ -46,7 +46,7 @@ package graph
 				else if (Math.abs(x1-x2)>Math.abs(y1-y2)) gradientBoxMatrix.createGradientBox( x2-x1, (y2 - y1), 0 , 0, 0);
 				else gradientBoxMatrix.createGradientBox( x2-x1, (y2 - y1), Math.PI/2 , 0, 0);
 				this.graphics.lineStyle(size * DEFAULT_SCALING, 0x00FF00, 1, false, LineScaleMode.NONE);
-				this.graphics.lineGradientStyle(GradientType.LINEAR, [0xFF0000, 0x0000FF], [0.7, 0.7], [55, 200], gradientBoxMatrix);
+				this.graphics.lineGradientStyle(GradientType.LINEAR, [0xFF0000, 0x0000FF], [1, 1], [55, 200], gradientBoxMatrix);
 
 			}
 			
