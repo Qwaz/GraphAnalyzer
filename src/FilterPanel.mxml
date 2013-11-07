@@ -118,7 +118,7 @@
 								(_appliedList.getItemAt(i) as Filter).params.getItemAt(j));
 						}
 						
-						nowFilter.initParameter(LastAppliedList);
+						nowFilter.initParameter(LastAppliedList, i);
 					}
 					
 					LastSucceeded = true;

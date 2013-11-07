@@ -48,7 +48,10 @@ package filters
 			{
 				return val;
 			}
-			else if (m_node == "")
+			
+			if (m_node != "") node = m_node;
+			
+			if (data)
 			{
 				if (data[node])
 				{
@@ -66,31 +69,13 @@ package filters
 					throw new Error("노드 '" + node + "'을(를) 찾을 수 없습니다.");
 				}
 			}
-			else if (data)
-			{
-				if (data[m_node])
-				{
-					if (data[m_node][val] != null)
-					{
-						return data[m_node][val];
-					}
-					else
-					{
-						throw new Error("속성 '" + val + "'을(를) 찾을 수 없습니다.");
-					}
-				}
-				else
-				{
-					throw new TrivialError("노드 '" + m_node + "'을(를) 찾을 수 없습니다.");
-				}
-			}
 			else
 			{
-				if (Canvas.canvas.node[m_node])
+				if (Canvas.canvas.node[node])
 				{
-					if (Canvas.canvas.node[m_node].data[val] != null)
+					if (Canvas.canvas.node[node].data[val] != null)
 					{
-						return Canvas.canvas.node[m_node].data[val];
+						return Canvas.canvas.node[node].data[val];
 					}
 					else
 					{
@@ -99,7 +84,7 @@ package filters
 				}
 				else
 				{
-					throw new TrivialError("노드 '" + m_node + "'을(를) 찾을 수 없습니다.");
+					throw new TrivialError("노드 '" + node + "'을(를) 찾을 수 없습니다.");
 				}
 			}
 		}
