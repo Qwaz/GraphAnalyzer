@@ -6,8 +6,9 @@
 	<fx:Script>
 		<![CDATA[
 			import events.ListClickEvent;
-			import mx.collections.ArrayList;
 			import filters.*;
+			
+			import mx.collections.ArrayList;
 			import utils.getClassReference;
 			
 			public static var panel:FilterPanel;

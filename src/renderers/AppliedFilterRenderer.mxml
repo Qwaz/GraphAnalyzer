@@ -20,6 +20,26 @@
 			private function activateData():void {
 				data.activated = activateButton.selected;
 			}
+			
+			private function goUp():void {
+				var dp:ArrayList = List(this.owner).dataProvider as ArrayList;
+				var index:int = dp.getItemIndex(data);
+				if (index > 0) {
+					var tmp:Object = data;
+					dp.setItemAt(dp.getItemAt(index - 1), index);
+					dp.setItemAt(tmp, index - 1);
+				}
+			}
+			
+			private function goDown():void {
+				var dp:ArrayList = List(this.owner).dataProvider as ArrayList;
+				var index:int = dp.getItemIndex(data);
+				if (index < dp.length-1) {
+					var tmp:Object = data;
+					dp.setItemAt(dp.getItemAt(index + 1), index);
+					dp.setItemAt(tmp, index + 1);
+				}
+			}
 		]]>
 	</fx:Script>
 	
@@ -31,7 +51,11 @@
 		</s:Rect>
 		
 		<s:VGroup width="100%" height="100%" horizontalAlign="center" paddingBottom="5" paddingRight="5">
-			<s:Label width="100%" paddingTop="6" textAlign="center" text="{data?Object(getClassReference(data)).getName():''}"/>
+			<s:HGroup width="100%" paddingTop="6">
+				<s:Label width="100%" textAlign="center" text="{data?Object(getClassReference(data)).getName():''}"/>
+				<s:Button width="19" alpha=".7" click="goUp()" skinClass="spark.skins.spark.ScrollBarUpButtonSkin"/>
+				<s:Button width="19" alpha=".7" click="goDown()" skinClass="spark.skins.spark.ScrollBarDownButtonSkin"/>
+			</s:HGroup>
 			<s:HGroup width="100%" paddingLeft="5" paddingRight="5" paddingTop="5" gap="5">
 				<s:CheckBox id="activateButton" enabled="{data is ApplyFilter}" selected="true" change="activateData()" />
 				<s:TextInput width="100%" id="nameLabel" text="@{data.filterName}" />
