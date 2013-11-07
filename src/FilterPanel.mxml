@@ -34,6 +34,7 @@
 			private static var _appliedList:ArrayList = new ArrayList();
 			
 			private static var LastAppliedList:ArrayList;
+			private static var LastSucceeded:Boolean = true;
 			private static var ncon:int = 1, ntime:int = 1, napply:int = 1;
 			
 			public static function get appliedList():ArrayList {
@@ -87,75 +88,65 @@
 				}
 			}
 			
-			public function ApplyButtonPressed():void
+			private function ApplyButtonPressed():void
 			{
-				LastAppliedList = new ArrayList();
-				for (var i:int = 0; i < _appliedList.length; ++i)
+				try
 				{
-					var selectedFilter:Class;
-					var nowFilter:Filter;
-					var len:int;
+					LastAppliedList = new ArrayList();
 					
-					selectedFilter = getClassReference(_appliedList.getItemAt(i));
-					nowFilter = new selectedFilter();
-					if (nowFilter is ApplyFilter) {
-						ApplyFilter(nowFilter).activated = ApplyFilter(_appliedList.getItemAt(i)).activated;
-					}
-					LastAppliedList.addItem(nowFilter);
-					nowFilter.filterName = (_appliedList.getItemAt(i) as Filter).filterName;
-					len = nowFilter.getParameters().length;
-					
-					nowFilter.params.removeAll();
-					for (var j:int = 0; j < len; ++j)
+					for (var i:int = 0; i < _appliedList.length; ++i)
 					{
-						nowFilter.params.addItem(
-							(_appliedList.getItemAt(i) as Filter).params.getItemAt(j));
+						var selectedFilter:Class;
+						var nowFilter:Filter;
+						var len:int;
+						
+						selectedFilter = getClassReference(_appliedList.getItemAt(i));
+						nowFilter = new selectedFilter();
+						if (nowFilter is ApplyFilter) {
+							ApplyFilter(nowFilter).activated = ApplyFilter(_appliedList.getItemAt(i)).activated;
+						}
+						LastAppliedList.addItem(nowFilter);
+						nowFilter.filterName = (_appliedList.getItemAt(i) as Filter).filterName;
+						len = nowFilter.getParameters().length;
+						
+						nowFilter.params.removeAll();
+						for (var j:int = 0; j < len; ++j)
+						{
+							nowFilter.params.addItem(
+								(_appliedList.getItemAt(i) as Filter).params.getItemAt(j));
+						}
+						
+						nowFilter.initParameter(LastAppliedList);
 					}
 					
-					nowFilter.initParameter(LastAppliedList);
+					LastSucceeded = true;
+					ApplyFilters();
+					result.text = "성공!";
 				}
-				
-				render();
+				catch (e:Error)
+				{
+					result.text = e.message;
+				}
 			}
 			
-			public function render():void {
-				var i:int, j:int, end:int;
-				var fail:Boolean;
+			public function ApplyFilters():void {
+				var i:int;
+				var now:Filter;
 				
-				reset();
-				
-				fail = false;
-				for (i = 0; i < LastAppliedList.length; i++) {
-					var now:Filter = LastAppliedList.getItemAt(i) as Filter;
+				if (LastSucceeded)
+				{
+					reset();
 					
-					for (j = 0; j < now.getParameters().length; j++) {
-						if (now.parameter[j] == null) {
-							result.text = (i + 1) + "번째 필터의 " + (j + 1) + "번째 매개변수가 잘못되었습니다.";
-							fail = true;
-							break;
-						}
-					}
-					if (fail) break;
-					
-					if (now is ApplyFilter && (now as ApplyFilter).activated)
-					{
-						try
+					for (i = 0; i < LastAppliedList.length; i++) {
+						now = LastAppliedList.getItemAt(i) as Filter;
+						
+						if (now is ApplyFilter && (now as ApplyFilter).activated)
 						{
 							(now as ApplyFilter).apply();
 						}
-						catch (e:Error)
-						{
-							result.text = e.message;
-							fail = true;
-							break;
-						}
 					}
-				}
-				
-				if (!fail)
-				{
+					
 					Canvas.canvas.reDraw();
-					result.text = "성공!";
 				}
 			}
 		]]>

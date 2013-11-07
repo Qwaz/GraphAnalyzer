@@ -8,6 +8,8 @@ obj/
 
 # Other files and folders
 
+.DS_Store
+.gitignore
 edge.txt
 frame.txt
 graph.txt

@@ -267,7 +267,7 @@ package
 			
 			lastTime = _slider.value;
 			
-			if (FilterPanel.panel) FilterPanel.panel.render();
+			if (FilterPanel.panel) FilterPanel.panel.ApplyFilters();
 		}
 		
 		private function enterFrameHandler(e:Event):void {
