@@ -61,7 +61,7 @@
 				<s:TextInput width="100%" id="nameLabel" text="@{data.filterName}" />
 				<s:Button width="50" click="deleteItem()">삭제</s:Button>
 			</s:HGroup>
-			<s:DataGrid width="95%" editable="true" dataProvider="{data.params}">
+			<s:DataGrid width="95%" editable="true" dataProvider="{data.params}" skinClass="skins.NoHeaderDataGridSkin">
 				<s:columns>
 					<s:ArrayList>
 						<s:GridColumn dataField="value" headerText="매개변수" itemRenderer="renderers.FilterRenderer">
