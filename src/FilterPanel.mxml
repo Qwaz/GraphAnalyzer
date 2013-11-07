@@ -71,7 +71,6 @@
 			}
 			
 			private function slowWheel(e:MouseEvent):void {
-				trace(e.delta);
 				e.delta = e.delta > 0 ? 1 : -1;
 			}
 			
