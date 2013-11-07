@@ -16,6 +16,10 @@
 				var parentList:List = this.owner as List;
 				parentList.dataProvider.removeItemAt(parentList.dataProvider.getItemIndex(data));
 			}
+			
+			private function activateData():void {
+				data.activated = activateButton.selected;
+			}
 		]]>
 	</fx:Script>
 	
@@ -27,10 +31,11 @@
 		</s:Rect>
 		
 		<s:VGroup width="100%" height="100%" horizontalAlign="center" paddingBottom="5" paddingRight="5">
-			<s:HGroup width="100%" paddingLeft="5" paddingRight="5" paddingTop="5">
-				<s:Label width="30%" paddingTop="6" textAlign="center" text="{data?Object(getClassReference(data)).getName():''}"/>
-				<s:TextInput width="45%" id="nameLabel" text="@{data.filterName}" />
-				<s:Button width="25%" click="deleteItem()">삭제</s:Button>
+			<s:Label width="100%" paddingTop="6" textAlign="center" text="{data?Object(getClassReference(data)).getName():''}"/>
+			<s:HGroup width="100%" paddingLeft="5" paddingRight="5" paddingTop="5" gap="5">
+				<s:CheckBox id="activateButton" enabled="{data is ApplyFilter}" selected="true" change="activateData()" />
+				<s:TextInput width="100%" id="nameLabel" text="@{data.filterName}" />
+				<s:Button width="50" click="deleteItem()">삭제</s:Button>
 			</s:HGroup>
 			<s:DataGrid width="95%" editable="true" dataProvider="{data.params}">
 				<s:columns>
