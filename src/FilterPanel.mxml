@@ -31,6 +31,7 @@
 			private static var _appliedList:ArrayList = new ArrayList();
 			
 			private static var LastAppliedList:ArrayList;
+			private static var ncon:int = 1, ntime:int = 1, napply:int = 1;
 			
 			public static function get appliedList():ArrayList {
 				return _appliedList;
@@ -38,7 +39,26 @@
 			
 			private function addFilter(e:ListClickEvent):void {
 				var selectedFilter:Class = filterList.getItemAt(e.index) as Class;
-				_appliedList.addItem(new selectedFilter());
+				var newFilter:Filter = new selectedFilter();
+				
+				if (newFilter is ConditionFilter)
+				{
+					newFilter.filterName = "C" + (ncon++).toString();
+				}
+				else if (newFilter is TimeFilter)
+				{
+					newFilter.filterName = "T" + (ntime++).toString();
+				}
+				else if (newFilter is ApplyFilter)
+				{
+					newFilter.filterName = "A" + (napply++).toString();
+				}
+				else
+				{
+					throw new Error("새로운 필터????");
+				}
+				
+				_appliedList.addItem(newFilter);
 			}
 			
 			private function reset():void
