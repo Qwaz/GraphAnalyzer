@@ -45,13 +45,16 @@ package graph
 			}
 			else
 			{
-				gradientBoxMatrix.createGradientBox( (x2-x1), (y2-y1), 0 , 0, 0);  
-				this.graphics.lineStyle(size);
-				this.graphics.lineGradientStyle(GradientType.LINEAR, [0xFF0000, 0x0000FF], [1,1], [20, 255], gradientBoxMatrix);
-				//this.graphics.lineStyle(size, 0, 1, false, LineScaleMode.NONE);
+				if(x1==x2) gradientBoxMatrix.createGradientBox( 1, (y2 - y1), Math.PI/2 , 0, 0);
+				else if (Math.abs(x1-x2)>Math.abs(y1-y2)) gradientBoxMatrix.createGradientBox( x2-x1, (y2 - y1), 0 , 0, 0);
+				else gradientBoxMatrix.createGradientBox( x2-x1, (y2 - y1), Math.PI/2 , 0, 0);
+				this.graphics.lineStyle(size*3, 0x00FF00, 1, false, LineScaleMode.NONE);
+				this.graphics.lineGradientStyle(GradientType.LINEAR, [0xFF0000, 0x0000FF], [0.7, 0.7], [55, 200], gradientBoxMatrix);
+
 			}
 			
 			this.graphics.lineTo(x2 - x1, y2 - y1);
+			
 		}
 		
 		override public function distance(mouseX:Number, mouseY:Number):Number {
