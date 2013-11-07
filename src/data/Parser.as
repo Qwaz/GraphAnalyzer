@@ -179,6 +179,7 @@ package data
 				_edgeAlterInfo = new Vector.<AlterInfo>;
 				
 				var numChange:int = int(split[cnt++]);
+				
 				for(i=0; i<numChange; i++){
 					tp = split[cnt++].split(' ');
 					tInfo = new AlterInfo();
