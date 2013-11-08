@@ -7,7 +7,7 @@ package graph
 	public class Node extends GraphObject
 	{
 		public static const FRICTION:Number = 0.97;
-		public static const CONSTANT:Number = 100;
+		public static const CONSTANT:Number = 50;
 		public static const CORNER_WEIGHT:Number = 1;
 		private static const HIGHLIGHT_SCALING:Number = 1.3;
 		

@@ -1,10 +1,12 @@
 package filters
 {
+	import utils.TrivialError;
+	
 	public class Value 
 	{
 		private var _isConstant:Boolean;
 		private var val:Object;
-		private var node:String;
+		private var m_node:String;
 		
 		/**
 		 * 변수면 constant를 false로, val에 이름.
@@ -23,12 +25,12 @@ package filters
 				
 				if (vals.length == 1)
 				{
-					node = "";
+					m_node = "";
 				}
 				else if (vals.length == 2)
 				{
-					node = vals[0];
-					val = vals[1];
+					m_node = vals[0];
+					this.val = vals[1];
 				}
 				else
 				{
@@ -38,41 +40,66 @@ package filters
 		}
 		
 		/**
-		 * 변수면 obj에 노드 정보를 줘야 함.
+		 * 특정 시점의 상태를 얻으려면 data에 전체 노드 데이터를 넘겨 준다.
 		 */
-		public function Get(obj:Object=null):Object
+		public function Get(node:String, data:Object = null):Object
 		{
 			if (_isConstant)
 			{
 				return val;
 			}
-			else if (node == "")
+			else if (m_node == "")
 			{
-				if (obj[val as String] != null)
+				if (data[node])
 				{
-					return obj[val as String];
-				}
-				else
-				{
-					throw new Error("속성 '" + (val as String) + "'을(를) 찾을 수 없습니다.");
-				}
-			}
-			else
-			{
-				if (Canvas.canvas.node[node])
-				{
-					if (Canvas.canvas.node[node].data[val] != null)
+					if (data[node][val] != null)
 					{
-						return Canvas.canvas.node[node].data[val];
+						return data[node][val];
 					}
 					else
 					{
-						throw new Error("속성 '" + (val as String) + "'을(를) 찾을 수 없습니다.");
+						throw new Error("속성 '" + val + "'을(를) 찾을 수 없습니다.");
 					}
 				}
 				else
 				{
 					throw new Error("노드 '" + node + "'을(를) 찾을 수 없습니다.");
+				}
+			}
+			else if (data)
+			{
+				if (data[m_node])
+				{
+					if (data[m_node][val] != null)
+					{
+						return data[m_node][val];
+					}
+					else
+					{
+						throw new Error("속성 '" + val + "'을(를) 찾을 수 없습니다.");
+					}
+				}
+				else
+				{
+					throw new TrivialError("노드 '" + m_node + "'을(를) 찾을 수 없습니다.");
+				}
+			}
+			else
+			{
+				if (Canvas.canvas.node[m_node])
+				{
+					if (Canvas.canvas.node[m_node].data[val] != null)
+					{
+						return Canvas.canvas.node[m_node].data[val];
+					}
+					else
+					{
+						throw new Error("속성 '" + val + "'을(를) 찾을 수 없습니다.");
+					}
+				}
+				else
+				{
+					throw new TrivialError("노드 '" + m_node + "'을(를) 찾을 수 없습니다.");
 				}
 			}
 		}
