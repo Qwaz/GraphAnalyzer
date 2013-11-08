@@ -22,6 +22,8 @@ package
 	{	
 		public static const SIZE:Number = 100, MIN_DISTANCE:Number = 7;
 		
+		private static const cornerPoint:Array = [new Point(-51, -51), new Point(51, -51), new Point(-51, 51), new Point(51, 51)];
+		
 		public static var canvas:Canvas;
 		
 		private var _slider:Slider, parser:Parser;
@@ -32,6 +34,7 @@ package
 		private var lastTime:Number, nodeIndex:uint, edgeIndex:uint;
 		
 		public var node:Object, edge:Object;
+		private var nodeCount:int = 0, edgeCount:int = 0;
 		
 		[Bindable]
 		public var dataList:ArrayList, emptyList:ArrayList;
@@ -188,9 +191,11 @@ package
 						if (selected && selected is Node && (selected as Node).GetName() == now.node) selected = null;
 						node[now.node].dispose();
 						delete node[now.node];
+						nodeCount--;
 					} else {
 						if(now.mode == AlterInfo.ADD){
 							node[now.node] = new Node(now.node);
+							nodeCount++;
 							addChild(node[now.node]);
 							node[now.node].x = Math.random()*SIZE-SIZE/2;
 							node[now.node].y = Math.random()*SIZE-SIZE/2;
@@ -206,9 +211,11 @@ package
 							(selected as Edge).node1 == now.node && (selected as Edge).node2 == now.node2) selected = null;
 						edge[now.hash()].dispose();
 						delete edge[now.hash()];
+						edgeCount--;
 					} else {
 						if(now.mode == AlterInfo.ADD){
 							tEdge = new Edge(now.node, now.node2);
+							edgeCount++;
 							edge[now.hash()] = tEdge;
 							addChildAt(tEdge, 0);
 						}
@@ -223,9 +230,11 @@ package
 						if (selected && selected is Node && (selected as Node).GetName() == now.node) selected = null;
 						node[now.node].dispose();
 						delete node[now.node];
+						nodeCount--;
 					} else {
 						if(now.mode == AlterInfo.REMOVE){
 							node[now.node] = new Node(now.node);
+							nodeCount++;
 							addChild(node[now.node]);
 							node[now.node].x = Math.random()*SIZE-SIZE/2;
 							node[now.node].y = Math.random()*SIZE-SIZE/2;
@@ -241,9 +250,11 @@ package
 							(selected as Edge).node1 == now.node && (selected as Edge).node2 == now.node2) selected = null;
 						edge[now.hash()].dispose();
 						delete edge[now.hash()];
+						edgeCount--;
 					} else {
 						if(now.mode == AlterInfo.REMOVE){
 							tEdge = new Edge(now.node, now.node2);
+							edgeCount++;
 							edge[now.hash()] = tEdge;
 							addChildAt(tEdge, 0);
 						}
@@ -291,9 +302,24 @@ package
 						
 						if (nowNode.consider && nextNode.consider)
 						{
-							nowNode.speedX -= nowNode.weight * nextNode.weight * Node.CONSTANT * (nextNode.x - nowNode.x) / r;
-							nowNode.speedY -= nowNode.weight * nextNode.weight * Node.CONSTANT * (nextNode.y - nowNode.y) / r;
+							nowNode.speedX -= nowNode.weight * nextNode.weight * Node.CONSTANT * (nextNode.x - nowNode.x) / r / Math.sqrt(nodeCount);
+							nowNode.speedY -= nowNode.weight * nextNode.weight * Node.CONSTANT * (nextNode.y - nowNode.y) / r / Math.sqrt(nodeCount);
 						}
+					}
+				}
+				
+				var i:int;
+				for (i = 0; i < 4; i++) {
+					var nextPoint:Point = cornerPoint[i];
+					
+					r = Point.distance(new Point(nextPoint.x, nextPoint.y), new Point(nowNode.x, nowNode.y));
+					if (r < 0.1) r = 0.1;
+					r = r * r * r;
+					
+					if (nowNode.consider && nextNode.consider)
+					{
+						nowNode.speedX -= nowNode.weight * Node.CORNER_WEIGHT * Node.CONSTANT * (nextPoint.x - nowNode.x) / r / Math.sqrt(nodeCount);
+						nowNode.speedY -= nowNode.weight * Node.CORNER_WEIGHT * Node.CONSTANT * (nextPoint.y - nowNode.y) / r / Math.sqrt(nodeCount);
 					}
 				}
 				

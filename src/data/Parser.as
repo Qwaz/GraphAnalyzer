@@ -57,33 +57,37 @@ package data
 			
 			var cnt:int = 0;
 			
-			var year:Array = split[cnt++].split(' ');
-			minimum = Number(year[0]);
-			maximum = Number(year[1]);
-			stepSize = Number(year[2]);
+			try {
+				var year:Array = split[cnt++].split(' ');
+				minimum = Number(year[0]);
+				maximum = Number(year[1]);
+				stepSize = Number(year[2]);
+				
+				var i:int, tp:Array;
+				
+				numNodeData = uint(split[cnt++]);
+				_nodeDataList = new Vector.<Data>;
+				nodeDictionary = new Object;
+				for(i=0; i<numNodeData; i++){
+					tp = split[cnt++].split(' ');
+					_nodeDataList.push(new Data(tp[0], tp[1]));
+					nodeDictionary[tp[1]] = _nodeDataList[_nodeDataList.length-1]; 
+				}
+				
+				numEdgeData = uint(split[cnt++]);
+				_edgeDataList = new Vector.<Data>;
+				edgeDictionary = new Object;
+				for(i=0; i<numEdgeData; i++){
+					tp = split[cnt++].split(' ');
+					_edgeDataList.push(new Data(tp[0], tp[1]));
+					edgeDictionary[tp[1]] = _edgeDataList[_edgeDataList.length-1];
+				}
 			
-			var i:int, tp:Array;
-			
-			numNodeData = uint(split[cnt++]);
-			_nodeDataList = new Vector.<Data>;
-			nodeDictionary = new Object;
-			for(i=0; i<numNodeData; i++){
-				tp = split[cnt++].split(' ');
-				_nodeDataList.push(new Data(tp[0], tp[1]));
-				nodeDictionary[tp[1]] = _nodeDataList[_nodeDataList.length-1]; 
+				parseGraph();
+				parseEdge();
+			} catch (e:Error) {
+				throw new Error("frame.txt에서 에러 / 현재 줄 수 : " + cnt);
 			}
-			
-			numEdgeData = uint(split[cnt++]);
-			_edgeDataList = new Vector.<Data>;
-			edgeDictionary = new Object;
-			for(i=0; i<numEdgeData; i++){
-				tp = split[cnt++].split(' ');
-				_edgeDataList.push(new Data(tp[0], tp[1]));
-				edgeDictionary[tp[1]] = _edgeDataList[_edgeDataList.length-1];
-			}
-			
-			parseGraph();
-			parseEdge();
 		}
 		
 		private function parseGraph():void {
@@ -101,54 +105,58 @@ package data
 			
 			var cnt:int = 0;
 			
-			var i:int, j:int, tp:Array, tInfo:AlterInfo;
-			_nodeAlterInfo = new Vector.<AlterInfo>;
-			
-			var numChange:int = int(split[cnt++]);
-			for(i=0; i<numChange; i++){
-				tp = split[cnt++].split(' ');
-				tInfo = new AlterInfo();
-				tInfo.time = Number(tp[0]);
-				tInfo.node = tp[1];
+			try {
+				var i:int, j:int, tp:Array, tInfo:AlterInfo;
+				_nodeAlterInfo = new Vector.<AlterInfo>;
 				
-				tInfo.type = AlterInfo.NODE;
-				if(tp[2]){
-					if(tp[2] == '+'){
-						tInfo.mode = AlterInfo.ADD;
+				var numChange:int = int(split[cnt++]);
+				for(i=0; i<numChange; i++){
+					tp = split[cnt++].split(' ');
+					tInfo = new AlterInfo();
+					tInfo.time = Number(tp[0]);
+					tInfo.node = tp[1];
+					
+					tInfo.type = AlterInfo.NODE;
+					if(tp[2]){
+						if(tp[2] == '+'){
+							tInfo.mode = AlterInfo.ADD;
+							tp = split[cnt++].split(' ');
+							
+							tInfo.data[_nodeDataList[0].name] = tInfo.node;
+							for(j=1; j<numNodeData; j++){
+								if(tp[j-1] != '.')
+									tInfo.data[_nodeDataList[j].name] = _nodeDataList[j].parse(tp[j-1]);
+							}
+						} else if(tp[2] == '-')
+							tInfo.mode = AlterInfo.REMOVE;
+						else if(tp[2] == 'c'){
+							tInfo.mode = AlterInfo.CHANGE;
+							tp = split[cnt++].split(' ');
+							
+							tInfo.data[tp[0]] = nodeDictionary[tp[0]].parse(tp[1]);
+						} else
+							throw new Error("변경 모드 입력이 잘못되었습니다. Line : "+cnt);
+					} else {
+						tInfo.mode = AlterInfo.CHANGE;
 						tp = split[cnt++].split(' ');
 						
-						tInfo.data[_nodeDataList[0].name] = tInfo.node;
 						for(j=1; j<numNodeData; j++){
 							if(tp[j-1] != '.')
 								tInfo.data[_nodeDataList[j].name] = _nodeDataList[j].parse(tp[j-1]);
 						}
-					} else if(tp[2] == '-')
-						tInfo.mode = AlterInfo.REMOVE;
-					else if(tp[2] == 'c'){
-						tInfo.mode = AlterInfo.CHANGE;
-						tp = split[cnt++].split(' ');
-						
-						tInfo.data[tp[0]] = nodeDictionary[tp[0]].parse(tp[1]);
-					} else
-						throw new Error("변경 모드 입력이 잘못되었습니다. Line : "+cnt);
-				} else {
-					tInfo.mode = AlterInfo.CHANGE;
-					tp = split[cnt++].split(' ');
-					
-					for(j=1; j<numNodeData; j++){
-						if(tp[j-1] != '.')
-							tInfo.data[_nodeDataList[j].name] = _nodeDataList[j].parse(tp[j-1]);
 					}
+					
+					_timeList.push(tInfo.time);
+					_nodeAlterInfo.push(tInfo);
 				}
+			
+				_nodeAlterInfo.sort(AlterInfo.sortFunc);
 				
-				_timeList.push(tInfo.time);
-				_nodeAlterInfo.push(tInfo);
+				nodeLoaded = true;
+				initCheck();
+			} catch (e:Error) {
+				throw new Error("graph.txt에서 에러 / 현재 줄 수 : " + cnt);
 			}
-			
-			_nodeAlterInfo.sort(AlterInfo.sortFunc);
-			
-			nodeLoaded = true;
-			initCheck();
 		}
 		
 		private function parseEdge():void {
@@ -166,54 +174,59 @@ package data
 			
 			var cnt:int = 0;
 			
-			var i:int, j:int, tp:Array, tInfo:AlterInfo;
-			_edgeAlterInfo = new Vector.<AlterInfo>;
-			
-			var numChange:int = int(split[cnt++]);
-			for(i=0; i<numChange; i++){
-				tp = split[cnt++].split(' ');
-				tInfo = new AlterInfo();
-				tInfo.time = Number(tp[0]);
-				tInfo.node = tp[1];
-				tInfo.node2 = tp[2];
+			try {
+				var i:int, j:int, tp:Array, tInfo:AlterInfo;
+				_edgeAlterInfo = new Vector.<AlterInfo>;
 				
-				tInfo.type = AlterInfo.EDGE;
-				if(tp[3]){
-					if(tp[3] == '+'){
-						tInfo.mode = AlterInfo.ADD;
+				var numChange:int = int(split[cnt++]);
+				
+				for(i=0; i<numChange; i++){
+					tp = split[cnt++].split(' ');
+					tInfo = new AlterInfo();
+					tInfo.time = Number(tp[0]);
+					tInfo.node = tp[1];
+					tInfo.node2 = tp[2];
+					
+					tInfo.type = AlterInfo.EDGE;
+					if(tp[3]){
+						if(tp[3] == '+'){
+							tInfo.mode = AlterInfo.ADD;
+							tp = split[cnt++].split(' ');
+							
+							for(j=0; j<numEdgeData; j++){
+								if(tp[j] != '.')
+									tInfo.data[_edgeDataList[j].name] = _edgeDataList[j].parse(tp[j]);
+							}
+						} else if(tp[3] == '-')
+							tInfo.mode = AlterInfo.REMOVE;
+						else if(tp[3] == 'c'){
+							tInfo.mode = AlterInfo.CHANGE;
+							tp = split[cnt++].split(' ');
+							
+							tInfo.data[tp[0]] = nodeDictionary[tp[0]].parse(tp[1]);
+						} else
+							throw new Error("변경 모드 입력이 잘못되었습니다. Line : "+cnt);
+					} else {
+						tInfo.mode = AlterInfo.CHANGE;
 						tp = split[cnt++].split(' ');
 						
 						for(j=0; j<numEdgeData; j++){
 							if(tp[j] != '.')
 								tInfo.data[_edgeDataList[j].name] = _edgeDataList[j].parse(tp[j]);
 						}
-					} else if(tp[3] == '-')
-						tInfo.mode = AlterInfo.REMOVE;
-					else if(tp[3] == 'c'){
-						tInfo.mode = AlterInfo.CHANGE;
-						tp = split[cnt++].split(' ');
-						
-						tInfo.data[tp[0]] = nodeDictionary[tp[0]].parse(tp[1]);
-					} else
-						throw new Error("변경 모드 입력이 잘못되었습니다. Line : "+cnt);
-				} else {
-					tInfo.mode = AlterInfo.CHANGE;
-					tp = split[cnt++].split(' ');
-					
-					for(j=0; j<numEdgeData; j++){
-						if(tp[j] != '.')
-							tInfo.data[_edgeDataList[j].name] = _edgeDataList[j].parse(tp[j]);
 					}
+					
+					_timeList.push(tInfo.time);
+					_edgeAlterInfo.push(tInfo);
 				}
 				
-				_timeList.push(tInfo.time);
-				_edgeAlterInfo.push(tInfo);
+				_edgeAlterInfo.sort(AlterInfo.sortFunc);
+				
+				edgeLoaded = true;
+				initCheck();
+			} catch (e:Error) {
+				throw new Error("edge.txt에서 에러 / 현재 줄 수 : " + cnt);	
 			}
-			
-			_edgeAlterInfo.sort(AlterInfo.sortFunc);
-			
-			edgeLoaded = true;
-			initCheck();
 		}
 		
 		private function initCheck():void {
