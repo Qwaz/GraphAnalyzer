@@ -28,7 +28,7 @@ package custom
 			this.graphics.beginFill(0xFFFFFF);
 			this.graphics.drawRect(0, 0, this.width, this.height);
 			
-			this.graphics.beginFill(0xFF0000);
+			this.graphics.beginFill(0x3FFF3F);
 			
 			var i:int;
 			for (i = 0; i < linePosition.length; i++) {

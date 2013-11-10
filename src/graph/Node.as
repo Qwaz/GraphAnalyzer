@@ -46,7 +46,7 @@ package graph
 			}
 			else
 			{
-				this.graphics.beginFill(0xFF0000);
+				this.graphics.beginFill(0x008F6F);
 				this.graphics.drawCircle(0, 0, size);
 			}
 		}
