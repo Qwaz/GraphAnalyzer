@@ -38,7 +38,13 @@ package graph
 			
 			if (_highlighted)
 			{
-				this.graphics.lineStyle(size * DEFAULT_SCALING * HIGHLIGHT_SCALING, 0x00FF00, 1, false, LineScaleMode.NONE);
+				this.graphics.lineStyle(size * DEFAULT_SCALING * HIGHLIGHT_SCALING,
+					0x00FF00, 1, false, LineScaleMode.NONE);
+			}
+			else if (_hl_filter)
+			{
+				this.graphics.lineStyle(size * DEFAULT_SCALING * HIGHLIGHT_SCALING,
+					0xBFFF00, 1, false, LineScaleMode.NONE);
 			}
 			else
 			{
@@ -47,11 +53,9 @@ package graph
 				else gradientBoxMatrix.createGradientBox( x2-x1, (y2 - y1), Math.PI/2 , 0, 0);
 				this.graphics.lineStyle(size * DEFAULT_SCALING, 0x00FF00, 1, false, LineScaleMode.NONE);
 				this.graphics.lineGradientStyle(GradientType.LINEAR, [0xFF0000, 0x0000FF], [1, 1], [55, 200], gradientBoxMatrix);
-
 			}
 			
 			this.graphics.lineTo(x2 - x1, y2 - y1);
-			
 		}
 		
 		override public function distance(mouseX:Number, mouseY:Number):Number {
@@ -79,6 +83,11 @@ package graph
 		
 		override public function set highlighted(val:Boolean):void {
 			_highlighted = val;
+			update();
+		}
+		
+		override public function set hl_filter(val:Boolean):void {
+			_hl_filter = val;
 			update();
 		}
 	}

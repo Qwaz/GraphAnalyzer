@@ -11,6 +11,7 @@ package graph
 		public var size:Number;
 		
 		protected var _highlighted:Boolean = false;
+		protected var _hl_filter:Boolean = false;
 		
 		public function GraphObject() {
 			data = new Object();
@@ -30,6 +31,10 @@ package graph
 		
 		public function set highlighted(val:Boolean):void {
 			_highlighted = val;
+		}
+		
+		public function set hl_filter(val:Boolean):void {
+			_hl_filter = val;
 		}
 	}
 }
