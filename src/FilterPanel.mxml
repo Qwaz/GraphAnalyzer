@@ -26,6 +26,7 @@
 				T_OnceFilter,
 				A_InvisibleFilter,
 				A_VisibleFilter,
+				A_HighlightFilter,
 				A_WeightFilter,
 				A_LinearWeightFilter,
 				A_LogarithmicWeightFilter,

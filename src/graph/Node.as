@@ -44,6 +44,11 @@ package graph
 				this.graphics.beginFill(0x00FF00);
 				this.graphics.drawCircle(0, 0, size * HIGHLIGHT_SCALING);
 			}
+			else if (_hl_filter)
+			{
+				this.graphics.beginFill(0xBFFF00);
+				this.graphics.drawCircle(0, 0, size);
+			}
 			else
 			{
 				this.graphics.beginFill(0x008F6F);
@@ -97,6 +102,14 @@ package graph
 			if (_highlighted != val)
 			{
 				_highlighted = val;
+				updateShape();
+			}
+		}
+		
+		override public function set hl_filter(val:Boolean):void {
+			if (_hl_filter != val)
+			{
+				_hl_filter = val;
 				updateShape();
 			}
 		}
