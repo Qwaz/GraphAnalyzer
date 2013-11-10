@@ -26,6 +26,7 @@
 				T_OnceFilter,
 				A_InvisibleFilter,
 				A_VisibleFilter,
+				A_HighlightFilter,
 				A_WeightFilter,
 				A_LinearWeightFilter,
 				A_LogarithmicWeightFilter,
@@ -117,7 +118,7 @@
 								(_appliedList.getItemAt(i) as Filter).params.getItemAt(j));
 						}
 						
-						nowFilter.initParameter(LastAppliedList);
+						nowFilter.initParameter(LastAppliedList, i);
 					}
 					
 					LastSucceeded = true;

@@ -37,7 +37,8 @@ package filters
 			}
 		}
 
-		public function initParameter(filterList:ArrayList):void {
+		public function initParameter(filterList:ArrayList, index:int):void
+		{
 			var i:int, j:int;
 			for (i = 0; i < params.length; i++) {
 				var ithParam:Object = params.getItemAt(i);
@@ -69,7 +70,7 @@ package filters
 					else
 					{
 						parameter[i] = null;
-						throw new Error((i + 1) + "번째 필터의 " + (j + 1) + "번째 매개변수가 잘못되었습니다.");
+						throw new Error((index + 1) + "번째 필터의 " + (i + 1) + "번째 매개변수가 잘못되었습니다.");
 					}
 				}
 				else // Filter
@@ -87,7 +88,7 @@ package filters
 					if (j == -1)
 					{
 						parameter[i] = null;
-						throw new Error((i + 1) + "번째 필터의 " + (j + 1) + "번째 매개변수가 잘못되었습니다.");
+						throw new Error((index + 1) + "번째 필터의 " + (i + 1) + "번째 매개변수가 잘못되었습니다.");
 					}
 				}
 			}
