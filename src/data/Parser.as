@@ -10,7 +10,7 @@ package data
 	{
 		private static const
 		FRAME:String="../frame.txt",
-		GRAPH:String="../graph.txt",
+		GRAPH:String="../node.txt",
 		EDGE:String="../edge.txt",
 		IGNORE:String=".";
 		
@@ -155,7 +155,7 @@ package data
 				nodeLoaded = true;
 				initCheck();
 			} catch (e:Error) {
-				throw new Error("graph.txt에서 에러 / 현재 줄 수 : " + cnt);
+				throw new Error("node.txt에서 에러 / 현재 줄 수 : " + cnt);
 			}
 		}
 		

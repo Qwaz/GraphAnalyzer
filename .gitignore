@@ -11,7 +11,7 @@ obj/
 .DS_Store
 .gitignore
 edge.txt
-frame.txt
+node.txt
 graph.txt
 *.swf
 
