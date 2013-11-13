@@ -16,35 +16,28 @@ package filters
 		}
 		
 		override public function getParameters():Array {
-			return [TimeFilter, Value];
+			return [Value];
 		}
 		
 		override public function apply():void {
-			var nodeList:Object = parameter[0].getNodeList();
 			var str:String;
 			var w:Number, max:Number, min:Number, ratio:Number, l:Number;
 			
-			for (str in nodeList)
+			for (str in Canvas.canvas.node)
 			{
-				if (Canvas.canvas.node[str])
+				if (!((parameter[0] as Value).Get(str) is Number))
 				{
-					if (!((parameter[1] as Value).Get(str) is Number))
-					{
-						throw new Error("로그 가중치 필터에는 실수를 입력하세요");
-					}
-					min = max = (parameter[1] as Value).Get(str) as Number;
-					break;
+					throw new Error("로그 가중치 필터에는 실수를 입력하세요");
 				}
+				min = max = (parameter[0] as Value).Get(str) as Number;
+				break;
 			}
 			
-			for (str in nodeList)
+			for (str in Canvas.canvas.node)
 			{
-				if (Canvas.canvas.node[str])
-				{
-					w = (parameter[1] as Value).Get(str) as Number;
-					if (w < min) min = w;
-					if (w > max) max = w;
-				}
+				w = (parameter[0] as Value).Get(str) as Number;
+				if (w < min) min = w;
+				if (w > max) max = w;
 			}
 			
 			if (min <= 0)
@@ -53,18 +46,15 @@ package filters
 			}
 			
 			l = Math.log(max / min);
-			for (str in nodeList)
+			for (str in Canvas.canvas.node)
 			{
-				if (Canvas.canvas.node[str])
-				{
-					w = (parameter[1] as Value).Get(str) as Number;
-					ratio = Math.log(w/min) / l;
-					
-					Canvas.canvas.node[str].weight =
-						(A_WeightFilter.WEIGHT_MAX - A_WeightFilter.WEIGHT_MIN) * ratio + A_WeightFilter.WEIGHT_MIN;
-					Canvas.canvas.node[str].size =
-						(A_WeightFilter.SIZE_MAX - A_WeightFilter.SIZE_MIN) * ratio + A_WeightFilter.SIZE_MIN;
-				}
+				w = (parameter[0] as Value).Get(str) as Number;
+				ratio = Math.log(w/min) / l;
+				
+				Canvas.canvas.node[str].weight =
+					(A_WeightFilter.WEIGHT_MAX - A_WeightFilter.WEIGHT_MIN) * ratio + A_WeightFilter.WEIGHT_MIN;
+				Canvas.canvas.node[str].size =
+					(A_WeightFilter.SIZE_MAX - A_WeightFilter.SIZE_MIN) * ratio + A_WeightFilter.SIZE_MIN;
 			}
 		}
 		
