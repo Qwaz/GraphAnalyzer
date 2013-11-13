@@ -8,7 +8,7 @@ package graph
 
 	public class Edge extends GraphObject
 	{
-		public static const CONSTANT:Number = 0.004;
+		public static const CONSTANT:Number = 0.002;
 		public static const SEPARATION:Number = .5;
 		private static const HIGHLIGHT_SCALING:Number = 1.1;
 		private static const DEFAULT_SCALING:Number = 2;

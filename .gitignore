@@ -12,6 +12,6 @@ obj/
 .gitignore
 edge.txt
 node.txt
-graph.txt
+frame.txt
 *.swf
 
