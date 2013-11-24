@@ -20,7 +20,7 @@ package filters
 			
 			for (str in nodeList)
 			{
-				if (Canvas.canvas.node[str]) {
+				if (nodeList[str] && Canvas.canvas.node[str]) {
 					Canvas.canvas.node[str].visible = true;
 					Canvas.canvas.node[str].consider = true;
 				}

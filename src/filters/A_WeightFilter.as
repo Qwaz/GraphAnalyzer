@@ -30,7 +30,7 @@ package filters
 			
 			for (str in nodeList)
 			{
-				if (Canvas.canvas.node[str])
+				if (nodeList[str] && Canvas.canvas.node[str])
 				{
 					if (!((parameter[1] as Value).Get(str) is Number))
 					{
@@ -42,7 +42,7 @@ package filters
 			
 			for (str in nodeList)
 			{
-				if (Canvas.canvas.node[str])
+				if (nodeList[str] && Canvas.canvas.node[str])
 				{
 					w = (parameter[1] as Value).Get(str) as Number;
 					Canvas.canvas.node[str].weight = w;
