@@ -66,7 +66,7 @@ package filters
 				}
 				else
 				{
-					throw new Error("노드 '" + node + "'을(를) 찾을 수 없습니다.");
+					throw new TrivialError("노드 '" + node + "'을(를) 찾을 수 없습니다.");
 				}
 			}
 			else

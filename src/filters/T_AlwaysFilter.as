@@ -94,7 +94,7 @@ package filters
 				{
 					if (!condition.check(str, node))
 					{
-						ret[now.node] = 0;
+						ret[str] = 0;
 					}
 				}
 			}

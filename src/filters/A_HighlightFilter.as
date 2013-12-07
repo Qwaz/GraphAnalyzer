@@ -19,7 +19,7 @@ package filters
 			
 			for (str in nodeList)
 			{
-				if (Canvas.canvas.node[str])
+				if (nodeList[str] && Canvas.canvas.node[str])
 				{
 					Canvas.canvas.node[str].hl_filter = true;
 				}

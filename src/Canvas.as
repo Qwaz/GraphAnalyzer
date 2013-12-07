@@ -297,7 +297,7 @@ package
 				for each(nextNode in node){
 					if (nextNode != nowNode) {
 						r = Point.distance(new Point(nextNode.x, nextNode.y), new Point(nowNode.x, nowNode.y));
-						if (r < 0.1) r = 0.1;
+						if (r < 1) r = 1;
 						r = r * r * r;
 						
 						if (nowNode.consider && nextNode.consider)

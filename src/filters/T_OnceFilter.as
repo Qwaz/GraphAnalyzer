@@ -93,7 +93,7 @@ package filters
 				{
 					if (condition.check(str, node))
 					{
-						ret[now.node] = 1;
+						ret[str] = 1;
 					}
 				}
 			}
